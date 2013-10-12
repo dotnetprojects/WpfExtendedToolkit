@@ -302,7 +302,10 @@ namespace Xceed.Wpf.AvalonDock
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                _autoHideWindowManager.HideAutoWindow();
+                if (_autoHideWindowManager != null)
+                {
+                    _autoHideWindowManager.HideAutoWindow();
+                }
 
                 foreach (var fw in _fwList.ToArray())
                 {
