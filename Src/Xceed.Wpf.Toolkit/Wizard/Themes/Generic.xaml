@@ -63,19 +63,7 @@
                                     </MultiBinding>
                                  </Button.Visibility>
                               </Button>
-                              <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                                 <Button Name="PART_CancelButton"
-                                         Margin="0,0,7,0"
-                                         MinWidth="75" 
-                                         Command="local:WizardCommands.Cancel" 
-                                         Content="{TemplateBinding CancelButtonContent}">
-                                    <Button.Visibility>
-                                       <MultiBinding Converter="{StaticResource WizardPageButtonVisibilityConverter}">
-                                          <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="CancelButtonVisibility" />
-                                          <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="CurrentPage.CancelButtonVisibility" />
-                                       </MultiBinding>
-                                    </Button.Visibility>
-                                 </Button>
+                              <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">                                 
                                  <Button Name="PART_BackButton"
                                          MinWidth="75" 
                                          Command="local:WizardCommands.PreviousPage" 
@@ -88,6 +76,7 @@
                                     </Button.Visibility>
                                  </Button>
                                  <Button Name="PART_NextButton"
+                                         Margin="7,0,0,0"
                                          MinWidth="75" 
                                          Command="local:WizardCommands.NextPage"
                                          Content="{TemplateBinding NextButtonContent}">
@@ -107,6 +96,18 @@
                                        <MultiBinding Converter="{StaticResource WizardPageButtonVisibilityConverter}">
                                           <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="FinishButtonVisibility" />
                                           <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="CurrentPage.FinishButtonVisibility" />
+                                       </MultiBinding>
+                                    </Button.Visibility>
+                                 </Button>
+                                 <Button Name="PART_CancelButton"
+                                        Margin="7,0,0,0"
+                                        MinWidth="75" 
+                                        Command="local:WizardCommands.Cancel" 
+                                        Content="{TemplateBinding CancelButtonContent}">
+                                    <Button.Visibility>
+                                       <MultiBinding Converter="{StaticResource WizardPageButtonVisibilityConverter}">
+                                          <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="CancelButtonVisibility" />
+                                          <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="CurrentPage.CancelButtonVisibility" />
                                        </MultiBinding>
                                     </Button.Visibility>
                                  </Button>
