@@ -23,7 +23,7 @@ namespace Xceed.Wpf.Toolkit.Core.Converters
   {
     public object Convert( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
     {
-      return value.GetType().Name;
+      return value == null ? String.Empty : value.GetType().Name;
     }
     public object ConvertBack( object value, Type targetType, object parameter, System.Globalization.CultureInfo culture )
     {
