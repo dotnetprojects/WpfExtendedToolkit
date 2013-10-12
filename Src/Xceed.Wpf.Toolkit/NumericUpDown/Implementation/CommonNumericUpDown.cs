@@ -211,6 +211,9 @@ namespace Xceed.Wpf.Toolkit
       if( Value == null )
         return string.Empty;
 
+      if (FormatString.Contains("{0"))
+        return string.Format(CultureInfo, FormatString, Value.Value);
+
       return Value.Value.ToString( FormatString, CultureInfo );
     }
 
