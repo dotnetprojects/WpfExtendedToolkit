@@ -313,6 +313,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TimeSpanUpDown\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WatermarkTextBox\Themes\Aero2.NormalColor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -369,6 +373,7 @@
     <Compile Include="CollectionControl\Implementation\ItemEventArgs.cs" />
     <Compile Include="CollectionControl\Implementation\PrimitiveTypeCollectionControl.cs" />
     <Compile Include="Core\CancelRoutedEventArgs.cs" />
+    <Compile Include="Core\ChangeTypeHelper.cs" />
     <Compile Include="Core\Converters\ColorBlendConverter.cs" />
     <Compile Include="Core\Converters\WindowContentBorderMarginConverter.cs" />
     <Compile Include="Core\Converters\WindowControlBackgroundConverter.cs" />
@@ -520,6 +525,7 @@
     <Compile Include="PropertyGrid\Implementation\Definitions\EditorTemplateDefinition.cs" />
     <Compile Include="PropertyGrid\Implementation\Definitions\PropertyDefinitionBase.cs" />
     <Compile Include="PropertyGrid\Implementation\Definitions\EditorDefinitionBase.cs" />
+    <Compile Include="PropertyGrid\Implementation\Editors\MaskedTextBoxEditor.cs" />
     <Compile Include="PropertyGrid\Implementation\PropertyDefinitionBaseCollection.cs" />
     <Compile Include="PropertyGrid\Implementation\FilterInfo.cs" />
     <Compile Include="PropertyGrid\Implementation\ObjectContainerHelperBase.cs" />
@@ -576,6 +582,7 @@
     <Compile Include="TimePicker\Implementation\TimeFormat.cs" />
     <Compile Include="TimePicker\Implementation\TimeItem.cs" />
     <Compile Include="TimePicker\Implementation\TimePicker.cs" />
+    <Compile Include="TimeSpanUpDown\Implementation\TimeSpanUpDown.cs" />
     <Compile Include="VisualStates.cs" />
     <Compile Include="MessageBox\Implementation\VisualStates.MessageBox.cs" />
     <Compile Include="WatermarkTextBox\Implementation\WatermarkTextBox.cs" />

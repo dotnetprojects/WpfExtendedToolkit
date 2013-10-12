@@ -250,7 +250,7 @@
       <Setter Property="VerticalContentAlignment" Value="Center" />
       <Setter Property="Focusable" Value="True" />
       <Setter Property="SnapsToDevicePixels" Value="True"/>
-      <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="None"/>
+      <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="None"/>        
       <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type pg:PropertyItemBase}">
@@ -381,11 +381,30 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <StackPanel Orientation="Horizontal" Margin="6,2,0,4"
+                            <!--<StackPanel Orientation="Horizontal" Margin="6,2,0,4"
                                  Visibility="{Binding ShowTitle, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <TextBlock Text="{TemplateBinding SelectedObjectTypeName}" FontWeight="Bold" />
                                 <TextBlock Text="{TemplateBinding SelectedObjectName}" Margin="5,0,0,0" />
-                            </StackPanel>
+                            </StackPanel>-->
+
+                            <DockPanel HorizontalAlignment="Stretch" Margin="2,2,0,4" LastChildFill="True">
+                                <Border DockPanel.Dock="Left" Background="White" DataContext="{TemplateBinding ShowPreview}" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Width="44" Height="44" HorizontalAlignment="Right" Margin="8 8 8 8" Padding="2">
+                                    <Border.Visibility>
+                                        <Binding>
+                                            <Binding.Converter>
+                                                <BooleanToVisibilityConverter />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </Border.Visibility>
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <VisualBrush Stretch="Uniform" Visual="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedObject}"></VisualBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </Border>
+                                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Height="{Binding Source={RelativeSource Self},Path=FontSize}" DockPanel.Dock="Left" Text="{TemplateBinding SelectedObjectTypeName}" FontWeight="Bold" Visibility="{Binding ShowTitle, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="{Binding Source={RelativeSource Self},Path=FontSize}" Text="{TemplateBinding SelectedObjectName}" Margin="5,0,5,0" />
+                            </DockPanel>
 
                             <Grid x:Name="toolsContainer" Grid.Row="1" Margin="4,0,4,4">
                                 <Grid.ColumnDefinitions>
@@ -443,7 +462,7 @@
                             </Grid>
 
                             <Grid Grid.Row="2" Background="{x:Static SystemColors.WindowBrush}">
-                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <!--<ScrollViewer VerticalScrollBarVisibility="Auto">-->
                                     <pg:PropertyItemsControl  x:Name="PART_PropertyItemsControl" IsTabStop="False" Focusable="False"
                                                      ItemsSource="{Binding Properties, RelativeSource={RelativeSource TemplatedParent}}"
                                                      ItemContainerStyle="{Binding PropertyContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
@@ -454,6 +473,14 @@
                                                 <VirtualizingStackPanel />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
+                                        
+                                        <ItemsControl.Template>
+                                            <ControlTemplate>
+                                            <ScrollViewer x:Name="ScrollViewer" CanContentScroll="True" Padding="{TemplateBinding Padding}">
+                                                    <ItemsPresenter />
+                                                </ScrollViewer>
+                                            </ControlTemplate>
+                                        </ItemsControl.Template> 
 
                                         <ItemsControl.GroupStyle>
                                             <GroupStyle>
@@ -476,7 +503,6 @@
                                         </ItemsControl.GroupStyle>
 
                                     </pg:PropertyItemsControl>
-                                </ScrollViewer>
 
                                 <Thumb x:Name="PART_DragThumb" HorizontalAlignment="Left" Width="5" Margin="6,0,0,0" Cursor="SizeWE">
                                     <Thumb.Template>

@@ -50,5 +50,6 @@
       <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/WatermarkTextBox/Themes/Generic.xaml" />
       <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Wizard/Themes/Generic.xaml" />
       <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Zoombox/Themes/Generic.xaml" />
+      <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/TimeSpanUpDown/Themes/Generic.xaml" />
    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

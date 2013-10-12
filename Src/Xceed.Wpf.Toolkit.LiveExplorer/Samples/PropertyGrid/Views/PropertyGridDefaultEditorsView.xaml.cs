@@ -20,6 +20,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using Xceed.Wpf.Toolkit.PropertyGrid.Converters;
 
 namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
 {
@@ -57,6 +58,8 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       selectedObject.UInt16 = (ushort)8;
       selectedObject.UInt32 = (uint)9;
       selectedObject.UInt64 = (ulong)10;
+      selectedObject.Char = 'a';
+      selectedObject.Guid = Guid.NewGuid();
 
       this.DataContext = selectedObject;
     }
@@ -135,6 +138,19 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Category( "Non-Numeric Editors" )]
       [Description( "This property is a complex property and has no default editor." )]
       public Person Person { get; set; }
+
+      [Category("Additional")]
+      [Description("")]
+      public Guid Guid { get; set; }
+      [Category("Additional")]
+      [Description("")]
+      public char Char { get; set; }
+      [Category("Additional")]
+      [Description("")]
+      public Guid? NGuid { get; set; }
+      [Category("Additional")]
+      [Description("")]
+      public char? NChar { get; set; }
     }
 
     public class Person

@@ -656,6 +656,23 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //ShowTitle
 
+    #region ShowPreview
+
+    public static readonly DependencyProperty ShowPreviewProperty = DependencyProperty.Register("ShowPreview", typeof(bool), typeof(PropertyGrid), new UIPropertyMetadata(false));
+    public bool ShowPreview
+    {
+        get
+        {
+            return (bool)GetValue(ShowPreviewProperty);
+        }
+        set
+        {
+            SetValue(ShowPreviewProperty, value);
+        }
+    }
+
+    #endregion //ShowPreview
+
     #endregion //Properties
 
     #region Constructors
@@ -695,7 +712,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         _dragThumb.DragDelta += DragThumb_DragDelta;
 
       _containerHelper.ChildrenItemsControl = GetTemplateChild( PART_PropertyItemsControl ) as PropertyItemsControl;
-
+      
       //Update TranslateTransform in code-behind instead of XAML to remove the
       //output window error.
       //When we use FindAncesstor in custom control template for binding internal elements property 

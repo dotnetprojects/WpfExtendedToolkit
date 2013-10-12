@@ -813,7 +813,7 @@ namespace Xceed.Wpf.Toolkit.Primitives
 
       try
       {
-        value = System.Convert.ChangeType( text, validatingType, this.GetActiveFormatProvider() );
+        value = ChangeTypeHelper.ChangeType(text, validatingType, this.GetActiveFormatProvider());
       }
       catch
       {
@@ -867,7 +867,7 @@ namespace Xceed.Wpf.Toolkit.Primitives
     [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly" )]
     protected virtual void ValidateValue( object value )
     {
-      if( value == null )
+      if( value == null || value is char || value is Guid)
         return;
 
       Type validatingType = this.ValueDataType;
@@ -877,7 +877,7 @@ namespace Xceed.Wpf.Toolkit.Primitives
 
       if( ( value != DBNull.Value ) && ( value.GetType() != validatingType ) )
         throw new ArgumentException( "The value is not of type " + validatingType.Name + ".", "Value" );
-
+    
       this.ValidateValueInRange( this.MinValue, this.MaxValue, value );
     }
 
@@ -988,7 +988,7 @@ namespace Xceed.Wpf.Toolkit.Primitives
       Type type = this.ValueDataType;
 
       if( value.GetType() != type )
-        value = System.Convert.ChangeType( value, type );
+        value = ChangeTypeHelper.ChangeType(value, type, this.GetActiveFormatProvider()); //System.Convert.ChangeType( value, type );
 
       object nullValue = this.NullValue;
 
