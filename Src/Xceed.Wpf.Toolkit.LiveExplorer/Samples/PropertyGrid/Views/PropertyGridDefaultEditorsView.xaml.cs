@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
@@ -60,6 +61,9 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       selectedObject.UInt64 = (ulong)10;
       selectedObject.Char = 'a';
       selectedObject.Guid = Guid.NewGuid();
+      selectedObject.DoubleCollection = new DoubleCollection(new[] { 1.0, 2.0, 3.0 });
+      selectedObject.Int32Collection = new Int32Collection(new[] { 1, 2, 3 });
+      selectedObject.StringCollection = new StringCollection() {"a"};
 
       this.DataContext = selectedObject;
     }
@@ -151,6 +155,18 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Category("Additional")]
       [Description("")]
       public char? NChar { get; set; }
+
+      [Category("Additional")]
+      [Description("")]
+      public DoubleCollection DoubleCollection { get; set; }
+
+      [Category("Additional")]
+      [Description("")]
+      public StringCollection StringCollection { get; set; }
+
+      [Category("Additional")]
+      [Description("")]
+      public Int32Collection Int32Collection { get; set; }
     }
 
     public class Person

@@ -14,6 +14,9 @@
 
   ***********************************************************************************/
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 {
   public class PrimitiveTypeCollectionEditor : TypeEditor<PrimitiveTypeCollectionControl>
@@ -30,9 +33,18 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
     }
 
     protected override void ResolveValueBinding( PropertyItem propertyItem )
-    {
+    {        
       Editor.ItemsSourceType = propertyItem.PropertyType;
-      Editor.ItemType = propertyItem.PropertyType.GetGenericArguments()[ 0 ];
+
+      var icollection = propertyItem.PropertyType.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
+      if (icollection != null)
+      {
+          Editor.ItemType = icollection.GetGenericArguments()[0];
+      }
+      else
+      {
+        Editor.ItemType = propertyItem.PropertyType.GetGenericArguments()[0];
+      }      
       base.ResolveValueBinding( propertyItem );
     }
   }
