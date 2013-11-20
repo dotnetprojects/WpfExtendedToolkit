@@ -380,6 +380,13 @@ namespace Xceed.Wpf.AvalonDock
 
                 newFW.ShowInTaskbar = false;
                 newFW.Show();
+
+                // Do not set the WindowState before showing or it will be lost
+                if (paneForExtensions != null && paneForExtensions.IsMaximized)
+                {
+                    newFW.WindowState = WindowState.Maximized;
+                }
+
                 return newFW;
             }
 
@@ -408,6 +415,13 @@ namespace Xceed.Wpf.AvalonDock
 
                 newFW.ShowInTaskbar = false;
                 newFW.Show();
+
+                // Do not set the WindowState before showing or it will be lost
+                if (paneForExtensions != null && paneForExtensions.IsMaximized)
+                {
+                    newFW.WindowState = WindowState.Maximized;
+                }
+
                 return newFW;
             }
 
@@ -2525,7 +2539,7 @@ namespace Xceed.Wpf.AvalonDock
         internal void _ExecuteCloseCommand(LayoutAnchorable anchorable)
         {
             var model = anchorable as LayoutAnchorable;
-            if (model != null && model.TestCanClose())
+            if (model != null && model.CloseWhenTabbedDocument && model.TestCanClose())
             {
                 if (model.IsAutoHidden)
                     model.ToggleAutoHide();
@@ -2533,6 +2547,8 @@ namespace Xceed.Wpf.AvalonDock
                 model.Close();
                 return;
             }
+
+            _ExecuteHideCommand(anchorable);
         }
 
         internal void _ExecuteHideCommand(LayoutAnchorable anchorable)

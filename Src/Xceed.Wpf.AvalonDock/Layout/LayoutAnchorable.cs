@@ -29,6 +29,15 @@ namespace Xceed.Wpf.AvalonDock.Layout
     [Serializable]
     public class LayoutAnchorable : LayoutContent
     {
+        #region CloseWhenTabbedDocument
+        [XmlIgnore]
+        public bool CloseWhenTabbedDocument
+        {
+            get;
+            set;
+        }
+        #endregion
+
         #region IsVisible
         [XmlIgnore]
         public bool IsVisible
