@@ -38,6 +38,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
         {
             _anchorable = model as LayoutAnchorable;
             _anchorable.IsVisibleChanged += new EventHandler(_anchorable_IsVisibleChanged);
+            _anchorable.IsAutoHiddenChanged += new EventHandler(_anchorable_IsAutoHiddenChanged);
 
             base.Attach(model);
         }
@@ -45,6 +46,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
         internal override void Detach()
         {
             _anchorable.IsVisibleChanged -= new EventHandler(_anchorable_IsVisibleChanged);
+            _anchorable.IsAutoHiddenChanged -= new EventHandler(_anchorable_IsAutoHiddenChanged);
             _anchorable = null;
             base.Detach();
         }
@@ -93,6 +95,52 @@ namespace Xceed.Wpf.AvalonDock.Controls
             base.SetDefaultBindings();
         }
 
+        #region IsHidden
+
+        /// <summary>
+        /// IsHidden Dependency Property
+        /// </summary>
+        public static readonly DependencyProperty IsHiddenProperty =
+            DependencyProperty.Register("IsHidden", typeof(bool), typeof(LayoutAnchorableItem),
+                                        new FrameworkPropertyMetadata(false,
+                                                                      new PropertyChangedCallback(OnIsHiddenChanged)));
+
+        /// <summary>
+        /// Gets or sets the IsHidden property.  This dependency property 
+        /// indicates the hidden state of the element.
+        /// </summary>
+        public bool IsHidden
+        {
+            get { return (bool)GetValue(IsHiddenProperty); }
+            set { SetValue(IsHiddenProperty, value); }
+        }
+
+        /// <summary>
+        /// Handles changes to the IsHidden property.
+        /// </summary>
+        private static void OnIsHiddenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LayoutAnchorableItem)d).OnIsHiddenChanged(e);
+        }
+
+        /// <summary>
+        /// Provides derived classes an opportunity to handle changes to the IsHidden property.
+        /// </summary>
+        protected virtual void OnIsHiddenChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (_anchorable != null)
+            {
+                if (_anchorable.IsHidden != (bool)e.NewValue)
+                {
+                    if (_anchorable.IsHidden)
+                        _anchorable.Show();
+                    else
+                        _anchorable.Hide();
+                }
+            }
+        }
+
+        #endregion
 
         #region HideCommand
 
@@ -150,6 +198,48 @@ namespace Xceed.Wpf.AvalonDock.Controls
         {
             if (_anchorable != null && _anchorable.Root != null && _anchorable.Root.Manager != null)
                 _anchorable.Root.Manager._ExecuteHideCommand(_anchorable);
+        }
+
+        #endregion
+
+        #region IsAutoHidden
+
+        /// <summary>
+        /// IsAutoHidden Dependency Property
+        /// </summary>
+        public static readonly DependencyProperty IsAutoHiddenProperty =
+            DependencyProperty.Register("IsAutoHidden", typeof(bool), typeof(LayoutAnchorableItem),
+                                        new FrameworkPropertyMetadata(false,
+                                                                      new PropertyChangedCallback(OnIsAutoHiddenChanged)));
+
+        /// <summary>
+        /// Gets or sets the IsAutoHidden property.  This dependency property 
+        /// indicates the pinned state of the element.
+        /// </summary>
+        public bool IsAutoHidden
+        {
+            get { return (bool)GetValue(IsAutoHiddenProperty); }
+            set { SetValue(IsAutoHiddenProperty, value); }
+        }
+
+        /// <summary>
+        /// Handles changes to the IsAutoHidden property.
+        /// </summary>
+        private static void OnIsAutoHiddenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((LayoutAnchorableItem)d).OnIsAutoHiddenChanged(e);
+        }
+
+        /// <summary>
+        /// Provides derived classes an opportunity to handle changes to the IsAutoHidden property.
+        /// </summary>
+        protected virtual void OnIsAutoHiddenChanged(DependencyPropertyChangedEventArgs e)
+        {
+            if (_anchorable != null)
+            {
+                if (_anchorable.IsAutoHidden != (bool)e.NewValue)
+                    _anchorable.ToggleAutoHide();
+            }
         }
 
         #endregion
@@ -214,6 +304,12 @@ namespace Xceed.Wpf.AvalonDock.Controls
         {
             if (_anchorable != null && _anchorable.Root != null && _anchorable.Root.Manager != null)
                 _anchorable.Root.Manager._ExecuteAutoHideCommand(_anchorable);
+        }
+
+        void _anchorable_IsAutoHiddenChanged(object sender, EventArgs e)
+        {
+            if (_anchorable != null)
+                IsAutoHidden = _anchorable.IsAutoHidden;
         }
 
         #endregion

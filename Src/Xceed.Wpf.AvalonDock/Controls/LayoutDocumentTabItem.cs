@@ -165,7 +165,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
                 }
             }
 
-            if (IsMouseCaptured)
+            if (IsMouseCaptured && PresentationSource.FromVisual(this) != null)
             {
                 var mousePosInScreenCoord = this.PointToScreenDPI(e.GetPosition(this));
                 if (!_parentDocumentTabPanelScreenArea.Contains(mousePosInScreenCoord))
