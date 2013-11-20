@@ -74,6 +74,7 @@
     <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="Controls\DropDownControlArea.cs" />
     <Compile Include="Controls\DropTargetBase.cs" />
+    <Compile Include="Controls\TabContent.cs" />
     <Compile Include="Controls\WeakDictionary.cs" />
     <Compile Include="Controls\WindowActivateEventArgs.cs" />
     <Compile Include="Controls\WindowHookHandler.cs" />

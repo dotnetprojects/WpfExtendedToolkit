@@ -130,6 +130,28 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
         #endregion
 
+        #region CacheTabsContent
+
+        private bool _cacheTabsContent = false;
+
+        /// <summary>
+        /// Should DocumentTabs content be rebuilt everytime a tab is changed, or be cached and simply
+        /// displayed. Setting this to true will consume more memory when application makes heavy use of document
+        /// tab switching, but requires less proceesing when switching document tabs
+        /// </summary>
+        public bool CacheTabsContent
+        {
+            get { return _cacheTabsContent; }
+            set
+            {
+                if (value != _cacheTabsContent)
+                {
+                    this._cacheTabsContent = value;
+                    RaisePropertyChanged("CacheTabsContent");
+                }
+            }
+        }
+        #endregion
 
         public void MoveChild(int oldIndex, int newIndex)
         {
