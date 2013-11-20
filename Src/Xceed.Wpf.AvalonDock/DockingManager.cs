@@ -2047,7 +2047,7 @@ namespace Xceed.Wpf.AvalonDock
                 CreateDocumentLayoutItem(documentToImport);
 
             }
-            _suspendLayoutItemCreation = true;
+            _suspendLayoutItemCreation = false;
 
 
             var documentsSourceAsNotifier = documentsSource as INotifyCollectionChanged;
