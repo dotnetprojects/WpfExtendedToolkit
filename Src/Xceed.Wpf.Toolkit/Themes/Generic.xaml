@@ -26,6 +26,8 @@
       <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/BusyIndicator/Themes/Generic.xaml" />
 
       <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/ButtonSpinner/Themes/Generic.xaml" />
+       
+      <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/BrushPicker/Themes/Generic.xaml" />
 
       <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Calculator/Themes/Generic.xaml" />
       <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/CalculatorUpDown/Themes/Generic.xaml" />

@@ -38,6 +38,7 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       selectedObject.Boolean = true;
       selectedObject.Byte = ( byte )1;
       selectedObject.Color = Colors.Blue;
+      selectedObject.Brush = new LinearGradientBrush(Colors.Red, Colors.Blue, new Point(0, 0), new Point(1, 1));
       selectedObject.DateTime = System.DateTime.Now;
       selectedObject.Double = (double)2;
       selectedObject.Enum = HorizontalAlignment.Center;
@@ -115,6 +116,9 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Category( "Non-Numeric Editors" )]
       [Description( "This property uses a ColorPicker as the default editor." )]
       public System.Windows.Media.Color Color { get; set; }
+      [Category("Non-Numeric Editors")]
+      [Description("This property uses a BrushPicker as the default editor.")]
+      public Brush Brush { get; set; }
       [Category( "Non-Numeric Editors" )]
       [Description( "(C# enum type) This property uses a ComboBox as the default editor. The ComboBox is auto-populated with the enum values." )]
       public HorizontalAlignment Enum { get; set; }

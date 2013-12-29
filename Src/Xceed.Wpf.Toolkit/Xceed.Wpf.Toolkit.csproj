@@ -49,6 +49,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="BrushPicker\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="BusyIndicator\Themes\Aero2.NormalColor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -348,6 +352,22 @@
     <Compile Include="AutoSelectTextBox\Implementation\AutoSelectBehaviorEnum.cs" />
     <Compile Include="AutoSelectTextBox\Implementation\AutoSelectTextBox.cs" />
     <Compile Include="AutoSelectTextBox\Implementation\QueryMoveFocusEventArgs.cs" />
+    <Compile Include="BrushPicker\Implementation\AlphaSelector.cs" />
+    <Compile Include="BrushPicker\Implementation\BaseSelector.cs" />
+    <Compile Include="BrushPicker\Implementation\ColorBox.cs" />
+    <Compile Include="BrushPicker\Implementation\ColorChangedEventArgs.cs" />
+    <Compile Include="BrushPicker\Implementation\ColorHelper.cs" />
+    <Compile Include="BrushPicker\Implementation\DoubleUpDown.cs" />
+    <Compile Include="BrushPicker\Implementation\Enums.cs" />
+    <Compile Include="BrushPicker\Implementation\GradientStopAdder.cs" />
+    <Compile Include="BrushPicker\Implementation\GradientStopSlider.cs" />
+    <Compile Include="BrushPicker\Implementation\HueSelector.cs" />
+    <Compile Include="BrushPicker\Implementation\InputValidationErrorEventArgs .cs" />
+    <Compile Include="BrushPicker\Implementation\SaturationBrightnessSelector.cs" />
+    <Compile Include="BrushPicker\Implementation\SpinEventArgs .cs" />
+    <Compile Include="BrushPicker\Implementation\Spinner.cs" />
+    <Compile Include="BrushPicker\Implementation\TextBoxBehavior.cs" />
+    <Compile Include="BrushPicker\Implementation\UpDownBase.cs" />
     <Compile Include="BusyIndicator\Implementation\BusyIndicator.cs" />
     <Compile Include="ButtonSpinner\Implementation\ButtonSpinner.cs" />
     <Compile Include="CalculatorUpDown\Implementation\CalculatorUpDown.cs" />
@@ -525,6 +545,7 @@
     <Compile Include="PropertyGrid\Implementation\Definitions\EditorTemplateDefinition.cs" />
     <Compile Include="PropertyGrid\Implementation\Definitions\PropertyDefinitionBase.cs" />
     <Compile Include="PropertyGrid\Implementation\Definitions\EditorDefinitionBase.cs" />
+    <Compile Include="PropertyGrid\Implementation\Editors\BrushEditor.cs" />
     <Compile Include="PropertyGrid\Implementation\Editors\MaskedTextBoxEditor.cs" />
     <Compile Include="PropertyGrid\Implementation\PropertyDefinitionBaseCollection.cs" />
     <Compile Include="PropertyGrid\Implementation\FilterInfo.cs" />

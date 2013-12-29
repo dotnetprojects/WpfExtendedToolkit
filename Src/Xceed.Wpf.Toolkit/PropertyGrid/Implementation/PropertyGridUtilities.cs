@@ -180,6 +180,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         editor = new DateTimeUpDownEditor();
       else if( ( propertyType == typeof( Color ) ) )
         editor = new ColorEditor();
+      else if ((propertyType == typeof(Brush)))
+        editor = new BrushEditor();
       else if( propertyType.IsEnum )
         editor = new EnumComboBoxEditor();
       else if( propertyType == typeof( TimeSpan ) )
