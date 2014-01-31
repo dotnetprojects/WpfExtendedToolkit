@@ -29,7 +29,8 @@
       <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="ButtonSpinner/Themes/Generic.xaml" />
 
       <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="BrushPicker/Themes/Generic.xaml" />
-
+      <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="TimeSpanUpDown/Themes/Generic.xaml" />
+       
       <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="Calculator/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="CalculatorUpDown/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="Core/Themes/Generic/WindowControl.xaml" />

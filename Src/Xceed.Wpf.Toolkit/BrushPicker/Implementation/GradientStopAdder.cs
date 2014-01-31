@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using System.Windows.Media.Imaging;
 
 namespace ColorBox
 {
@@ -30,13 +31,45 @@ namespace ColorBox
                 
                 GradientStop _gs = new GradientStop();
                 _gs.Offset = Mouse.GetPosition(btn).X / btn.ActualWidth;
-                _gs.Color = this.ColorBox.Color;
+                //_gs.Color = this.ColorBox.Color;
+                _gs.Color = GetColorFromImage(e.GetPosition(this));                
                 this.ColorBox.Gradients.Add(_gs);
                 this.ColorBox.SelectedGradient = _gs;
+                this.ColorBox.Color = _gs.Color;
                 this.ColorBox.SetBrush();
             }
         }
 
+        Color GetColorFromImage(Point p)
+        {
+            try
+            {
+                Rect bounds = VisualTreeHelper.GetDescendantBounds(this);
+                RenderTargetBitmap rtb = new RenderTargetBitmap((Int32)bounds.Width, (Int32)bounds.Height, 96, 96, PixelFormats.Default);
+                rtb.Render(this);
+
+                byte[] arr;
+                PngBitmapEncoder png = new PngBitmapEncoder();
+                png.Frames.Add(BitmapFrame.Create(rtb));
+                using (var stream = new System.IO.MemoryStream())
+                {
+                    png.Save(stream);
+                    arr = stream.ToArray();
+                }
+
+                BitmapSource bitmap = BitmapFrame.Create(new System.IO.MemoryStream(arr));
+
+                byte[] pixels = new byte[4];
+                CroppedBitmap cb = new CroppedBitmap(bitmap, new Int32Rect((int)p.X, (int)p.Y, 1, 1));
+                cb.CopyPixels(pixels, 4, 0);
+                return Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
+            }
+            catch (Exception)
+            {
+                return this.ColorBox.Color;
+            }
+        }
+        
         public ColorBox ColorBox
         {
             get { return (ColorBox)GetValue(ColorBoxProperty); }
@@ -44,5 +77,5 @@ namespace ColorBox
         }
         public static readonly DependencyProperty ColorBoxProperty =
             DependencyProperty.Register("ColorBox", typeof(ColorBox), typeof(GradientStopAdder));       
-    }    
+    }
 }

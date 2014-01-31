@@ -19,17 +19,27 @@ using System.Windows;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.ComponentModel;
+using System.Windows.Data;
 
 namespace ColorBox
 {
+    [TemplatePart(Name = PART_CurrentColor, Type = typeof(TextBox))]
     public class ColorBox : Control
     {
+        internal const string PART_CurrentColor = "PART_CurrentColor";
+
         //internal bool _GradientStopSetInternally = false;
         internal bool _HSBSetInternally = false;
         internal bool _RGBSetInternally = false;
         internal bool _BrushSetInternally = false;
         internal bool _BrushTypeSetInternally = false;
         internal bool _UpdateBrush = true;
+
+        internal TextBox CurrentColorTextBox
+        {
+            get;
+            private set;
+        }
 
         static ColorBox()
         {
@@ -41,10 +51,28 @@ namespace ColorBox
 
         public override void OnApplyTemplate()
         {
-            base.OnApplyTemplate(); 
+            base.OnApplyTemplate();
+
+            CurrentColorTextBox = GetTemplateChild(PART_CurrentColor) as TextBox;
+            if (CurrentColorTextBox != null)
+            {
+                CurrentColorTextBox.PreviewKeyDown += CurrentColorTextBox_PreviewKeyDown;        
+            }
 
             this.CommandBindings.Add(new CommandBinding(ColorBox.RemoveGradientStop, RemoveGradientStop_Executed));
             this.CommandBindings.Add(new CommandBinding(ColorBox.ReverseGradientStop, ReverseGradientStop_Executed));
+        }
+
+        void CurrentColorTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {                
+                BindingExpression be = CurrentColorTextBox.GetBindingExpression(TextBox.TextProperty);
+                if (be != null)
+                {
+                    be.UpdateSource();
+                }
+            }
         }
         
         private void RemoveGradientStop_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -88,186 +116,6 @@ namespace ColorBox
 
         #region Private Properties
 
-        double RotateAngle
-        {
-            get { return (double)GetValue(RotateAngleProperty); }
-            set { SetValue(RotateAngleProperty, value); }
-        }
-        static readonly DependencyProperty RotateAngleProperty =
-            DependencyProperty.Register("RotateAngle", typeof(double), typeof(ColorBox), new PropertyMetadata(0d, new PropertyChangedCallback(RotateAngleChanged)));
-        static void RotateAngleChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[0] as RotateTransform).Angle = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-        double ScaleX
-        {
-            get { return (double)GetValue(ScaleXProperty); }
-            set { SetValue(ScaleXProperty, value); }
-        }
-        static readonly DependencyProperty ScaleXProperty =
-            DependencyProperty.Register("ScaleX", typeof(double), typeof(ColorBox), new PropertyMetadata(1d, new PropertyChangedCallback(ScaleXChanged)));
-        static void ScaleXChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[1] as ScaleTransform).ScaleX = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-        double ScaleY
-        {
-            get { return (double)GetValue(ScaleYProperty); }
-            set { SetValue(ScaleYProperty, value); }
-        }
-        static readonly DependencyProperty ScaleYProperty =
-            DependencyProperty.Register("ScaleY", typeof(double), typeof(ColorBox), new PropertyMetadata(1d, new PropertyChangedCallback(ScaleYChanged)));
-        static void ScaleYChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[1] as ScaleTransform).ScaleY = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-        double AngleX
-        {
-            get { return (double)GetValue(AngleXProperty); }
-            set { SetValue(AngleXProperty, value); }
-        }
-        static readonly DependencyProperty AngleXProperty =
-            DependencyProperty.Register("AngleX", typeof(double), typeof(ColorBox), new PropertyMetadata(0d, new PropertyChangedCallback(AngleXChanged)));
-        static void AngleXChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[2] as SkewTransform).AngleX = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-        double AngleY
-        {
-            get { return (double)GetValue(AngleYProperty); }
-            set { SetValue(AngleYProperty, value); }
-        }
-        static readonly DependencyProperty AngleYProperty =
-            DependencyProperty.Register("AngleY", typeof(double), typeof(ColorBox), new PropertyMetadata(0d, new PropertyChangedCallback(AngleYChanged)));
-        static void AngleYChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[2] as SkewTransform).AngleY = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-        double TranslateX
-        {
-            get { return (double)GetValue(TranslateXProperty); }
-            set { SetValue(TranslateXProperty, value); }
-        }
-        static readonly DependencyProperty TranslateXProperty =
-            DependencyProperty.Register("TranslateX", typeof(double), typeof(ColorBox), new PropertyMetadata(0d, new PropertyChangedCallback(TranslateXChanged)));
-        static void TranslateXChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[3] as TranslateTransform).X = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-        double TranslateY
-        {
-            get { return (double)GetValue(TranslateYProperty); }
-            set { SetValue(TranslateYProperty, value); }
-        }
-        static readonly DependencyProperty TranslateYProperty =
-            DependencyProperty.Register("TranslateY", typeof(double), typeof(ColorBox), new PropertyMetadata(0d, new PropertyChangedCallback(TranslateYChanged)));
-        static void TranslateYChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[3] as TranslateTransform).Y = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-        double TransformOriginX
-        {
-            get { return (double)GetValue(TransformOriginXProperty); }
-            set { SetValue(TransformOriginXProperty, value); }
-        }
-        static readonly DependencyProperty TransformOriginXProperty =
-            DependencyProperty.Register("TransformOriginX", typeof(double), typeof(ColorBox), new PropertyMetadata(0.5, new PropertyChangedCallback(TransformOriginXChanged)));
-        static void TransformOriginXChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[0] as RotateTransform).CenterX = (double)args.NewValue;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[1] as ScaleTransform).CenterX = (double)args.NewValue;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[2] as SkewTransform).CenterX = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-        double TransformOriginY
-        {
-            get { return (double)GetValue(TransformOriginYProperty); }
-            set { SetValue(TransformOriginYProperty, value); }
-        }
-        static readonly DependencyProperty TransformOriginYProperty =
-            DependencyProperty.Register("TransformOriginY", typeof(double), typeof(ColorBox), new PropertyMetadata(0.5, new PropertyChangedCallback(TransformOriginYChanged)));
-        static void TransformOriginYChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
-        {
-            ColorBox cp = property as ColorBox;
-            if (cp.Brush is GradientBrush)
-            {
-                cp.InitTransform();
-                cp._BrushSetInternally = true;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[0] as RotateTransform).CenterY = (double)args.NewValue;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[1] as ScaleTransform).CenterY = (double)args.NewValue;
-                (((cp.Brush as GradientBrush).Transform as TransformGroup).Children[2] as SkewTransform).CenterY = (double)args.NewValue;
-                cp._BrushSetInternally = false;
-            }
-        }
-
-       
-
-
-
-
         double StartX
         {
             get { return (double)GetValue(StartXProperty); }
@@ -280,6 +128,8 @@ namespace ColorBox
             ColorBox cp = property as ColorBox;
             if (cp.Brush is LinearGradientBrush)
             {
+                if (cp.Brush.IsFrozen)
+                    cp.Brush = cp.Brush.Clone();
                 cp._BrushSetInternally = true;
                 (cp.Brush as LinearGradientBrush).StartPoint = new Point((double)args.NewValue, (cp.Brush as LinearGradientBrush).StartPoint.Y);
                 cp._BrushSetInternally = false;
@@ -298,6 +148,8 @@ namespace ColorBox
             ColorBox cp = property as ColorBox;
             if (cp.Brush is LinearGradientBrush)
             {
+                if (cp.Brush.IsFrozen)
+                    cp.Brush = cp.Brush.Clone();
                 cp._BrushSetInternally = true;
                 (cp.Brush as LinearGradientBrush).StartPoint = new Point((cp.Brush as LinearGradientBrush).StartPoint.X, (double)args.NewValue);
                 cp._BrushSetInternally = false;
@@ -316,6 +168,8 @@ namespace ColorBox
             ColorBox cp = property as ColorBox;
             if (cp.Brush is LinearGradientBrush)
             {
+                if (cp.Brush.IsFrozen)
+                    cp.Brush = cp.Brush.Clone();
                 cp._BrushSetInternally = true;
                 (cp.Brush as LinearGradientBrush).EndPoint = new Point((double)args.NewValue, (cp.Brush as LinearGradientBrush).EndPoint.Y);
                 cp._BrushSetInternally = false;
@@ -334,6 +188,8 @@ namespace ColorBox
             ColorBox cp = property as ColorBox;
             if (cp.Brush is LinearGradientBrush)
             {
+                if (cp.Brush.IsFrozen)
+                    cp.Brush = cp.Brush.Clone();
                 cp._BrushSetInternally = true;
                 (cp.Brush as LinearGradientBrush).EndPoint = new Point((cp.Brush as LinearGradientBrush).EndPoint.X, (double)args.NewValue);
                 cp._BrushSetInternally = false;

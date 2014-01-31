@@ -526,8 +526,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             _resizerWindowHost = new Window()
             {
                 SizeToContent = System.Windows.SizeToContent.Manual,
-                ResizeMode = ResizeMode.NoResize,
-                SizeToContent = System.Windows.SizeToContent.Manual,
+                ResizeMode = ResizeMode.NoResize,                
                 WindowStyle = System.Windows.WindowStyle.None,
                 ShowInTaskbar = false,
                 AllowsTransparency = true,
