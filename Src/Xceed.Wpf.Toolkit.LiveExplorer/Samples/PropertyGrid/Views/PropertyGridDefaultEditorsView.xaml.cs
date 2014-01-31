@@ -40,26 +40,28 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       selectedObject.Color = Colors.Blue;
       selectedObject.Brush = new LinearGradientBrush(Colors.Red, Colors.Blue, new Point(0, 0), new Point(1, 1));
       selectedObject.DateTime = System.DateTime.Now;
-      selectedObject.Double = (double)2;
+      selectedObject.Decimal = ( decimal )2;
+      selectedObject.Double = (double)3;
       selectedObject.Enum = HorizontalAlignment.Center;
       selectedObject.FontFamily = new FontFamily( "Arial" );
       selectedObject.FontStretch = FontStretches.Normal;
       selectedObject.FontStyle = FontStyles.Italic;
       selectedObject.FontWeight = FontWeights.Bold;
-      selectedObject.Int16 = ( short )3;
-      selectedObject.Int32 = (int)4;
-      selectedObject.Int64 = (long)5;
+      selectedObject.Int16 = ( short )4;
+      selectedObject.Int32 = (int)5;
+      selectedObject.Int64 = (long)6;
       selectedObject.ListOfInt32 = new List<int>() { 1, 2, 3 };
       selectedObject.ListOfPerson = new List<Person>() { new Person() { Name = "John Smith" }, new Person() { Name = "Robert King" } };
       selectedObject.ListOfStrings = new List<string>() { "string1", "string2", "string3" };
       selectedObject.Person = new Person() { Name = "John Smith" };
-      selectedObject.SByte = (sbyte) 6;
-      selectedObject.Single = (float)7;
+      selectedObject.SByte = (sbyte) 7;
+      selectedObject.Single = (float)8;
       selectedObject.String = "this is a string";
       selectedObject.TimeSpan = TimeSpan.FromHours( 2 );
-      selectedObject.UInt16 = (ushort)8;
-      selectedObject.UInt32 = (uint)9;
-      selectedObject.UInt64 = (ulong)10;
+      selectedObject.UInt16 = (ushort)9;
+      selectedObject.UInt32 = (uint)10;
+      selectedObject.UInt64 = (ulong)11;
+
       selectedObject.Char = 'a';
       selectedObject.Guid = Guid.NewGuid();
       selectedObject.DoubleCollection = new DoubleCollection(new[] { 1.0, 2.0, 3.0 });
@@ -93,6 +95,13 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Description( "(C# float type) This property uses a SingleUpDown as the default editor." )]
       public float Single { get; set; }
       [Category( "Numeric Editors" )]
+      [Description( "(C# decimal type) This property uses a Decimal as the default editor." )]
+      public decimal Decimal
+      {
+        get;
+        set;
+      }
+      [Category( "Numeric Editors" )]
       [Description( "(C# byte type) This property uses a ByteUpDown as the default editor." )]
       public byte Byte { get; set; }
       [Category( "Numeric Editors" )]
@@ -116,7 +125,7 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Category( "Non-Numeric Editors" )]
       [Description( "This property uses a ColorPicker as the default editor." )]
       public System.Windows.Media.Color Color { get; set; }
-      [Category("Non-Numeric Editors")]
+      [Category( "Non-Numeric Editors" )]
       [Description("This property uses a BrushPicker as the default editor.")]
       public Brush Brush { get; set; }
       [Category( "Non-Numeric Editors" )]

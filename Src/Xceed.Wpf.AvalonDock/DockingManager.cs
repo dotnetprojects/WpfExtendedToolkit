@@ -41,6 +41,8 @@ namespace Xceed.Wpf.AvalonDock
     [TemplatePart(Name="PART_AutoHideArea")]
     public class DockingManager : Control, IOverlayWindowHost//, ILogicalChildrenContainer
     {
+        private ResourceDictionary currentThemeResourceDictionary; // = null
+
         static DockingManager()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DockingManager), new FrameworkPropertyMetadata(typeof(DockingManager)));
@@ -269,7 +271,12 @@ namespace Xceed.Wpf.AvalonDock
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
+        }
 
+        void DockingManager_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
             if (Layout.Manager == this)
             {
                 LayoutRootPanel = CreateUIElementForModel(Layout.RootPanel) as LayoutPanelControl;
@@ -279,13 +286,6 @@ namespace Xceed.Wpf.AvalonDock
                 BottomSidePanel = CreateUIElementForModel(Layout.BottomSide) as LayoutAnchorSideControl;
             }
 
-
-        }
-
-        void DockingManager_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!DesignerProperties.GetIsInDesignMode(this))
-            {
                 //load windows not already loaded!
                 foreach (var fw in Layout.FloatingWindows.Where(fw => !_fwList.Any(fwc => fwc.Model == fw)))
                     _fwList.Add(CreateUIElementForModel(fw) as LayoutFloatingWindowControl);
@@ -302,10 +302,10 @@ namespace Xceed.Wpf.AvalonDock
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                if (_autoHideWindowManager != null)
-                {
-                    _autoHideWindowManager.HideAutoWindow();
-                }
+              if( _autoHideWindowManager != null )
+              {
+                _autoHideWindowManager.HideAutoWindow();
+              }
 
                 foreach (var fw in _fwList.ToArray())
                 {
@@ -415,13 +415,11 @@ namespace Xceed.Wpf.AvalonDock
 
                 newFW.ShowInTaskbar = false;
                 newFW.Show();
-
                 // Do not set the WindowState before showing or it will be lost
-                if (paneForExtensions != null && paneForExtensions.IsMaximized)
+                if( paneForExtensions != null && paneForExtensions.IsMaximized )
                 {
-                    newFW.WindowState = WindowState.Maximized;
+                  newFW.WindowState = WindowState.Maximized;
                 }
-
                 return newFW;
             }
 
@@ -2201,7 +2199,7 @@ namespace Xceed.Wpf.AvalonDock
             if (!document.TestCanClose())
                 return;
 
-            document.Close();
+            document.CloseInternal();
 
             if (DocumentClosed != null)
             { 
@@ -2692,16 +2690,35 @@ namespace Xceed.Wpf.AvalonDock
             var resources = this.Resources;
             if (oldTheme != null)
             {
+              if( oldTheme is DictionaryTheme )
+              {
+                if( currentThemeResourceDictionary != null )
+                {
+                  resources.MergedDictionaries.Remove( currentThemeResourceDictionary );
+                  currentThemeResourceDictionary = null;
+                }
+              }
+              else
+              {
                 var resourceDictionaryToRemove =
                     resources.MergedDictionaries.FirstOrDefault(r => r.Source == oldTheme.GetResourceUri());
                 if (resourceDictionaryToRemove != null)
                     resources.MergedDictionaries.Remove(
                         resourceDictionaryToRemove);
             }
+            }
 
             if (newTheme != null)
             {
+              if( newTheme is DictionaryTheme )
+              {
+                currentThemeResourceDictionary = ( ( DictionaryTheme )newTheme ).ThemeResourceDictionary;
+                resources.MergedDictionaries.Add( currentThemeResourceDictionary );
+              }
+              else
+              {
                 resources.MergedDictionaries.Add(new ResourceDictionary() { Source = newTheme.GetResourceUri() });
+            }
             }
 
             foreach (var fwc in _fwList)

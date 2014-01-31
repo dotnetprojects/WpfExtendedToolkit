@@ -33,7 +33,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
     }
 
     protected override void ResolveValueBinding( PropertyItem propertyItem )
-    {        
+    {
       Editor.ItemsSourceType = propertyItem.PropertyType;
 
       var icollection = propertyItem.PropertyType.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
@@ -43,8 +43,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       }
       else
       {
-        Editor.ItemType = propertyItem.PropertyType.GetGenericArguments()[0];
-      }      
+          Editor.ItemType = propertyItem.PropertyType.GetGenericArguments()[ 0 ];
+      }
       base.ResolveValueBinding( propertyItem );
     }
   }
