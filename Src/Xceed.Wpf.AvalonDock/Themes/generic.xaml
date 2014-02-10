@@ -160,7 +160,15 @@
             </Setter.Value>
         </Setter>
 
-        <Setter Property="avalonDockControls:TabContent.IsCached" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Model.CacheTabsContent}"/>        
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <avalonDockControls:LayoutDocumentControl Model="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <!--<Setter Property="avalonDockControls:TabContent.IsCached" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Model.CacheTabsContent}"/>        
         <Style.Triggers>
             <Trigger Property="avalonDockControls:TabContent.IsCached" Value="True">
                 <Setter Property="avalonDockControls:TabContent.Template">
@@ -182,7 +190,7 @@
                 </Setter>
                 <Setter Property="avalonDockControls:TabContent.Template" Value="{x:Null}"/>
             </Trigger>
-        </Style.Triggers>
+        </Style.Triggers>-->
     </Style>
 
     <!--AnchorablePaneControlStyle-->
@@ -291,7 +299,15 @@
             </Setter.Value>
         </Setter>
 
-        <Setter Property="avalonDockControls:TabContent.IsCached" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Model.CacheTabsContent}"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <avalonDockControls:LayoutAnchorableControl Model="{Binding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <!--<Setter Property="avalonDockControls:TabContent.IsCached" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Model.CacheTabsContent}"/>
         <Style.Triggers>
             <Trigger Property="avalonDockControls:TabContent.IsCached" Value="True">
                 <Setter Property="avalonDockControls:TabContent.Template">
@@ -313,7 +329,7 @@
                 </Setter>
                 <Setter Property="avalonDockControls:TabContent.Template" Value="{x:Null}"/>
             </Trigger>
-        </Style.Triggers>
+        </Style.Triggers>-->
     </Style>
 
     <Style TargetType="avalonDockControls:AnchorablePaneTitle">
