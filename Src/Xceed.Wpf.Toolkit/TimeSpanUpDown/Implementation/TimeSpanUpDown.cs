@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -34,7 +35,7 @@ namespace Xceed.Wpf.Toolkit
 
     private List<DateTimeInfo> _dateTimeInfoList = new List<DateTimeInfo>();
     private DateTimeInfo _selectedDateTimeInfo;
-    private bool _fireSelectionChangedEvent = true;
+    private bool _fireSelectionChangedEvent = false;
     private bool _processTextChanged = true;
 
     #endregion //Members
@@ -170,6 +171,17 @@ namespace Xceed.Wpf.Toolkit
       if( string.IsNullOrEmpty( text ) )
         return null;
 
+      TimeSpan result;
+      this.TryParseTimeSpan(text, out result);
+
+      if (this.ClipValueToMinMax)
+      {
+          return this.GetClippedMinMaxValue(result);
+      }
+
+      this.ValidateDefaultMinMax(result);
+
+      return result;
       return TimeSpan.Parse(text, this.CultureInfo);
     }
 
@@ -231,7 +243,7 @@ namespace Xceed.Wpf.Toolkit
         if (this.Value.HasValue && this.Value.Value.Milliseconds != 0)
         {
             this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ".", IsReadOnly = true });
-            this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Second, Length = 7, Format = "fffffff" });
+            this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Millisecond, Length = 7, Format = "fffffff" });
         }
 
         if (this.Value.HasValue)
@@ -291,8 +303,11 @@ namespace Xceed.Wpf.Toolkit
       DateTimeInfo info = this._selectedDateTimeInfo;
 
       //this only occurs when the user manually type in a value for the Value Property
-      if( info == null )
-        info = this._dateTimeInfoList[ 0 ];
+      if (info == null)
+        info = this._dateTimeInfoList.First(i => i.Type == DateTimePart.Minute);
+        //info = this._dateTimeInfoList[ 0 ];
+
+      TimeSpan? result = null;
 
       try
       {
@@ -300,27 +315,27 @@ namespace Xceed.Wpf.Toolkit
           {
               case DateTimePart.Day:
                   {
-                      this.Value = ((TimeSpan)this.Value).Add(new TimeSpan(value, 0, 0, 0, 0));
+                      result = ((TimeSpan)this.Value).Add(new TimeSpan(value, 0, 0, 0, 0));
                       break;
                   }
               case DateTimePart.Hour24:
                   {
-                      this.Value = ((TimeSpan)this.Value).Add(new TimeSpan(0, value, 0, 0, 0));
+                      result = ((TimeSpan)this.Value).Add(new TimeSpan(0, value, 0, 0, 0));
                       break;
                   }
               case DateTimePart.Minute:
                   {
-                      this.Value = this.Value = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, value, 0, 0));
+                      result = this.Value = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, value, 0, 0));
                       break;
                   }
               case DateTimePart.Second:
                   {
-                      this.Value = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, 0, value, 0));
+                      result = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, 0, value, 0));
                       break;
                   }
               case DateTimePart.Millisecond:
                   {
-                      this.Value = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, 0, 0, value));
+                      result = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, 0, 0, value));
                       break;
                   }
               default:
@@ -338,9 +353,79 @@ namespace Xceed.Wpf.Toolkit
 
       //InitializeDateTimeInfoList();
 
+      this.Value = this.CoerceValueMinMax(result);
+
       //we loose our selection when the Value is set so we need to reselect it without firing the selection changed event
       this.TextBox.Select( info.StartPosition, info.Length );
       this._fireSelectionChangedEvent = true;
+    }
+
+    private TimeSpan? CoerceValueMinMax(TimeSpan? value)
+    {
+        if (this.IsLowerThan(value, this.Minimum))
+            return this.Minimum;
+        else if (this.IsGreaterThan(value, this.Maximum))
+            return this.Maximum;
+        else
+            return value;
+    }
+
+    private bool IsLowerThan(TimeSpan? value1, TimeSpan? value2)
+    {
+        if (value1 == null || value2 == null)
+            return false;
+
+        return (value1.Value < value2.Value);
+    }
+
+    private bool IsGreaterThan(TimeSpan? value1, TimeSpan? value2)
+    {
+        if (value1 == null || value2 == null)
+            return false;
+
+        return (value1.Value > value2.Value);
+    }
+
+    private bool TryParseTimeSpan(string text, out TimeSpan result)
+    {
+        bool isValid = false;
+        result = TimeSpan.Zero;
+
+        TimeSpan current = this.Value.HasValue ? this.Value.Value : TimeSpan.Parse(TimeSpan.Zero.ToString(), this.CultureInfo.DateTimeFormat);
+        isValid = TimeSpan.TryParse(text, this.CultureInfo, out result);
+
+        return isValid;
+    }
+
+    private bool IsCurrentValueValid()
+    {
+        TimeSpan result;
+
+        if (string.IsNullOrEmpty(this.TextBox.Text))
+            return true;
+
+        return this.TryParseTimeSpan(this.TextBox.Text, out result);
+    }
+
+    private void ValidateDefaultMinMax(TimeSpan? value)
+    {
+        // DefaultValue is always accepted.
+        if (object.Equals(value, DefaultValue))
+            return;
+
+        if (IsLowerThan(value, Minimum))
+            throw new ArgumentOutOfRangeException("Minimum", String.Format("Value must be greater than MinValue of {0}", Minimum));
+        else if (IsGreaterThan(value, Maximum))
+            throw new ArgumentOutOfRangeException("Maximum", String.Format("Value must be less than MaxValue of {0}", Maximum));
+    }
+
+    private TimeSpan? GetClippedMinMaxValue(TimeSpan? value)
+    {
+        if (this.IsGreaterThan(value, this.Maximum))
+            return this.Maximum;
+        else if (this.IsLowerThan(value, this.Minimum))
+            return this.Minimum;
+        return value;
     }
 
     private void UpdateTextFormatting()
