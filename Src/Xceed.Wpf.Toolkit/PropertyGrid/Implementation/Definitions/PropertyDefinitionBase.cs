@@ -14,6 +14,7 @@
 
   ***********************************************************************************/
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,6 +42,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         _targetProperties = value; 
       }
     }
+
+    public Type HasAttribute { get; set; }
 
     internal override void Lock()
     {

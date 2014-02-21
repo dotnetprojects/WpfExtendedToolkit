@@ -358,6 +358,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       if( editorElement == null && definitionKeyAsType == null )
         editorElement = this.GenerateCustomEditingElement( propertyItem.PropertyType, propertyItem );
 
+      foreach (var edef in this.PropertyContainer.EditorDefinitions.Where(x => x.HasAttribute != null))
+      {
+        if (propertyItem.PropertyDescriptor.Attributes.Cast<Attribute>().Any(x => x.GetType() == edef.HasAttribute))
+          return edef.GenerateEditingElementInternal(propertyItem);
+      }
+
       if( editorElement == null )
       {
         if( pd.IsReadOnly )
@@ -392,6 +398,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
           def = propertyDefs.GetRecursiveBaseTypes( descriptor.PropertyType );
         }
       }
+
+        
 
       return def;
     }
