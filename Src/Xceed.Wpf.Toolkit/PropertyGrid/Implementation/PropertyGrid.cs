@@ -694,23 +694,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //UpdateTextBoxSourceOnEnterKey
 
-    #region ShowPreview
-
-    public static readonly DependencyProperty ShowPreviewProperty = DependencyProperty.Register("ShowPreview", typeof(bool), typeof(PropertyGrid), new UIPropertyMetadata(false));
-    public bool ShowPreview
-    {
-        get
-        {
-            return (bool)GetValue(ShowPreviewProperty);
-        }
-        set
-        {
-            SetValue(ShowPreviewProperty, value);
-        }
-    }
-
-    #endregion //ShowPreview
-
     #endregion //Properties
 
     #region Constructors

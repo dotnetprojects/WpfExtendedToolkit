@@ -166,12 +166,6 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
 
       [Category("Additional")]
       [Description("")]
-      public Guid Guid { get; set; }
-      [Category("Additional")]
-      [Description("")]
-      public char Char { get; set; }
-      [Category("Additional")]
-      [Description("")]
       public Guid? NGuid { get; set; }
       [Category("Additional")]
       [Description("")]

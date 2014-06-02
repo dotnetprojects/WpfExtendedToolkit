@@ -423,7 +423,6 @@
     <Compile Include="ColorPicker\Implementation\ColorSorter.cs" />
     <Compile Include="Core\CancelRoutedEventArgs.cs" />
     <Compile Include="Core\Converters\CenterTitleConverter.cs" />
-    <Compile Include="Core\ChangeTypeHelper.cs" />
     <Compile Include="Core\Converters\ColorBlendConverter.cs" />
     <Compile Include="Core\Converters\IntToThicknessConverter.cs" />
     <Compile Include="Core\Converters\WindowContentBorderMarginConverter.cs" />

@@ -708,7 +708,7 @@
                                                FontWeight="Bold" />
                                     <TextBlock Text="{TemplateBinding SelectedObjectName}"
                                                Margin="5,0,0,0" />
-                                </StackPanel>
+                                </StackPanel>-->
 
                             <Grid x:Name="toolsContainer" Grid.Row="1" Margin="4,0,4,4">
                                 <Grid.ColumnDefinitions>
