@@ -30,6 +30,7 @@
         <ResourceDictionary Source="../../Themes/Aero2/Common.xaml" />
         <ResourceDictionary Source="../../NumericUpDown/Themes/Aero2.NormalColor.xaml" />
        <ResourceDictionary Source="../../DateTimeUpDown/Themes/Aero2.NormalColor.xaml" />
+       <ResourceDictionary Source="../../TimeSpanUpDown/Themes/Aero2.NormalColor.xaml" />
        <ResourceDictionary Source="../../WatermarkTextBox/Themes/Aero2.NormalColor.xaml" />
        <ResourceDictionary Source="../../ColorPicker/Themes/Aero2.NormalColor.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -41,6 +42,7 @@
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <conv:InverseBoolConverter x:Key="InverseBoolConverter" />
     <pgconv:ExpandableObjectMarginConverter x:Key="ExpandableObjectMarginConverter" />
+    <pgconv:ObjectToUIElementConverter x:Key="ObjectToUIElementConverter" />
 
     <x:Static x:Key="EmptyString" Member="sys:String.Empty" />
 
@@ -150,6 +152,24 @@
       </Style.Triggers>
    </Style>
 
+    <!-- PropertyGrid TimeSpan Editors -->
+    <Style TargetType="{x:Type editor:PropertyGridEditorTimeSpanUpDown}" BasedOn="{StaticResource TimeSpanUpDown}">
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsKeyboardFocusWithin"
+                               Value="False" />
+                    <Condition Property="IsMouseOver"
+                               Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush"
+                        Value="Transparent" />
+                <Setter Property="ShowButtonSpinner"
+                        Value="False" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
    <!-- PropertyGrid ComboBox Editors --> 
    <Style TargetType="{x:Type editor:PropertyGridEditorComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}" >
       <Style.Triggers>
@@ -183,7 +203,11 @@
    </Style>
 
    <!-- PropertyGrid TextBlock Editors --> 
-   <Style TargetType="{x:Type editor:PropertyGridEditorTextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}" />
+   <Style TargetType="{x:Type editor:PropertyGridEditorTextBlock}"
+          BasedOn="{StaticResource {x:Type TextBlock}}">
+      <Setter Property="Foreground"
+                    Value="Gray" />
+   </Style>
 
    <!-- PropertyGrid ColorPicker Editors --> 
    <Style TargetType="{x:Type editor:PropertyGridEditorColorPicker}" BasedOn="{StaticResource ColorPicker}" >
@@ -468,17 +492,22 @@
     </ContextMenu>
 
     <Style TargetType="{x:Type pg:PropertyItemBase}">
-      <Setter Property="Background" Value="{x:Static SystemColors.WindowBrush}" />
+      <Setter Property="Background"
+              Value="{x:Static SystemColors.WindowBrush}" />
       <!-- Set the margin at 1 pixel bottom to let the horizontal "line" effect appear. -->       
-      <Setter Property="Margin" Value="0,0,0,1" />
-      <Setter Property="VerticalContentAlignment" Value="Center" />
-      <Setter Property="SnapsToDevicePixels" Value="True"/>
+      <Setter Property="Margin"
+              Value="0,0,0,1" />
+      <Setter Property="VerticalContentAlignment"
+              Value="Center" />
+      <Setter Property="SnapsToDevicePixels"
+              Value="True" />
       <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type pg:PropertyItemBase}">
                     <Border ContextMenu="{Binding AdvancedOptionsMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}" 
                             ContextMenuService.Placement="Bottom">
-                  <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                  <Grid VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="{Binding NameColumnWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type pg:PropertyGrid}}}" />
                                 <ColumnDefinition Width="*" />
@@ -494,7 +523,8 @@
                              Margin="0,0,1,0" 
                              VerticalAlignment="Stretch" 
                              HorizontalAlignment="Stretch" >
-                        <Grid Margin="2,2,2,2" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                        <Grid Margin="2,2,2,2"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
@@ -513,10 +543,13 @@
                                                IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                                                Visibility="{Binding IsExpandable, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                              <TextBlock Grid.Column="1" Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}" 
+                              <TextBlock x:Name="_text"
+                                         Grid.Column="1"
+                                         Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
                                          HorizontalAlignment="Stretch" 
                                          VerticalAlignment="Center"
-                                         TextTrimming="CharacterEllipsis" />
+                                         TextTrimming="CharacterEllipsis"
+                                         IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"/>
                            </Grid>
 
                                     <Grid Grid.Column="1"
@@ -527,28 +560,37 @@
                                  ContextMenu="{Binding AdvancedOptionsMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}">
 
                                         <Image x:Name="_optionsImage"
-                                     Width="11"
-                                     Height="11"
-                                     ToolTip="{Binding AdvancedOptionsTooltip, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                 Width="11"
+                                                 Height="11"
+                                                 ToolTip="{Binding AdvancedOptionsTooltip, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </Grid>
                                 </Grid>
                             </Border>
 
-                            <Border x:Name="PART_Editor" Grid.Column="1" 
-                                                               Background="{TemplateBinding Background}" 
+                     <Border x:Name="PART_Editor"
+                             Grid.Column="1"
+                                     Background="{TemplateBinding Background}"
                                     KeyboardNavigation.DirectionalNavigation="None"
-                           VerticalAlignment="Stretch" 
-                           HorizontalAlignment="Stretch">
+                                    VerticalAlignment="Stretch" 
+                                    HorizontalAlignment="Stretch">
                         <ContentControl x:Name="PART_ValueContainer" 
                                           Content="{TemplateBinding Editor}" 
-                                          Focusable="False" IsTabStop="False" 
+                                        Focusable="False"
+                                        IsTabStop="False"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                         IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}" >
                                 </ContentControl>
                             </Border>
 
-                            <Expander x:Name="_propertyExpander" Grid.ColumnSpan="2" Grid.Row="1" IsExpanded="{TemplateBinding IsExpanded}" Style="{StaticResource PropertyExpanderStyle}" IsEnabled="True">
-                                <pg:PropertyItemsControl x:Name="PART_PropertyItemsControl" IsTabStop="False" Focusable="False"
+                     <Expander x:Name="_propertyExpander"
+                               Grid.ColumnSpan="2"
+                               Grid.Row="1"
+                               IsExpanded="{TemplateBinding IsExpanded}"
+                               Style="{StaticResource PropertyExpanderStyle}"
+                               IsEnabled="True">
+                        <pg:PropertyItemsControl x:Name="PART_PropertyItemsControl"
+                                                 IsTabStop="False"
+                                                 Focusable="False"
                                                  ItemsSource="{Binding Properties, RelativeSource={RelativeSource TemplatedParent}}"
                                                  ItemContainerStyle="{Binding PropertyContainerStyle, RelativeSource={RelativeSource TemplatedParent}}">
                                     <ItemsControl.ItemsPanel>
@@ -561,40 +603,74 @@
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_Name" Property="Background" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonMouseOverBackgroundKey}}" />
+                  <Trigger Property="IsMouseOver"
+                           Value="True">
+                     <Setter TargetName="PART_Name"
+                             Property="Background"
+                             Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonMouseOverBackgroundKey}}" />
                         </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="PART_Name" Property="Background" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonPressedBackgroundKey}}" />
+                  <Trigger Property="IsSelected"
+                           Value="True">
+                     <Setter TargetName="PART_Name"
+                             Property="Background"
+                             Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonPressedBackgroundKey}}" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" TargetName="PART_ValueContainer"  Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"  />
+                  <Trigger Property="IsEnabled"
+                           Value="False">
+                     <Setter Property="Foreground"
+                             TargetName="PART_ValueContainer"
+                             Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                     <Setter Property="Foreground"
+                             TargetName="_text"
+                             Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
-                        <Trigger Property="Validation.HasError" Value="true">
+                  <Trigger Property="Validation.HasError"
+                           Value="true">
                             <Setter Property="ToolTip"
                                 Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
                         </Trigger>
-                        <Trigger Property="Visibility" Value="Visible" SourceName="_expandableButton">
-                           <Setter Property="Focusable" Value="False" />
+                  <Trigger Property="Visibility"
+                           Value="Visible"
+                           SourceName="_expandableButton">
+                     <Setter Property="Focusable"
+                             Value="False" />
                         </Trigger>
 
-                       <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.Local}">
-                           <Setter TargetName="_optionsImage" Property="Source" Value="../Images/Local11.png" />
+                  <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
+                               Value="{x:Static pg:StringConstants.Local}">
+                     <Setter TargetName="_optionsImage"
+                             Property="Source"
+                             Value="../Images/Local11.png" />
                         </DataTrigger>
-                       <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.Resource}">
-                           <Setter TargetName="_optionsImage" Property="Source" Value="../Images/Resource11.png" />
+                  <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
+                               Value="{x:Static pg:StringConstants.Resource}">
+                     <Setter TargetName="_optionsImage"
+                             Property="Source"
+                             Value="../Images/Resource11.png" />
                         </DataTrigger>
-                       <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.Databinding}">
-                           <Setter TargetName="_optionsImage" Property="Source" Value="../Images/Database11.png" />
+                  <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
+                               Value="{x:Static pg:StringConstants.Databinding}">
+                     <Setter TargetName="_optionsImage"
+                             Property="Source"
+                             Value="../Images/Database11.png" />
                         </DataTrigger>
-                       <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.Inheritance}">
-                           <Setter TargetName="_optionsImage" Property="Source" Value="../Images/Inheritance11.png" />
+                  <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
+                               Value="{x:Static pg:StringConstants.Inheritance}">
+                     <Setter TargetName="_optionsImage"
+                             Property="Source"
+                             Value="../Images/Inheritance11.png" />
                         </DataTrigger>
-                       <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.StyleSetter}">
-                           <Setter TargetName="_optionsImage" Property="Source" Value="../Images/Style11.png" />
+                  <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
+                               Value="{x:Static pg:StringConstants.StyleSetter}">
+                     <Setter TargetName="_optionsImage"
+                             Property="Source"
+                             Value="../Images/Style11.png" />
                         </DataTrigger>
-                       <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}" Value="{x:Static pg:StringConstants.AdvancedProperties}">
-                           <Setter TargetName="_optionsImage" Property="Source" Value="../Images/AdvancedProperties11.png" />
+                  <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
+                               Value="{x:Static pg:StringConstants.AdvancedProperties}">
+                     <Setter TargetName="_optionsImage"
+                             Property="Source"
+                             Value="../Images/AdvancedProperties11.png" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -628,28 +704,11 @@
 
                             <!--<StackPanel Orientation="Horizontal" Margin="6,2,0,4"
                                  Visibility="{Binding ShowTitle, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <TextBlock Text="{TemplateBinding SelectedObjectTypeName}" FontWeight="Bold" />
-                                <TextBlock Text="{TemplateBinding SelectedObjectName}" Margin="5,0,0,0" />
-                            </StackPanel>-->
-
-                            <DockPanel HorizontalAlignment="Stretch" Margin="2,2,0,4" LastChildFill="True">
-                                <Border DockPanel.Dock="Left" Background="White" DataContext="{TemplateBinding ShowPreview}" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Width="44" Height="44" HorizontalAlignment="Right" Margin="8 8 8 8" Padding="2">
-                                    <Border.Visibility>
-                                        <Binding>
-                                            <Binding.Converter>
-                                                <BooleanToVisibilityConverter />
-                                            </Binding.Converter>
-                                        </Binding>
-                                    </Border.Visibility>
-                                    <Rectangle>
-                                        <Rectangle.Fill>
-                                            <VisualBrush Stretch="Uniform" Visual="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedObject}"></VisualBrush>
-                                        </Rectangle.Fill>
-                                    </Rectangle>
-                                </Border>
-                                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Height="{Binding Source={RelativeSource Self},Path=FontSize}" DockPanel.Dock="Left" Text="{TemplateBinding SelectedObjectTypeName}" FontWeight="Bold" Visibility="{Binding ShowTitle, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                <TextBlock HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="{Binding Source={RelativeSource Self},Path=FontSize}" Text="{TemplateBinding SelectedObjectName}" Margin="5,0,5,0" />
-                            </DockPanel>
+                                    <TextBlock Text="{TemplateBinding SelectedObjectTypeName}"
+                                               FontWeight="Bold" />
+                                    <TextBlock Text="{TemplateBinding SelectedObjectName}"
+                                               Margin="5,0,0,0" />
+                                </StackPanel>
 
                             <Grid x:Name="toolsContainer" Grid.Row="1" Margin="4,0,4,4">
                                 <Grid.ColumnDefinitions>
@@ -735,7 +794,11 @@
                                                             <Setter.Value>
                                                                 <ControlTemplate>
                                                                     <Border>
-                                                                        <Expander Header="{Binding Name}" Style="{StaticResource ExpanderStyle}" IsExpanded="True">
+                                                                        <Expander Header="{Binding Name}"
+                                                                                  Style="{StaticResource ExpanderStyle}">
+                                                                            <Expander.IsExpanded>
+                                                                                <sys:Boolean>True</sys:Boolean>
+                                                                            </Expander.IsExpanded>
                                                                             <ItemsPresenter />
                                                                         </Expander>
                                                                     </Border>

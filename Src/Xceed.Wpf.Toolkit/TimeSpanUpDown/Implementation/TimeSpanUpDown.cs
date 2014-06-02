@@ -1,188 +1,96 @@
-﻿/************************************************************************
+﻿/*************************************************************************************
 
    Extended WPF Toolkit
 
-   Copyright (C) 2010-2012 Xceed Software Inc.
+   Copyright (C) 2007-2013 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
 
-   This program can be provided to you by Xceed Software Inc. under a
-   proprietary commercial license agreement for use in non-Open Source
-   projects. The commercial version of Extended WPF Toolkit also includes
-   priority technical support, commercial updates, and many additional 
-   useful WPF controls if you license Xceed Business Suite for WPF.
+   For more features, controls, and fast professional support,
+   pick up the Plus Edition at http://xceed.com/wpf_toolkit
 
-   Visit http://xceed.com and follow @datagrid on Twitter.
+   Stay informed: follow @datagrid on Twitter or Like http://facebook.com/datagrids
 
-  **********************************************************************/
+  ***********************************************************************************/
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-
+using Xceed.Wpf.Toolkit.Core.Primitives;
 using Xceed.Wpf.Toolkit.Primitives;
 
 namespace Xceed.Wpf.Toolkit
 {
-  public class TimeSpanUpDown : UpDownBase<TimeSpan?>
+  public class TimeSpanUpDown : DateTimeUpDownBase<TimeSpan?>
   {
-    #region Members
-
-    private List<DateTimeInfo> _dateTimeInfoList = new List<DateTimeInfo>();
-    private DateTimeInfo _selectedDateTimeInfo;
-    private bool _fireSelectionChangedEvent = false;
-    private bool _processTextChanged = true;
-
-    #endregion //Members
-
-    #region Properties
-
-    #region DefaultValue
-
-    public static readonly DependencyProperty DefaultValueProperty = DependencyProperty.Register("DefaultValue", typeof(TimeSpan), typeof(TimeSpanUpDown), new UIPropertyMetadata(new TimeSpan()));
-    public TimeSpan DefaultValue
-    {
-      get
-      {
-        return ( TimeSpan )this.GetValue( DefaultValueProperty );
-      }
-      set
-      {
-        this.SetValue( DefaultValueProperty, value );
-      }
-    }
-
-    #endregion //DefaultValue
-
-    #region Maximum
-
-
-
-    #endregion //Maximum
-
-    #region Minimum
-
-
-
-    #endregion //Minimum
-
-    #endregion //Properties
-
     #region Constructors
 
     static TimeSpanUpDown()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(TimeSpanUpDown), new FrameworkPropertyMetadata(typeof(TimeSpanUpDown)));
+      DefaultStyleKeyProperty.OverrideMetadata( typeof( TimeSpanUpDown ), new FrameworkPropertyMetadata( typeof( TimeSpanUpDown ) ) );
+      MaximumProperty.OverrideMetadata( typeof( TimeSpanUpDown ), new FrameworkPropertyMetadata( TimeSpan.MaxValue ) );
+      MinimumProperty.OverrideMetadata( typeof( TimeSpanUpDown ), new FrameworkPropertyMetadata( TimeSpan.MinValue ) );
     }
 
     public TimeSpanUpDown()
     {
-      this.InitializeDateTimeInfoList();
     }
 
     #endregion //Constructors
 
-    #region Base Class Overrides
-
-    public override void OnApplyTemplate()
-    {
-      if( this.TextBox != null )
-        this.TextBox.SelectionChanged -= this.TextBox_SelectionChanged;
-
-      base.OnApplyTemplate();
-
-      if( this.TextBox != null )
-        this.TextBox.SelectionChanged += this.TextBox_SelectionChanged;
-    }
+    #region BaseClass Overrides
 
     protected override void OnCultureInfoChanged( CultureInfo oldValue, CultureInfo newValue )
     {
       this.InitializeDateTimeInfoList();
     }
 
+    protected override void SetValidSpinDirection()
+    {
+      ValidSpinDirections validDirections = ValidSpinDirections.None;
+
+      if( !this.IsReadOnly )
+      {
+        if( this.IsLowerThan( this.Value, this.Maximum ) || !this.Value.HasValue )
+          validDirections = validDirections | ValidSpinDirections.Increase;
+
+        if( this.IsGreaterThan( this.Value, this.Minimum ) || !this.Value.HasValue )
+          validDirections = validDirections | ValidSpinDirections.Decrease;
+      }
+
+      if( this.Spinner != null )
+        this.Spinner.ValidSpinDirection = validDirections;
+    }
+
     protected override void OnIncrement()
     {
       if( this.Value.HasValue )
-          this.UpdateTimeSpan(1);
+      {
+        this.UpdateTimeSpan( 1 );
+      }
       else
-        this.Value = this.DefaultValue;
+      {
+        this.Value = this.DefaultValue ?? TimeSpan.Zero;
+      }
     }
 
     protected override void OnDecrement()
     {
       if( this.Value.HasValue )
-          this.UpdateTimeSpan(-1);
+      {
+        this.UpdateTimeSpan( -1 );
+      }
       else
-        this.Value = this.DefaultValue;
-    }
-
-    protected override void OnPreviewKeyDown( KeyEventArgs e )
-    {
-      switch( e.Key )
       {
-        case Key.Enter:
-          {
-            if( !this.IsReadOnly )
-            {
-              this._fireSelectionChangedEvent = false;
-              BindingExpression binding = BindingOperations.GetBindingExpression( this.TextBox, System.Windows.Controls.TextBox.TextProperty );
-              binding.UpdateSource();
-              this._fireSelectionChangedEvent = true;
-              e.Handled = true;
-            }
-            return;
-          }
-        default:
-          {
-            this._fireSelectionChangedEvent = false;
-            break;
-          }
+        this.Value = this.DefaultValue ?? TimeSpan.Zero;
       }
-
-      base.OnPreviewKeyDown( e );
-    }
-
-    protected override void OnTextChanged( string previousValue, string currentValue )
-    {
-      if( !this._processTextChanged )
-        return;
-
-      if( String.IsNullOrEmpty( currentValue ) )
-      {
-        this.Value = null;
-        return;
-      }
-
-        TimeSpan current = this.Value.HasValue ? this.Value.Value : new TimeSpan();
-      TimeSpan result;
-      var success = TimeSpan.TryParse( currentValue, out result );
-      currentValue = result.ToString();
-
-      this.SyncTextAndValueProperties(true, currentValue);
-    }
-
-    protected override TimeSpan? ConvertTextToValue(string text)
-    {
-      if( string.IsNullOrEmpty( text ) )
-        return null;
-
-      TimeSpan result;
-      this.TryParseTimeSpan(text, out result);
-
-      if (this.ClipValueToMinMax)
-      {
-          return this.GetClippedMinMaxValue(result);
-      }
-
-      this.ValidateDefaultMinMax(result);
-
-      return result;
-      return TimeSpan.Parse(text, this.CultureInfo);
     }
 
     protected override string ConvertValueToText()
@@ -193,68 +101,127 @@ namespace Xceed.Wpf.Toolkit
       return this.Value.Value.ToString();
     }
 
-    protected override void SetValidSpinDirection()
+    protected override TimeSpan? ConvertTextToValue( string text )
     {
-      //TODO: implement Minimum and Maximum
+      if( string.IsNullOrEmpty( text ) )
+        return null;
+
+      TimeSpan timeSpan = TimeSpan.Parse( text );
+
+      if( this.ClipValueToMinMax )
+      {
+        return this.GetClippedMinMaxValue( timeSpan );
+      }
+
+      this.ValidateDefaultMinMax( timeSpan );
+
+      return timeSpan;
     }
 
-    protected override void OnValueChanged(TimeSpan? oldValue, TimeSpan? newValue)
+    protected override void OnTextChanged( string previousValue, string currentValue )
+    {
+      if( !_processTextChanged )
+        return;
+
+      if( String.IsNullOrEmpty( currentValue ) )
+      {
+        this.Value = null;
+        return;
+      }
+
+      TimeSpan current = this.Value.HasValue ? this.Value.Value : new TimeSpan();
+      TimeSpan result;
+      var success = TimeSpan.TryParse( currentValue, out result );
+      currentValue = result.ToString();
+
+      this.SyncTextAndValueProperties( true, currentValue );
+    }
+
+    protected override void OnValueChanged( TimeSpan? oldValue, TimeSpan? newValue )
     {
       //whenever the value changes we need to parse out the value into out DateTimeInfo segments so we can keep track of the individual pieces
       //but only if it is not null
       if( newValue != null )
-          this.ParseValueIntoTimeSpanInfo();
-
+      {
+        this.ParseValueIntoTimeSpanInfo();
+      }
       base.OnValueChanged( oldValue, newValue );
     }
 
-    #endregion //Base Class Overrides
-
-    #region Event Hanlders
-
-    void TextBox_SelectionChanged( object sender, RoutedEventArgs e )
+    protected override void PerformMouseSelection()
     {
-      if( this._fireSelectionChangedEvent )
-        this.PerformMouseSelection();
-      else
-        this._fireSelectionChangedEvent = true;
+      this.InitializeDateTimeInfoList();
+      base.PerformMouseSelection();
     }
 
-    #endregion //Event Hanlders
+    #endregion
 
     #region Methods
 
-    private void InitializeDateTimeInfoList()
+    protected override void InitializeDateTimeInfoList()
     {
-        this._dateTimeInfoList.Clear();
+      DateTimeInfo dayInfo = _dateTimeInfoList.FirstOrDefault( x => x.Type == DateTimePart.Day );
+      bool hasDay = dayInfo != null;
 
-        if (this.Value.HasValue && this.Value.Value.TotalMilliseconds < 0)
-            this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = "-", IsReadOnly = true });
-        if (this.Value.HasValue && this.Value.Value.Days != 0)
-        {
-            this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Day, Length = this.Value.Value.Days.ToString().Length, Format = "dd" });
-            this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ".", IsReadOnly = true });
-        }
-        this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Hour24, Length = 2, Format = "hh" });
-        this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ":", IsReadOnly = true });
-        this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Minute, Length = 2, Format = "mm" });
-        this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ":", IsReadOnly = true });
-        this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Second, Length = 2, Format = "ss" });
-        if (this.Value.HasValue && this.Value.Value.Milliseconds != 0)
-        {
-            this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ".", IsReadOnly = true });
-            this._dateTimeInfoList.Add(new DateTimeInfo() { Type = DateTimePart.Millisecond, Length = 7, Format = "fffffff" });
-        }
+      _dateTimeInfoList.Clear();
 
-        if (this.Value.HasValue)
-            this.ParseValueIntoTimeSpanInfo();
+      if( this.Value.HasValue && this.Value.Value.Days != 0 )
+      {
+        int dayLength = this.Value.Value.Days.ToString().Length;
+        _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Day, Length = dayLength, Format = "dd" } );
+        _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ".", IsReadOnly = true } );
+
+        // Day has been added, move TextBox.Selection to keep it on current DateTimeInfo
+        if( !hasDay )
+        {
+          this.TextBox.SelectionStart += ( dayLength + 1 );
+        }
+      }
+      // Day has been removed, move TextBox.Selection to keep it on current DateTimeInfo
+      else if( hasDay )
+      {
+        this.TextBox.SelectionStart = Math.Max( 0, this.TextBox.SelectionStart - ( dayInfo.Length + 1 ) );
+      }
+
+      _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Hour24, Length = 2, Format = "hh" } );
+      _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ":", IsReadOnly = true } );
+      _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Minute, Length = 2, Format = "mm" } );
+      _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ":", IsReadOnly = true } );
+      _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Second, Length = 2, Format = "ss" } );
+
+      if( this.Value.HasValue && this.Value.Value.Milliseconds != 0 )
+      {
+        _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Other, Length = 1, Content = ".", IsReadOnly = true } );
+        _dateTimeInfoList.Add( new DateTimeInfo() { Type = DateTimePart.Second, Length = 7, Format = "fffffff" } );
+      }
+
+      if( this.Value.HasValue )
+      {
+        this.ParseValueIntoTimeSpanInfo();
+      }
+    }
+
+    protected override bool IsLowerThan( TimeSpan? value1, TimeSpan? value2 )
+    {
+      if( value1 == null || value2 == null )
+        return false;
+
+      return ( value1.Value < value2.Value );
+    }
+
+    protected override bool IsGreaterThan( TimeSpan? value1, TimeSpan? value2 )
+    {
+      if( value1 == null || value2 == null )
+        return false;
+
+      return ( value1.Value > value2.Value );
     }
 
     private void ParseValueIntoTimeSpanInfo()
     {
       string text = string.Empty;
 
-      this._dateTimeInfoList.ForEach( info =>
+      _dateTimeInfoList.ForEach( info =>
       {
         if( info.Format == null )
         {
@@ -264,85 +231,55 @@ namespace Xceed.Wpf.Toolkit
         }
         else
         {
-          TimeSpan span = TimeSpan.Parse(this.Value.ToString());
+          TimeSpan span = TimeSpan.Parse( this.Value.ToString() );
           info.StartPosition = text.Length;
-          info.Content = span.ToString(info.Format, this.CultureInfo.DateTimeFormat);
-          if (info.Format == "dd")
-            info.Content = Convert.ToInt32(info.Content).ToString();
+          DateTime tempDate = new DateTime( span.Ticks );
+          info.Content = tempDate.ToString( info.Format );
+          if( info.Format == "dd" )
+          {
+            info.Content = Convert.ToInt32( info.Content ).ToString();
+          }
           info.Length = info.Content.Length;
           text += info.Content;
         }
       } );
     }
 
-    private void PerformMouseSelection()
-    {
-      this.InitializeDateTimeInfoList();
-
-      this._dateTimeInfoList.ForEach( info =>
-      {
-        if( ( info.StartPosition <= this.TextBox.SelectionStart ) && ( this.TextBox.SelectionStart < ( info.StartPosition + info.Length ) ) )
-        {
-          this.Select( info );
-          return;
-        }
-      } );
-    }
-
-    private void Select( DateTimeInfo info )
-    {
-      this._fireSelectionChangedEvent = false;
-      this.TextBox.Select( info.StartPosition, info.Length );
-      this._fireSelectionChangedEvent = true;
-      this._selectedDateTimeInfo = info;
-    }
-
     private void UpdateTimeSpan( int value )
     {
-      this._fireSelectionChangedEvent = false;
-      DateTimeInfo info = this._selectedDateTimeInfo;
+      _fireSelectionChangedEvent = false;
+      DateTimeInfo info = _selectedDateTimeInfo;
 
       //this only occurs when the user manually type in a value for the Value Property
-      if (info == null)
-        info = this._dateTimeInfoList.First(i => i.Type == DateTimePart.Minute);
-        //info = this._dateTimeInfoList[ 0 ];
+      if( info == null )
+      {
+        info = _dateTimeInfoList[ 0 ];
+      }
 
       TimeSpan? result = null;
 
       try
       {
-          switch (info.Type)
-          {
-              case DateTimePart.Day:
-                  {
-                      result = ((TimeSpan)this.Value).Add(new TimeSpan(value, 0, 0, 0, 0));
-                      break;
-                  }
-              case DateTimePart.Hour24:
-                  {
-                      result = ((TimeSpan)this.Value).Add(new TimeSpan(0, value, 0, 0, 0));
-                      break;
-                  }
-              case DateTimePart.Minute:
-                  {
-                      result = this.Value = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, value, 0, 0));
-                      break;
-                  }
-              case DateTimePart.Second:
-                  {
-                      result = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, 0, value, 0));
-                      break;
-                  }
-              case DateTimePart.Millisecond:
-                  {
-                      result = ((TimeSpan)this.Value).Add(new TimeSpan(0, 0, 0, 0, value));
-                      break;
-                  }
-              default:
-                  {
-                      break;
-                  }
-          }
+        switch( info.Type )
+        {
+          case DateTimePart.Day:
+            result = ( ( TimeSpan )Value ).Add( new TimeSpan( value, 0, 0, 0, 0 ) );
+            break;
+          case DateTimePart.Hour24:
+            result = ( ( TimeSpan )Value ).Add( new TimeSpan( 0, value, 0, 0, 0 ) );
+            break;
+          case DateTimePart.Minute:
+            result = ( ( TimeSpan )Value ).Add( new TimeSpan( 0, 0, value, 0, 0 ) );
+            break;
+          case DateTimePart.Second:
+            result = ( ( TimeSpan )Value ).Add( new TimeSpan( 0, 0, 0, value, 0 ) );
+            break;
+          case DateTimePart.Millisecond:
+            result = ( ( TimeSpan )Value ).Add( new TimeSpan( 0, 0, 0, 0, value ) );
+            break;
+          default:
+            break;
+        }
       }
       catch
       {
@@ -351,93 +288,17 @@ namespace Xceed.Wpf.Toolkit
         //efficient if I just handle the edge case and allow an exeption to occur and swallow it instead.
       }
 
-      //InitializeDateTimeInfoList();
+      result = ( ( result != null ) && result.HasValue )
+                ? result.Value.TotalMilliseconds > 0 ? result.Value : this.DefaultValue
+                : result;
 
-      this.Value = this.CoerceValueMinMax(result);
+      this.Value = this.CoerceValueMinMax( result );
 
       //we loose our selection when the Value is set so we need to reselect it without firing the selection changed event
       this.TextBox.Select( info.StartPosition, info.Length );
-      this._fireSelectionChangedEvent = true;
+      _fireSelectionChangedEvent = true;
     }
 
-    private TimeSpan? CoerceValueMinMax(TimeSpan? value)
-    {
-        if (this.IsLowerThan(value, this.Minimum))
-            return this.Minimum;
-        else if (this.IsGreaterThan(value, this.Maximum))
-            return this.Maximum;
-        else
-            return value;
-    }
-
-    private bool IsLowerThan(TimeSpan? value1, TimeSpan? value2)
-    {
-        if (value1 == null || value2 == null)
-            return false;
-
-        return (value1.Value < value2.Value);
-    }
-
-    private bool IsGreaterThan(TimeSpan? value1, TimeSpan? value2)
-    {
-        if (value1 == null || value2 == null)
-            return false;
-
-        return (value1.Value > value2.Value);
-    }
-
-    private bool TryParseTimeSpan(string text, out TimeSpan result)
-    {
-        bool isValid = false;
-        result = TimeSpan.Zero;
-
-        TimeSpan current = this.Value.HasValue ? this.Value.Value : TimeSpan.Parse(TimeSpan.Zero.ToString(), this.CultureInfo.DateTimeFormat);
-        isValid = TimeSpan.TryParse(text, this.CultureInfo, out result);
-
-        return isValid;
-    }
-
-    private bool IsCurrentValueValid()
-    {
-        TimeSpan result;
-
-        if (string.IsNullOrEmpty(this.TextBox.Text))
-            return true;
-
-        return this.TryParseTimeSpan(this.TextBox.Text, out result);
-    }
-
-    private void ValidateDefaultMinMax(TimeSpan? value)
-    {
-        // DefaultValue is always accepted.
-        if (object.Equals(value, DefaultValue))
-            return;
-
-        if (IsLowerThan(value, Minimum))
-            throw new ArgumentOutOfRangeException("Minimum", String.Format("Value must be greater than MinValue of {0}", Minimum));
-        else if (IsGreaterThan(value, Maximum))
-            throw new ArgumentOutOfRangeException("Maximum", String.Format("Value must be less than MaxValue of {0}", Maximum));
-    }
-
-    private TimeSpan? GetClippedMinMaxValue(TimeSpan? value)
-    {
-        if (this.IsGreaterThan(value, this.Maximum))
-            return this.Maximum;
-        else if (this.IsLowerThan(value, this.Minimum))
-            return this.Minimum;
-        return value;
-    }
-
-    private void UpdateTextFormatting()
-    {
-      this._processTextChanged = false;
-
-      if( this.Value.HasValue )
-        this.Text = this.ConvertValueToText();
-
-      this._processTextChanged = true;
-    }
-
-    #endregion //Methods
+    #endregion
   }
 }

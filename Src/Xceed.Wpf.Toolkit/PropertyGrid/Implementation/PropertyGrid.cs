@@ -609,6 +609,23 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //ShowAdvancedOptions
 
+    #region ShowPreview
+
+    public static readonly DependencyProperty ShowPreviewProperty = DependencyProperty.Register( "ShowPreview", typeof( bool ), typeof( PropertyGrid ), new UIPropertyMetadata( false ) );
+    public bool ShowPreview
+    {
+      get
+      {
+        return ( bool )GetValue( ShowPreviewProperty );
+      }
+      set
+      {
+        SetValue( ShowPreviewProperty, value );
+      }
+    }
+
+    #endregion //ShowPreview
+
     #region ShowSearchBox
 
     public static readonly DependencyProperty ShowSearchBoxProperty = DependencyProperty.Register( "ShowSearchBox", typeof( bool ), typeof( PropertyGrid ), new UIPropertyMetadata( true ) );
@@ -659,6 +676,23 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
     #endregion //ShowTitle
+
+    #region UpdateTextBoxSourceOnEnterKey
+
+    public static readonly DependencyProperty UpdateTextBoxSourceOnEnterKeyProperty = DependencyProperty.Register( "UpdateTextBoxSourceOnEnterKey", typeof( bool ), typeof( PropertyGrid ), new UIPropertyMetadata( true ) );
+    public bool UpdateTextBoxSourceOnEnterKey
+    {
+      get
+      {
+        return ( bool )GetValue( UpdateTextBoxSourceOnEnterKeyProperty );
+      }
+      set
+      {
+        SetValue( UpdateTextBoxSourceOnEnterKeyProperty, value );
+      }
+    }
+
+    #endregion //UpdateTextBoxSourceOnEnterKey
 
     #region ShowPreview
 
@@ -716,7 +750,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         _dragThumb.DragDelta += DragThumb_DragDelta;
 
       _containerHelper.ChildrenItemsControl = GetTemplateChild( PART_PropertyItemsControl ) as PropertyItemsControl;
-      
+
       //Update TranslateTransform in code-behind instead of XAML to remove the
       //output window error.
       //When we use FindAncesstor in custom control template for binding internal elements property 
@@ -733,17 +767,20 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     protected override void OnPreviewKeyDown( KeyEventArgs e )
     {
-      //hitting enter on textbox will update value of underlying source
-      if( this.SelectedPropertyItem != null && e.Key == Key.Enter && e.OriginalSource is TextBox )
+      var textBox = e.OriginalSource as TextBox;
+
+      //hitting enter on textbox will update value of underlying source if UpdateTextBoxSourceOnEnterKey is true
+      if( (this.SelectedPropertyItem != null) 
+          && (e.Key == Key.Enter)
+          && this.UpdateTextBoxSourceOnEnterKey
+          && (textBox != null)
+          && !textBox.AcceptsReturn )
       {
-        if( !( e.OriginalSource as TextBox ).AcceptsReturn )
-        {
-          BindingExpression be = ( ( TextBox )e.OriginalSource ).GetBindingExpression( TextBox.TextProperty );
+        BindingExpression be = textBox.GetBindingExpression( TextBox.TextProperty );
           if( be != null )
             be.UpdateSource();
         }
       }
-    }
 
     protected override void OnPropertyChanged( DependencyPropertyChangedEventArgs e )
     {

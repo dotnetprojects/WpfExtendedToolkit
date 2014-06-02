@@ -1,44 +1,50 @@
-﻿/************************************************************************
+﻿/*************************************************************************************
 
    Extended WPF Toolkit
 
-   Copyright (C) 2010-2012 Xceed Software Inc.
+   Copyright (C) 2007-2013 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
 
-   This program can be provided to you by Xceed Software Inc. under a
-   proprietary commercial license agreement for use in non-Open Source
-   projects. The commercial version of Extended WPF Toolkit also includes
-   priority technical support, commercial updates, and many additional 
-   useful WPF controls if you license Xceed Business Suite for WPF.
+   For more features, controls, and fast professional support,
+   pick up the Plus Edition at http://xceed.com/wpf_toolkit
 
-   Visit http://xceed.com and follow @datagrid on Twitter.
+   Stay informed: follow @datagrid on Twitter or Like http://facebook.com/datagrids
 
-  **********************************************************************/
+  ***********************************************************************************/
 
 using System;
-using System.CodeDom;
-using System.Runtime.CompilerServices;
-using System.Windows.Controls;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 {
   public class MaskedTextBoxEditor : TypeEditor<MaskedTextBox>
   {
-    public string Mask { get; set; }
-    public Type ValueDataType { get; set; }
+    public string Mask
+    {
+      get;
+      set;
+    }
+
+    public Type ValueDataType
+    {
+      get;
+      set;
+    }
 
     protected override void SetControlProperties()
     {
       Editor.BorderThickness = new System.Windows.Thickness( 0 );
-      this.Editor.ValueDataType = ValueDataType;
-      this.Editor.Mask = Mask;      
+      this.Editor.ValueDataType = this.ValueDataType;
+      this.Editor.Mask = this.Mask;
     }
 
     protected override void SetValueDependencyProperty()
     {
-      ValueProperty = MaskedTextBox.ValueProperty;
+      this.ValueProperty = MaskedTextBox.ValueProperty;
     }
   }
 }
