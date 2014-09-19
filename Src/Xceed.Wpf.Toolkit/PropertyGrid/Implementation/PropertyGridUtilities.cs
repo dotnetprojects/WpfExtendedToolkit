@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -91,6 +92,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         editor = new MaskedTextBoxEditor() { ValueDataType = propertyType, Mask = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA" };
       else if (propertyType == typeof(char) || propertyType == typeof(char?))
         editor = new MaskedTextBoxEditor() { ValueDataType = propertyType, Mask = "&" };
+      else if (propertyType == typeof(IPAddress))
+          editor = new IpTextBoxEditor() { };
       else if( propertyType == typeof( object ) )
         // If any type of object is possible in the property, default to the TextBoxEditor.
         // Useful in some case (e.g., Button.Content).

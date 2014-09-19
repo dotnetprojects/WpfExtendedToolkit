@@ -580,6 +580,7 @@
     <Compile Include="PropertyGrid\Implementation\Definitions\PropertyDefinitionBase.cs" />
     <Compile Include="PropertyGrid\Implementation\Definitions\EditorDefinitionBase.cs" />
     <Compile Include="PropertyGrid\Implementation\Editors\BrushEditor.cs" />
+    <Compile Include="PropertyGrid\Implementation\Editors\IpTextBoxEditor.cs" />
     <Compile Include="PropertyGrid\Implementation\Editors\MaskedTextBoxEditor.cs" />
     <Compile Include="PropertyGrid\Implementation\PropertyDefinitionBaseCollection.cs" />
     <Compile Include="PropertyGrid\Implementation\FilterInfo.cs" />
