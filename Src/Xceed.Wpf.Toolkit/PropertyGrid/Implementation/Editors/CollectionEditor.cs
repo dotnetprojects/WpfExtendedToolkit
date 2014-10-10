@@ -14,45 +14,45 @@
 
   ***********************************************************************************/
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Windows;
+
 namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 {
-  public class PrimitiveTypeCollectionEditor : TypeEditor<PrimitiveTypeCollectionControl>
+  public class CollectionEditor : TypeEditor<CollectionControlButton>
   {
-    protected override void SetControlProperties()
-    {
-      Editor.BorderThickness = new System.Windows.Thickness( 0 );
-      Editor.Content = "(Collection)";
-    }
-
     protected override void SetValueDependencyProperty()
     {
-      ValueProperty = PrimitiveTypeCollectionControl.ItemsSourceProperty;
+      ValueProperty = CollectionControlButton.ItemsSourceProperty;
     }
 
     protected override void ResolveValueBinding( PropertyItem propertyItem )
     {
       var type = propertyItem.PropertyType;
+
       Editor.ItemsSourceType = type;
 
       if( type.BaseType == typeof( System.Array ) )
       {
-        Editor.ItemType = type.GetElementType();
+        Editor.NewItemTypes = new List<Type>() { type.GetElementType() };
       }
-      else if( type.ContainsGenericParameters )
+      else if( type.GetGenericArguments().Count() > 0 )
       {
-        Editor.ItemType = type.GetGenericArguments()[ 0 ];
+        Editor.NewItemTypes = new List<Type>() { type.GetGenericArguments()[ 0 ] };
       }
 
       base.ResolveValueBinding( propertyItem );
     }
   }
 
-  public class PropertyGridEditorPrimitiveTypeCollectionControl : PrimitiveTypeCollectionControl
+  public class PropertyGridEditorCollectionControl : CollectionControlButton
   {
-    static PropertyGridEditorPrimitiveTypeCollectionControl()
+    static PropertyGridEditorCollectionControl()
     {
-      DefaultStyleKeyProperty.OverrideMetadata( typeof( PropertyGridEditorPrimitiveTypeCollectionControl ), new FrameworkPropertyMetadata( typeof( PropertyGridEditorPrimitiveTypeCollectionControl ) ) );
+      DefaultStyleKeyProperty.OverrideMetadata( typeof( PropertyGridEditorCollectionControl ), new FrameworkPropertyMetadata( typeof( PropertyGridEditorCollectionControl ) ) );
     }
   }
 }
