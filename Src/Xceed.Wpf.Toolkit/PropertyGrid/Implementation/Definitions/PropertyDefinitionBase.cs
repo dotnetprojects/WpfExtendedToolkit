@@ -71,7 +71,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         }
       }
 
-      _targetProperties = new ReadOnlyCollection<object>( newList );
+      //In Designer Mode, the Designer is broken if using a ReadOnlyCollection
+      _targetProperties = DesignerProperties.GetIsInDesignMode( this )
+                          ? new Collection<object>( newList )
+                          : new ReadOnlyCollection<object>( newList ) as IList;
     }
   }
 }

@@ -268,7 +268,7 @@ namespace Xceed.Wpf.AvalonDock
             SetupAutoHideWindow();
         }
 
-        protected override void OnInitialized(EventArgs e)
+        protected override void OnInitialized( EventArgs e )
         {
             base.OnInitialized(e);
         }
@@ -277,14 +277,14 @@ namespace Xceed.Wpf.AvalonDock
         {
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-            if (Layout.Manager == this)
-            {
-                LayoutRootPanel = CreateUIElementForModel(Layout.RootPanel) as LayoutPanelControl;
-                LeftSidePanel = CreateUIElementForModel(Layout.LeftSide) as LayoutAnchorSideControl;
-                TopSidePanel = CreateUIElementForModel(Layout.TopSide) as LayoutAnchorSideControl;
-                RightSidePanel = CreateUIElementForModel(Layout.RightSide) as LayoutAnchorSideControl;
-                BottomSidePanel = CreateUIElementForModel(Layout.BottomSide) as LayoutAnchorSideControl;
-            }
+                if( Layout.Manager == this )
+                {
+                  LayoutRootPanel = CreateUIElementForModel( Layout.RootPanel ) as LayoutPanelControl;
+                  LeftSidePanel = CreateUIElementForModel( Layout.LeftSide ) as LayoutAnchorSideControl;
+                  TopSidePanel = CreateUIElementForModel( Layout.TopSide ) as LayoutAnchorSideControl;
+                  RightSidePanel = CreateUIElementForModel( Layout.RightSide ) as LayoutAnchorSideControl;
+                  BottomSidePanel = CreateUIElementForModel( Layout.BottomSide ) as LayoutAnchorSideControl;
+                }
 
                 //load windows not already loaded!
                 foreach (var fw in Layout.FloatingWindows.Where(fw => !_fwList.Any(fwc => fwc.Model == fw)))
@@ -307,16 +307,16 @@ namespace Xceed.Wpf.AvalonDock
                 _autoHideWindowManager.HideAutoWindow();
               }
 
-                foreach (var fw in _fwList.ToArray())
-                {
-                    //fw.Owner = null;
-                    fw.SetParentWindowToNull();
-                    fw.KeepContentVisibleOnClose = true;
-                    fw.Close();
-                }
+              foreach (var fw in _fwList.ToArray())
+              {
+                  //fw.Owner = null;
+                  fw.SetParentWindowToNull();
+                  fw.KeepContentVisibleOnClose = true;
+                  fw.Close();
+              }
 
-                DestroyOverlayWindow();
-                FocusElementManager.FinalizeFocusManagement(this);
+              DestroyOverlayWindow();
+              FocusElementManager.FinalizeFocusManagement(this);
             }
         }
 
@@ -382,9 +382,9 @@ namespace Xceed.Wpf.AvalonDock
                 newFW.Show();
 
                 // Do not set the WindowState before showing or it will be lost
-                if (paneForExtensions != null && paneForExtensions.IsMaximized)
+                if( paneForExtensions != null && paneForExtensions.IsMaximized )
                 {
-                    newFW.WindowState = WindowState.Maximized;
+                  newFW.WindowState = WindowState.Maximized;
                 }
 
                 return newFW;
@@ -1023,40 +1023,6 @@ namespace Xceed.Wpf.AvalonDock
 
         #endregion
 
-        protected override void OnGotKeyboardFocus(System.Windows.Input.KeyboardFocusChangedEventArgs e)
-        {
-            //if (e.NewFocus is Grid)
-          //    Trace.WriteLine(string.Format("DockingManager.OnGotKeyboardFocus({0})", e.NewFocus));
-            base.OnGotKeyboardFocus(e);
-        }
-
-        protected override void OnPreviewGotKeyboardFocus(System.Windows.Input.KeyboardFocusChangedEventArgs e)
-        {
-          Trace.WriteLine( string.Format( "DockingManager.OnPreviewGotKeyboardFocus({0})", e.NewFocus ) );
-
-            base.OnPreviewGotKeyboardFocus(e);
-        }
-
-        protected override void OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
-        {
-          Trace.WriteLine( string.Format( "DockingManager.OnPreviewLostKeyboardFocus({0})", e.OldFocus ) );
-            base.OnPreviewLostKeyboardFocus(e);
-        }
-
-        protected override void OnMouseLeftButtonDown(System.Windows.Input.MouseButtonEventArgs e)
-        {
-          Trace.WriteLine( string.Format( "DockingManager.OnMouseLeftButtonDown([{0}])", e.GetPosition( this ) ) );
-            base.OnMouseLeftButtonDown(e);
-        }
-
-        protected override void OnMouseMove(System.Windows.Input.MouseEventArgs e)
-        {
-          //Trace.WriteLine(string.Format("DockingManager.OnMouseMove([{0}])", e.GetPosition(this)));
-            base.OnMouseMove(e);
-        }
-
-
-
         #region LayoutRootPanel
 
         /// <summary>
@@ -1262,7 +1228,6 @@ namespace Xceed.Wpf.AvalonDock
 
         #endregion
 
-
         #region LogicalChildren
 
         List<WeakReference> _logicalChildren = new List<WeakReference>();
@@ -1278,7 +1243,6 @@ namespace Xceed.Wpf.AvalonDock
 
         internal void InternalAddLogicalChild(object element)
         {
-          //System.Diagnostics.Trace.WriteLine("[{0}]InternalAddLogicalChild({1})", this, element);
 #if DEBUG
             if (_logicalChildren.Select(ch => ch.GetValueOrDefault<object>()).Contains(element))
                 new InvalidOperationException();
@@ -1292,8 +1256,6 @@ namespace Xceed.Wpf.AvalonDock
 
         internal void InternalRemoveLogicalChild(object element)
         {
-          //System.Diagnostics.Trace.WriteLine("[{0}]InternalRemoveLogicalChild({1})", this, element);
-
             var wrToRemove = _logicalChildren.FirstOrDefault(ch => ch.GetValueOrDefault<object>() == element);
             if (wrToRemove != null)
                 _logicalChildren.Remove(wrToRemove);
@@ -1787,7 +1749,6 @@ namespace Xceed.Wpf.AvalonDock
 
         IOverlayWindow IOverlayWindowHost.ShowOverlayWindow(LayoutFloatingWindowControl draggingWindow)
         {
-          //Trace.WriteLine("ShowOverlayWindow");
             CreateOverlayWindow();
             _overlayWindow.Owner = draggingWindow;
             _overlayWindow.EnableDropTargets();
@@ -1797,7 +1758,6 @@ namespace Xceed.Wpf.AvalonDock
 
         void IOverlayWindowHost.HideOverlayWindow()
         {
-          //Trace.WriteLine("HideOverlayWindow");
             _areas = null;
             _overlayWindow.Owner = null;
             _overlayWindow.HideDropTargets();
@@ -2196,16 +2156,14 @@ namespace Xceed.Wpf.AvalonDock
                     return;
             }
 
-            if (!document.TestCanClose())
-                return;
-
-            document.CloseInternal();
-
+            if( document.CloseDocument() )
+            {
             if (DocumentClosed != null)
             { 
                 var evargs = new DocumentClosedEventArgs(document);
                 DocumentClosed(this, evargs);
             }
+        }
         }
 
         /// <summary>
@@ -2537,16 +2495,10 @@ namespace Xceed.Wpf.AvalonDock
         internal void _ExecuteCloseCommand(LayoutAnchorable anchorable)
         {
             var model = anchorable as LayoutAnchorable;
-            if (model != null && model.CloseWhenTabbedDocument && model.TestCanClose())
+            if (model != null )
             {
-                if (model.IsAutoHidden)
-                    model.ToggleAutoHide();
-
-                model.Close();
-                return;
+              model.CloseAnchorable();
             }
-
-            _ExecuteHideCommand(anchorable);
         }
 
         internal void _ExecuteHideCommand(LayoutAnchorable anchorable)
@@ -2701,11 +2653,11 @@ namespace Xceed.Wpf.AvalonDock
               else
               {
                 var resourceDictionaryToRemove =
-                    resources.MergedDictionaries.FirstOrDefault(r => r.Source == oldTheme.GetResourceUri());
-                if (resourceDictionaryToRemove != null)
-                    resources.MergedDictionaries.Remove(
-                        resourceDictionaryToRemove);
-            }
+                   resources.MergedDictionaries.FirstOrDefault( r => r.Source == oldTheme.GetResourceUri() );
+                if( resourceDictionaryToRemove != null )
+                  resources.MergedDictionaries.Remove(
+                      resourceDictionaryToRemove );
+              }
             }
 
             if (newTheme != null)
@@ -2718,7 +2670,7 @@ namespace Xceed.Wpf.AvalonDock
               else
               {
                 resources.MergedDictionaries.Add(new ResourceDictionary() { Source = newTheme.GetResourceUri() });
-            }
+              }
             }
 
             foreach (var fwc in _fwList)
@@ -3169,8 +3121,6 @@ namespace Xceed.Wpf.AvalonDock
 
             _navigatorWindow.ShowDialog();
             _navigatorWindow = null;
-
-            Trace.WriteLine( "ShowNavigatorWindow()" );
         }
 
         bool IsNavigatorWindowActive
@@ -3181,7 +3131,6 @@ namespace Xceed.Wpf.AvalonDock
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-          Trace.WriteLine( string.Format( "OnPreviewKeyDown({0})", e.Key ) );
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 if (e.IsDown && e.Key == Key.Tab)

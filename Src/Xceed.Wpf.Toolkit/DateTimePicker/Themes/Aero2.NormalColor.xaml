@@ -142,9 +142,11 @@
                                                 Minimum="{Binding Minimum, RelativeSource={RelativeSource TemplatedParent}}"
                                                 Maximum="{Binding Maximum, RelativeSource={RelativeSource TemplatedParent}}"
                                                 ClipValueToMinMax="{Binding ClipValueToMinMax, RelativeSource={RelativeSource TemplatedParent}}"
+                                                          AllowSpin="{TemplateBinding TimePickerAllowSpin}"
+                                                          ShowButtonSpinner="{TemplateBinding TimePickerShowButtonSpinner}"
                                                 Watermark="{TemplateBinding TimeWatermark}"
-                                                WatermarkTemplate="{TemplateBinding TimeWatermarkTemplate}"
-                                                Visibility="{TemplateBinding TimePickerVisibility}"/>
+                                                          WatermarkTemplate="{TemplateBinding TimeWatermarkTemplate}"
+                                                          Visibility="{TemplateBinding TimePickerVisibility}"/>
                                     </StackPanel>
                                 </Border>
                             </Popup>

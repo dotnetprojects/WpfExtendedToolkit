@@ -14,6 +14,7 @@
 
   ***********************************************************************************/
 
+using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,18 +35,27 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 
     protected override void ResolveValueBinding( PropertyItem propertyItem )
     {
-      Editor.ItemsSourceType = propertyItem.PropertyType;
+      var type = propertyItem.PropertyType;
+      Editor.ItemsSourceType = type;
 
       var icollection = propertyItem.PropertyType.GetInterfaces().FirstOrDefault(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICollection<>));
       if (icollection != null)
       {
           Editor.ItemType = icollection.GetGenericArguments()[0];
       }
-      else
+      else if( type.ContainsGenericParameters )
       {
-          Editor.ItemType = propertyItem.PropertyType.GetGenericArguments()[ 0 ];
+          Editor.ItemType = type.GetGenericArguments()[ 0 ];
       }
       base.ResolveValueBinding( propertyItem );
+    }
+  }
+
+  public class PropertyGridEditorPrimitiveTypeCollectionControl : PrimitiveTypeCollectionControl
+  {
+    static PropertyGridEditorPrimitiveTypeCollectionControl()
+    {
+      DefaultStyleKeyProperty.OverrideMetadata( typeof( PropertyGridEditorPrimitiveTypeCollectionControl ), new FrameworkPropertyMetadata( typeof( PropertyGridEditorPrimitiveTypeCollectionControl ) ) );
     }
   }
 }

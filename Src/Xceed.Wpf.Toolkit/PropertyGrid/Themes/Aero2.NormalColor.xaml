@@ -33,6 +33,7 @@
        <ResourceDictionary Source="../../TimeSpanUpDown/Themes/Aero2.NormalColor.xaml" />
        <ResourceDictionary Source="../../WatermarkTextBox/Themes/Aero2.NormalColor.xaml" />
        <ResourceDictionary Source="../../ColorPicker/Themes/Aero2.NormalColor.xaml" />
+       <ResourceDictionary Source="../../CollectionControl/Themes/Aero2.NormalColor.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <!-- =============================================================================== -->
@@ -221,6 +222,20 @@
             <Setter Property="ShowDropDownButton" Value="False" />
          </MultiTrigger>
       </Style.Triggers>
+   </Style>
+
+   <!-- PropertyGrid PrimitiveTypeCollectionControl Editors -->
+   <Style TargetType="{x:Type editor:PropertyGridEditorPrimitiveTypeCollectionControl}" 
+          BasedOn="{StaticResource PrimitiveTypeCollectionControl}" >
+      <Setter Property="BorderThickness"
+              Value="0" />
+      <Setter Property="Content"
+              Value="(Collection)" />
+   </Style>
+
+   <!-- PropertyGrid CollectionControl Editors -->
+   <Style TargetType="{x:Type editor:PropertyGridEditorCollectionControl}"
+          BasedOn="{StaticResource CollectionControlButton}">
    </Style>
 
    <!-- ===============================================================================   -->
@@ -501,6 +516,8 @@
               Value="Center" />
       <Setter Property="SnapsToDevicePixels"
               Value="True" />
+      <Setter Property="IsTabStop"
+              Value="False" />
       <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type pg:PropertyItemBase}">
@@ -702,13 +719,32 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <!--<StackPanel Orientation="Horizontal" Margin="6,2,0,4"
+                            <StackPanel Orientation="Horizontal">
+                                <Border Background="White"
+                                        BorderBrush="Black"
+                                        Visibility="{Binding ShowPreview, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        BorderThickness="1"
+                                        Width="44"
+                                        Height="44"
+                                        Margin="6,4,0,4"
+                                        Padding="2">
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <VisualBrush Stretch="Uniform"
+                                                         Visual="{Binding RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ObjectToUIElementConverter}, Path=SelectedObject}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </Border>
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center"
+                                            Margin="6,2,0,4"
                                  Visibility="{Binding ShowTitle, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <TextBlock Text="{TemplateBinding SelectedObjectTypeName}"
                                                FontWeight="Bold" />
                                     <TextBlock Text="{TemplateBinding SelectedObjectName}"
                                                Margin="5,0,0,0" />
-                                </StackPanel>-->
+                                </StackPanel>
+                            </StackPanel>
 
                             <Grid x:Name="toolsContainer" Grid.Row="1" Margin="4,0,4,4">
                                 <Grid.ColumnDefinitions>
