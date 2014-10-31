@@ -58,5 +58,7 @@
       <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="WatermarkTextBox/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="Wizard/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="Zoombox/Themes/Generic.xaml" />
-   </ResourceDictionary.MergedDictionaries>
+
+      <core:VersionResourceDictionary AssemblyName="Xceed.Wpf.Toolkit" SourcePath="TokenizedTextBox/Themes/Generic.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
