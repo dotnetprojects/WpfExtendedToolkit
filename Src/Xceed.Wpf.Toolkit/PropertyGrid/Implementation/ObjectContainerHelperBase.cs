@@ -28,6 +28,7 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows.Controls.Primitives;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
@@ -256,6 +257,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         : null;
     }
 
+
+
+
     internal void InitializeDescriptorDefinition(
       DescriptorPropertyDefinitionBase descriptorDef,
       PropertyDefinition propertyDefinition )
@@ -346,8 +350,14 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       DescriptorPropertyDefinitionBase pd = propertyItem.DescriptorDefinition;
       object definitionKey = null;
       Type definitionKeyAsType = definitionKey as Type;
+      ITypeEditor editor = null;
 
-      ITypeEditor editor = pd.CreateAttributeEditor();
+      if( pd.IsReadOnly )
+        editor = new TextBlockEditor();
+
+      if( editor == null )
+        editor = pd.CreateAttributeEditor();
+
       if( editor != null )
         editorElement = editor.ResolveEditor( propertyItem );
 
@@ -360,9 +370,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
       if( editorElement == null )
       {
-        if( pd.IsReadOnly )
-          editor = new TextBlockEditor();
-
         // Fallback: Use a default type editor.
         if( editor == null )
         {

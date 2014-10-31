@@ -41,11 +41,13 @@ namespace Xceed.Wpf.Toolkit.Primitives
     /// </summary>
     internal const string PART_Spinner = "PART_Spinner";
 
+    internal bool _isTextChangedFromUI;
+
     /// <summary>
     /// Flags if the Text and Value properties are in the process of being sync'd
     /// </summary>
-    private bool _isSyncingTextAndValueProperties;
-    private bool _isTextChangedFromUI;
+    private bool _isSyncingTextAndValueProperties;    
+    private bool _isSpinnerCaptured;
 
     #endregion //Members
 
@@ -79,7 +81,7 @@ namespace Xceed.Wpf.Toolkit.Primitives
 
     #endregion //AllowSpin
 
-#region ClipValueToMinMax
+    #region ClipValueToMinMax
 
     public static readonly DependencyProperty ClipValueToMinMaxProperty = DependencyProperty.Register( "ClipValueToMinMax", typeof( bool ), typeof( UpDownBase<T> ), new UIPropertyMetadata( false ) );
     public bool ClipValueToMinMax
@@ -94,9 +96,9 @@ namespace Xceed.Wpf.Toolkit.Primitives
       }
     }
 
-#endregion //ClipValueToMinMax
+    #endregion //ClipValueToMinMax
 
-#region DisplayDefaultValueOnEmptyText
+    #region DisplayDefaultValueOnEmptyText
 
     public static readonly DependencyProperty DisplayDefaultValueOnEmptyTextProperty = DependencyProperty.Register( "DisplayDefaultValueOnEmptyText", typeof( bool ), typeof( UpDownBase<T> ), new UIPropertyMetadata( false, OnDisplayDefaultValueOnEmptyTextChanged ) );
     public bool DisplayDefaultValueOnEmptyText
@@ -374,6 +376,7 @@ namespace Xceed.Wpf.Toolkit.Primitives
 
     internal UpDownBase()
     {
+      this.AddHandler( Mouse.PreviewMouseDownOutsideCapturedElementEvent, new RoutedEventHandler( this.HandleClickOutsideOfControl ), true );
     }
 
     #endregion //Constructors
@@ -396,6 +399,7 @@ namespace Xceed.Wpf.Toolkit.Primitives
       if( TextBox != null )
       {
         TextBox.Text = Text;
+        TextBox.GotFocus += new RoutedEventHandler( TextBox_GotFocus );
         TextBox.LostFocus += new RoutedEventHandler( TextBox_LostFocus );
         TextBox.TextChanged += new TextChangedEventHandler( TextBox_TextChanged );
       }
@@ -451,14 +455,24 @@ namespace Xceed.Wpf.Toolkit.Primitives
 
     #region Event Handlers
 
+    private void HandleClickOutsideOfControl( object sender, RoutedEventArgs e )
+    {
+      if( _isSpinnerCaptured )
+      {
+        this.Spinner.ReleaseMouseCapture();
+        _isSpinnerCaptured = false;
+      }
+    }
+
     private void OnSpinnerSpin( object sender, SpinEventArgs e )
     {
       if( AllowSpin && !IsReadOnly )
       {
         var activeTrigger = this.MouseWheelActiveTrigger;
         bool spin = !e.UsingMouseWheel;
-        spin |= (activeTrigger == MouseWheelActiveTrigger.MouseOver);
+        spin |= ( activeTrigger == MouseWheelActiveTrigger.MouseOver );
         spin |= ( TextBox.IsFocused && ( activeTrigger == MouseWheelActiveTrigger.FocusedMouseOver ) );
+        spin |= ( TextBox.IsFocused && ( activeTrigger == MouseWheelActiveTrigger.Focused ) && (Mouse.Captured != null) );
 
         if( spin )
         {
@@ -565,6 +579,15 @@ namespace Xceed.Wpf.Toolkit.Primitives
       }
     }
 
+    private void TextBox_GotFocus( object sender, RoutedEventArgs e )
+    {
+      if( ( this.MouseWheelActiveTrigger == Primitives.MouseWheelActiveTrigger.Focused ) && !_isSpinnerCaptured )
+      {
+        _isSpinnerCaptured = true;
+        Mouse.Capture( this.Spinner );
+      }
+    }
+
     private void TextBox_LostFocus( object sender, RoutedEventArgs e )
     {
       CommitInput();
@@ -583,7 +606,7 @@ namespace Xceed.Wpf.Toolkit.Primitives
       }
     }
 
-    public bool CommitInput()
+    public virtual bool CommitInput()
     {
       return this.SyncTextAndValueProperties( true, Text );
     }
