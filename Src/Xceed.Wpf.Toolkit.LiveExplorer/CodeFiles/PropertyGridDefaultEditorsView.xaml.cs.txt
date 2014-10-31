@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Net;
 using System.Windows;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
@@ -69,6 +70,8 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       selectedObject.DoubleCollection = new DoubleCollection(new[] { 1.0, 2.0, 3.0 });
       selectedObject.Int32Collection = new Int32Collection(new[] { 1, 2, 3 });
       selectedObject.StringCollection = new StringCollection() {"a"};
+
+      selectedObject.IPAddressFilled = IPAddress.Parse("127.0.0.1");
 
       this.DataContext = selectedObject;
     }
@@ -182,6 +185,10 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Category("Additional")]
       [Description("")]
       public Int32Collection Int32Collection { get; set; }
+
+      public IPAddress IPAddressEmpty { get; set; }
+
+      public IPAddress IPAddressFilled { get; set; }
     }
 
     public class Person

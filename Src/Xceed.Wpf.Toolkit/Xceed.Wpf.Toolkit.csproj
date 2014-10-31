@@ -224,10 +224,7 @@
     <Page Include="Pie\Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    </Page>      
     <Page Include="PropertyGrid\Themes\Aero2.NormalColor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
