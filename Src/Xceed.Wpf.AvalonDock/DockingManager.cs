@@ -188,7 +188,7 @@ namespace Xceed.Wpf.AvalonDock
                                 if (Layout.ActiveContent != null)
                                     FocusElementManager.SetFocusOnLastElement(Layout.ActiveContent);
                                 _setFocusAsyncOperation = null;
-                            }), DispatcherPriority.Background);
+                            } ), DispatcherPriority.Input );
                     }
                 }
 
@@ -2158,10 +2158,11 @@ namespace Xceed.Wpf.AvalonDock
 
             if( document.CloseDocument() )
             {
-            if (DocumentClosed != null)
-            { 
-                var evargs = new DocumentClosedEventArgs(document);
-                DocumentClosed(this, evargs);
+              if( DocumentClosed != null )
+              {
+                var evargs = new DocumentClosedEventArgs( document );
+                DocumentClosed( this, evargs );
+              }
             }
         }
         }

@@ -47,6 +47,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       {
           Editor.ItemType = type.GetGenericArguments()[ 0 ];
       }
+
       base.ResolveValueBinding( propertyItem );
     }
   }
