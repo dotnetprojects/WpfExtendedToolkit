@@ -813,7 +813,7 @@
 
                                     <ItemsControl.Template>
                                         <ControlTemplate>
-                                            <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
+                                            <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}" CanContentScroll="False" >
                                                 <ItemsPresenter />
                                             </ScrollViewer>
                                         </ControlTemplate>

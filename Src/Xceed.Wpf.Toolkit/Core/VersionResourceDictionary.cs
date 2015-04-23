@@ -86,7 +86,7 @@ namespace Xceed.Wpf.Toolkit.Core
         if( string.IsNullOrEmpty( this.AssemblyName ) || string.IsNullOrEmpty( this.SourcePath ) )
           throw new InvalidOperationException( "AssemblyName and SourcePath must be set during initialization" );
 
-        string uriStr = string.Format( @"{0};v{1};component/{2}", this.AssemblyName, _XceedVersionInfo.Version, this.SourcePath );
+        string uriStr = string.Format( @"/{0};v{1};component/{2}", this.AssemblyName, _XceedVersionInfo.Version, this.SourcePath );
         this.Source = new Uri( uriStr, UriKind.Relative );
       }
 
