@@ -2164,8 +2164,7 @@ namespace Xceed.Wpf.AvalonDock
                 DocumentClosed( this, evargs );
               }
             }
-        }
-        }
+        }        
 
         /// <summary>
         /// Event fired when a document is about to be closed
