@@ -1,0 +1,39 @@
+version: 2.4.{build}
+
+branches:
+  only:
+    - Extended
+
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "{version}"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "{version}"
+
+configuration: Release
+
+build:
+  project: DotNetProjects.Wpf.Toolkit.sln
+
+after_build:
+  - ps: .\nuget\pack.ps1
+
+test: off
+
+artifacts:
+  - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.dll
+    name: DotNetProjects.Wpf.Toolkit.dll
+  - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.pdb
+    name: DotNetProjects.Wpf.Toolkit.pdb
+  - path: '**\DotNetProjects.*.nupkg'
+
+#uncomment to publish to NuGet
+deploy:
+  provider: NuGet
+  api_key:
+    secure: OrhpK2cLXXcoWW+hU6xAv3eeKIbATEFbenteoFsi9EfM1yyDof6ZuNKAsA3Vy6vb
+  artifact: /.*\.nupkg/
+  
+  
+  

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DotNetProjects.Extended.Wpf.Toolkit</id>
+    <version>$version$</version>
+    <authors>DotNetProjects</authors>
+    <owners>DotNetProjects</owners>
+    <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
+    <projectUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A fork of WPF Extended Toolkit</description>
+    <copyright>Copyright 2015</copyright>
+  </metadata>
+  <files>
+    <file src="..\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.dll" target="lib\net40" />
+    <file src="..\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.dll" target="lib\net40" />
+  </files>
+</package>

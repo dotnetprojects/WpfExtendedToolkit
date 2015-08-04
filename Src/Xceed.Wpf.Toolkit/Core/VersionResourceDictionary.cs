@@ -21,6 +21,7 @@ using System.Text;
 using System.Windows;
 using System.ComponentModel;
 using System.Diagnostics;
+using Xceed.Wpf.Toolkit.Core.Converters;
 
 namespace Xceed.Wpf.Toolkit.Core
 {
@@ -30,6 +31,12 @@ namespace Xceed.Wpf.Toolkit.Core
     private string _assemblyName;
     private string _sourcePath;
 
+    private static string _version;
+
+    static VersionResourceDictionary()
+    {
+        _version = typeof (VersionResourceDictionary).Assembly.GetName().Version.ToString();
+    }
 
     public VersionResourceDictionary() { }
 
@@ -86,7 +93,7 @@ namespace Xceed.Wpf.Toolkit.Core
         if( string.IsNullOrEmpty( this.AssemblyName ) || string.IsNullOrEmpty( this.SourcePath ) )
           throw new InvalidOperationException( "AssemblyName and SourcePath must be set during initialization" );
 
-        string uriStr = string.Format( @"/{0};v{1};component/{2}", this.AssemblyName, _XceedVersionInfo.Version, this.SourcePath );
+        string uriStr = string.Format( @"/{0};v{1};component/{2}", this.AssemblyName, _version, this.SourcePath );
         this.Source = new Uri( uriStr, UriKind.Relative );
       }
 

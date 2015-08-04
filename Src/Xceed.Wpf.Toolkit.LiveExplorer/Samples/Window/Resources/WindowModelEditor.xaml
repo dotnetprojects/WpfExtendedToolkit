@@ -18,16 +18,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:conv="clr-namespace:Xceed.Wpf.Toolkit.Core.Converters;assembly=Xceed.Wpf.Toolkit"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" 
              x:Name="_windowModelEditor">
    <UserControl.Resources>
-      <conv:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"/>
-      <conv:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
-      <conv:BorderThicknessToStrokeThicknessConverter x:Key="BorderThicknessToStrokeThicknessConverter" />
+      <xctk:VisibilityToBoolConverter x:Key="VisibilityToBoolConverter"/>
+      <xctk:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
+      <xctk:BorderThicknessToStrokeThicknessConverter x:Key="BorderThicknessToStrokeThicknessConverter" />
 
       <ObjectDataProvider x:Key="WindowStyleComboBoxItemsSource" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
          <ObjectDataProvider.MethodParameters>
