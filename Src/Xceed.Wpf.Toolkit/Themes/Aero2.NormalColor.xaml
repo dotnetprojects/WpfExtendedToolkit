@@ -19,45 +19,45 @@
 
     <ResourceDictionary.MergedDictionaries>
 
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Themes/Aero2/Brushes.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Themes/Aero2/Buttons.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Themes/Aero2/Common.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Themes/Aero2/Brushes.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Themes/Aero2/Buttons.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Themes/Aero2/Common.xaml" />
 
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Chromes/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Chromes/Themes/Aero2.NormalColor.xaml" />
 
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/BusyIndicator/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/BusyIndicator/Themes/Aero2.NormalColor.xaml" />
 
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/ButtonSpinner/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/ButtonSpinner/Themes/Aero2.NormalColor.xaml" />
 
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Calculator/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/CalculatorUpDown/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Primitives/Themes/Aero2/WindowControl.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Primitives/Themes/Aero2/SelectorItem.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/CheckComboBox/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/CheckListBox/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/ChildWindow/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/CollectionControl/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/ColorCanvas/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/ColorPicker/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/DropDownButton/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/MessageBox/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/DateTimeUpDown/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/DateTimePicker/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/MultiLineTextEditor/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/NumericUpDown/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Pie/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/RangeSlider/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/RichTextBoxFormatBar/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/SplitButton/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/PropertyGrid/Themes/Aero2.NormalColor.xaml" />        
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Calculator/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/CalculatorUpDown/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Primitives/Themes/Aero2/WindowControl.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Primitives/Themes/Aero2/SelectorItem.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/CheckComboBox/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/CheckListBox/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/ChildWindow/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/CollectionControl/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/ColorCanvas/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/ColorPicker/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/DropDownButton/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/MessageBox/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/DateTimeUpDown/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/DateTimePicker/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/MultiLineTextEditor/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/NumericUpDown/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Pie/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/RangeSlider/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/RichTextBoxFormatBar/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/SplitButton/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/PropertyGrid/Themes/Aero2.NormalColor.xaml" />        
 
 
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/TimePicker/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/TimeSpanUpDown/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/WatermarkComboBox/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/WatermarkTextBox/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Wizard/Themes/Aero2.NormalColor.xaml" />
-        <ResourceDictionary Source="/Xceed.Wpf.Toolkit;component/Zoombox/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/TimePicker/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/TimeSpanUpDown/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/WatermarkComboBox/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/WatermarkTextBox/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Wizard/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Zoombox/Themes/Aero2.NormalColor.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

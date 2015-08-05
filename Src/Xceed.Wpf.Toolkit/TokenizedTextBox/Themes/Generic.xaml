@@ -44,7 +44,7 @@
                               <ContentPresenter />
                            </ControlTemplate>
                         </Button.Template>
-                        <Image Source="/Xceed.Wpf.Toolkit;component/TokenizedTextBox/Images/delete8.png" Width="8" Height="8" />
+                        <Image Source="/DotNetProjects.Wpf.Extended.Toolkit;component/TokenizedTextBox/Images/delete8.png" Width="8" Height="8" />
                      </Button>
                   </StackPanel>
                </Border>
