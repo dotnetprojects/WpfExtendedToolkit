@@ -12,7 +12,7 @@
     <copyright>Copyright 2015</copyright>
   </metadata>
   <files>
-    <file src="..\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.dll" target="lib\net40" />
-    <file src="..\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.dll" target="lib\net40" />
+    <file src="..\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.dll" target="lib\net40" />
+    <file src="..\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.dll" target="lib\net40" />
   </files>
 </package>

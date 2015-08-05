@@ -22,10 +22,10 @@ after_build:
 test: off
 
 artifacts:
-  - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.dll
-    name: DotNetProjects.Wpf.Toolkit.dll
-  - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.pdb
-    name: DotNetProjects.Wpf.Toolkit.pdb
+  - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.dll
+    name: DotNetProjects.Wpf.Extended.Toolkit.dll
+  - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.pdb
+    name: DotNetProjects.Wpf.Extended.Toolkit.pdb
   - path: '**\DotNetProjects.*.nupkg'
 
 #uncomment to publish to NuGet

@@ -2,7 +2,7 @@ $root = (split-path -parent $MyInvocation.MyCommand.Definition) + '\..'
 
 Write-Host "root: $root"
 
-$version = [System.Reflection.Assembly]::LoadFile("$root\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Toolkit.dll").GetName().Version
+$version = [System.Reflection.Assembly]::LoadFile("$root\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.dll").GetName().Version
 $versionStr = "{0}.{1}.{2}" -f ($version.Major, $version.Minor, $version.Build)
 
 Write-Host "Setting .nuspec version tag to $versionStr"

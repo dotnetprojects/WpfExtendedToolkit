@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Xceed.Wpf.Toolkit</RootNamespace>
-    <AssemblyName>DotNetProjects.Wpf.Toolkit</AssemblyName>
+    <AssemblyName>DotNetProjects.Wpf.Extended.Toolkit</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

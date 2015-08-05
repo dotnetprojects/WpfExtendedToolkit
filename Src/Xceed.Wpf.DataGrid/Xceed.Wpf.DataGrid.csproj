@@ -1090,9 +1090,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xceed.Wpf.Toolkit\DotNetProjects.Wpf.Toolkit.csproj">
+    <ProjectReference Include="..\Xceed.Wpf.Toolkit\DotNetProjects.Wpf.Extended.Toolkit.csproj">
       <Project>{72e591d6-8f83-4d8c-8f67-9c325e623234}</Project>
-      <Name>DotNetProjects.Wpf.Toolkit</Name>
+      <Name>DotNetProjects.Wpf.Extended.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
