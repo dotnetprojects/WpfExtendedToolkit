@@ -1,4 +1,5 @@
-![Build status](https://ci.appveyor.com/api/projects/status/c7mad20yer1iod92)
+[![Build status](https://ci.appveyor.com/api/projects/status/c7mad20yer1iod92/branch/Extended?svg=true)](https://ci.appveyor.com/project/jogibear9988/wpfextoolkit/branch/Extended)
+
 WpfExToolkit
 ============
 
