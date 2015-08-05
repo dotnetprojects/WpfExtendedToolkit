@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/c7mad20yer1iod92)]
+![Build status](https://ci.appveyor.com/api/projects/status/c7mad20yer1iod92)
 WpfExToolkit
 ============
 
