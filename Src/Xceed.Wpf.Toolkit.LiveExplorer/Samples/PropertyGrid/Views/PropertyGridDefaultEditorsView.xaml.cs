@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Media;
@@ -129,7 +130,7 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       public System.TimeSpan TimeSpan { get; set; }
       [Category( "Non-Numeric Editors" )]
       [Description( "This property uses a ColorPicker as the default editor." )]
-      public System.Windows.Media.Color Color { get; set; }
+      public System.Windows.Media.Color? Color { get; set; }
       [Category( "Non-Numeric Editors" )]
       [Description("This property uses a BrushPicker as the default editor.")]
       public Brush Brush { get; set; }

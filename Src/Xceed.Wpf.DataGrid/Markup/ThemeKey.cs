@@ -21,7 +21,6 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using Xceed.Wpf.DataGrid.Views;
-using System.ComponentModel;
 
 namespace Xceed.Wpf.DataGrid.Markup
 {

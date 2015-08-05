@@ -34,7 +34,7 @@
        <ResourceDictionary Source="../../WatermarkTextBox/Themes/Aero2.NormalColor.xaml" />
        <ResourceDictionary Source="../../ColorPicker/Themes/Aero2.NormalColor.xaml" />
        <ResourceDictionary Source="../../CollectionControl/Themes/Aero2.NormalColor.xaml" />
-    </ResourceDictionary.MergedDictionaries>
+   </ResourceDictionary.MergedDictionaries>
 
     <!-- =============================================================================== -->
     <!-- PropertyGrid                                                                    -->
@@ -42,10 +42,12 @@
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <conv:InverseBoolConverter x:Key="InverseBoolConverter" />
+    <conv:HalfConverter x:Key="HalfConverter" />
     <pgconv:ExpandableObjectMarginConverter x:Key="ExpandableObjectMarginConverter" />
     <pgconv:ObjectToUIElementConverter x:Key="ObjectToUIElementConverter" />
+    <pgconv:IsStringEmptyConverter x:Key="IsStringEmptyConverter" />
 
-    <x:Static x:Key="EmptyString" Member="sys:String.Empty" />
+   <x:Static x:Key="EmptyString" Member="sys:String.Empty" />
 
    <!-- PropertyGrid numeric Editors -->  
    <Style TargetType="{x:Type editor:PropertyGridEditorByteUpDown}" BasedOn="{StaticResource NumericUpDown}">
@@ -171,7 +173,7 @@
         </Style.Triggers>
     </Style>
 
-   <!-- PropertyGrid ComboBox Editors --> 
+    <!-- PropertyGrid ComboBox Editors --> 
    <Style TargetType="{x:Type editor:PropertyGridEditorComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}" >
       <Style.Triggers>
          <MultiTrigger>
@@ -182,6 +184,11 @@
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Background" Value="Transparent" />
          </MultiTrigger>
+         <Trigger Property="IsEnabled"
+                  Value="False">
+            <Setter Property="Foreground"
+                    Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+         </Trigger>
       </Style.Triggers>
    </Style>
 
@@ -203,7 +210,7 @@
       </Style.Triggers>
    </Style>
 
-   <!-- PropertyGrid TextBlock Editors --> 
+   <!-- PropertyGrid TextBlock Editors -->
    <Style TargetType="{x:Type editor:PropertyGridEditorTextBlock}"
           BasedOn="{StaticResource {x:Type TextBlock}}">
       <Setter Property="Foreground"
@@ -223,6 +230,7 @@
          </MultiTrigger>
       </Style.Triggers>
    </Style>
+
 
    <!-- PropertyGrid PrimitiveTypeCollectionControl Editors -->
    <Style TargetType="{x:Type editor:PropertyGridEditorPrimitiveTypeCollectionControl}" 
@@ -408,6 +416,11 @@
 
     <ControlTemplate x:Key="ExpanderToggleButton" TargetType="{x:Type ToggleButton}">
         <Grid>
+         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+
             <Rectangle Margin="0,0,0,0" x:Name="Rectangle" Fill="Transparent" />
             <Path HorizontalAlignment="Center" x:Name="Up_Arrow" VerticalAlignment="Center" Fill="{StaticResource GlyphBrush}" Data="M 0 0 L 4 4 L 8 0 Z" RenderTransformOrigin="0.5,0.5">
                 <Path.RenderTransform>
@@ -429,7 +442,9 @@
                     </TransformGroup>
                 </Path.RenderTransform>
             </Path>
-        </Grid>
+
+         <ContentPresenter Grid.Column="1" />
+      </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="IsChecked" Value="true">
                 <Setter Property="Visibility" Value="Visible" TargetName="Down_Arrow" />
@@ -451,14 +466,14 @@
                             <RowDefinition Height="*" x:Name="ContentRow" />
                         </Grid.RowDefinitions>
                         <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="#FFF0F0F0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <ToggleButton Template="{StaticResource ExpanderToggleButton}" IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" OverridesDefaultStyle="True" />
-                                <ContentPresenter Grid.Column="1" Margin="1" RecognizesAccessKey="True" ContentSource="Header" TextElement.FontWeight="Bold" />
-                            </Grid>
+                           <ToggleButton Template="{StaticResource ExpanderToggleButton}"
+                                         IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                         OverridesDefaultStyle="True">
+                              <ContentPresenter Margin="1"
+                                                RecognizesAccessKey="True"
+                                                ContentSource="Header"
+                                                TextElement.FontWeight="Bold" />
+                           </ToggleButton>
                         </Border>
                         <Border Visibility="Collapsed" Grid.Row="1" x:Name="ExpandSite" Background="{x:Static SystemColors.ControlBrush}" Padding="10 0 0 0">
                             <Border BorderThickness="0" Margin="0" Padding="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -500,16 +515,56 @@
         </Setter>
     </Style>
 
-    <ContextMenu x:Key="{ComponentResourceKey 
+   <Style x:Key="PropertyItemGroupContainerStyle"
+          TargetType="{x:Type GroupItem}">
+      <Style.Resources>
+      </Style.Resources>
+      <Setter Property="Template">
+         <Setter.Value>
+            <ControlTemplate>
+               <Border>
+                  <Expander Header="{Binding Name}"
+                            Style="{StaticResource ExpanderStyle}">
+                        <Expander.IsExpanded>
+                           <sys:Boolean>True</sys:Boolean>
+                        </Expander.IsExpanded>
+                     <ItemsPresenter />
+                  </Expander>
+               </Border>
+            </ControlTemplate>
+         </Setter.Value>
+      </Setter>
+
+      <Style.Triggers>
+         <MultiDataTrigger>
+            <MultiDataTrigger.Conditions>
+               <Condition Binding="{Binding Name}"
+                          Value="Misc" />
+               <Condition Binding="{Binding IsMiscCategoryLabelHidden, RelativeSource={RelativeSource AncestorType={x:Type pg:PropertyGrid}}}"
+                          Value="True" />
+            </MultiDataTrigger.Conditions>
+            <Setter Property="Template">
+               <Setter.Value>
+                  <ControlTemplate TargetType="{x:Type GroupItem}">
+                     <!-- No Expander for the Misc Category -->
+                     <ItemsPresenter />
+                  </ControlTemplate>
+               </Setter.Value>
+            </Setter>
+         </MultiDataTrigger>
+      </Style.Triggers>
+   </Style>
+
+   <ContextMenu x:Key="{ComponentResourceKey 
                   TypeInTargetAssembly={x:Type pg:PropertyGrid}, 
                   ResourceId=SelectedObjectAdvancedOptionsMenu}">
         <MenuItem Header="Reset Value" Command="commands:PropertyItemCommands.ResetValue" />
     </ContextMenu>
 
-    <Style TargetType="{x:Type pg:PropertyItemBase}">
+   <Style TargetType="{x:Type pg:PropertyItemBase}">
       <Setter Property="Background"
               Value="{x:Static SystemColors.WindowBrush}" />
-      <!-- Set the margin at 1 pixel bottom to let the horizontal "line" effect appear. -->       
+      <!-- Set the margin at 1 pixel bottom to let the horizontal "line" effect appear. -->
       <Setter Property="Margin"
               Value="0,0,0,1" />
       <Setter Property="VerticalContentAlignment"
@@ -519,85 +574,92 @@
       <Setter Property="IsTabStop"
               Value="False" />
       <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type pg:PropertyItemBase}">
-                    <Border ContextMenu="{Binding AdvancedOptionsMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}" 
-                            ContextMenuService.Placement="Bottom">
+         <Setter.Value>
+            <ControlTemplate TargetType="{x:Type pg:PropertyItemBase}">
+               <Border ContextMenu="{Binding AdvancedOptionsMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}"
+                       ContextMenuService.Placement="Bottom">
                   <Grid VerticalAlignment="Stretch"
                         HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="{Binding NameColumnWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type pg:PropertyGrid}}}" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding NameColumnWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type pg:PropertyGrid}}}" />
+                        <ColumnDefinition Width="*" />
+                     </Grid.ColumnDefinitions>
+                     <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                     </Grid.RowDefinitions>
 
                      <!-- Set the BorderThickness at 1 pixel to the right to let the "vertical line" appear -->
-                            <Border x:Name="PART_Name"
-                                    Background="{TemplateBinding Background}" 
-                             Margin="0,0,1,0" 
-                             VerticalAlignment="Stretch" 
-                             HorizontalAlignment="Stretch" >
+                     <Border x:Name="PART_Name"
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             Margin="0,0,1,0"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Stretch">
                         <Grid Margin="2,2,2,2"
                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+                           <Grid.ColumnDefinitions>
+                              <ColumnDefinition Width="*" />
+                              <ColumnDefinition Width="Auto" />
+                           </Grid.ColumnDefinitions>
 
-                                    <Grid Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ExpandableObjectMarginConverter}}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="15" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                           <Grid Margin="{Binding Level, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ExpandableObjectMarginConverter}}">
+                              <Grid.ColumnDefinitions>
+                                 <ColumnDefinition Width="15" />
+                                 <ColumnDefinition Width="*" />
+                              </Grid.ColumnDefinitions>
 
                               <ToggleButton x:Name="_expandableButton"
                                             Grid.Column="0"
                                             Template="{StaticResource ExpanderToggleButton}"
-                                               OverridesDefaultStyle="True"
-                                               IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
-                                               Visibility="{Binding IsExpandable, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                            OverridesDefaultStyle="True"
+                                            IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                                            Visibility="{Binding IsExpandable, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                              <TextBlock x:Name="_text"
-                                         Grid.Column="1"
-                                         Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
-                                         HorizontalAlignment="Stretch" 
-                                         VerticalAlignment="Center"
-                                         TextTrimming="CharacterEllipsis"
-                                         IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"/>
+                              <pg:TrimmedTextBlock x:Name="_text"
+                                                   Grid.Column="1"
+                                                   Text="{Binding DisplayName, RelativeSource={RelativeSource TemplatedParent}}"
+                                                   HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}"/>
                            </Grid>
 
-                                    <Grid Grid.Column="1"
+                           <Grid Grid.Column="1"
                                  HorizontalAlignment="Right"
                                  Margin="5,0,5,0"
                                  Visibility="{Binding ShowAdvancedOptions, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                  utilities:ContextMenuUtilities.OpenOnMouseLeftButtonClick="True"
                                  ContextMenu="{Binding AdvancedOptionsMenu, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}">
 
-                                        <Image x:Name="_optionsImage"
-                                                 Width="11"
-                                                 Height="11"
-                                                 ToolTip="{Binding AdvancedOptionsTooltip, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    </Grid>
-                                </Grid>
-                            </Border>
+                              <Image x:Name="_optionsImage"
+                                     Width="11"
+                                     Height="11"
+                                     ToolTip="{Binding AdvancedOptionsTooltip, RelativeSource={RelativeSource TemplatedParent}}" />
+                           </Grid>
+                        </Grid>
+                     </Border>
 
                      <Border x:Name="PART_Editor"
                              Grid.Column="1"
-                                     Background="{TemplateBinding Background}"
-                                    KeyboardNavigation.DirectionalNavigation="None"
-                                    VerticalAlignment="Stretch" 
-                                    HorizontalAlignment="Stretch">
-                        <ContentControl x:Name="PART_ValueContainer" 
-                                          Content="{TemplateBinding Editor}" 
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             KeyboardNavigation.DirectionalNavigation="None"
+                             VerticalAlignment="Stretch"
+                             HorizontalAlignment="Stretch">
+                        <Border.ToolTip>
+                           <ToolTip Visibility="Collapsed"/>
+                        </Border.ToolTip>
+                        <ContentControl x:Name="PART_ValueContainer"
+                                        Content="{TemplateBinding Editor}"
                                         Focusable="False"
                                         IsTabStop="False"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                        IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}" >
-                                </ContentControl>
-                            </Border>
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}, Converter={StaticResource InverseBoolConverter}}">
+                        </ContentControl>
+                     </Border>
 
                      <Expander x:Name="_propertyExpander"
                                Grid.ColumnSpan="2"
@@ -610,28 +672,33 @@
                                                  Focusable="False"
                                                  ItemsSource="{Binding Properties, RelativeSource={RelativeSource TemplatedParent}}"
                                                  ItemContainerStyle="{Binding PropertyContainerStyle, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </pg:PropertyItemsControl>
-                            </Expander>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
+                           <ItemsControl.ItemsPanel>
+                              <ItemsPanelTemplate>
+                                 <VirtualizingStackPanel />
+                              </ItemsPanelTemplate>
+                           </ItemsControl.ItemsPanel>
+
+                           <ItemsControl.GroupStyle>
+                              <GroupStyle ContainerStyle="{StaticResource PropertyItemGroupContainerStyle}"/>
+                           </ItemsControl.GroupStyle>
+
+                        </pg:PropertyItemsControl>
+                     </Expander>
+                  </Grid>
+               </Border>
+               <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver"
                            Value="True">
                      <Setter TargetName="PART_Name"
                              Property="Background"
                              Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonMouseOverBackgroundKey}}" />
-                        </Trigger>
+                  </Trigger>
                   <Trigger Property="IsSelected"
                            Value="True">
                      <Setter TargetName="PART_Name"
                              Property="Background"
                              Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonPressedBackgroundKey}}" />
-                        </Trigger>
+                  </Trigger>
                   <Trigger Property="IsEnabled"
                            Value="False">
                      <Setter Property="Foreground"
@@ -640,65 +707,76 @@
                      <Setter Property="Foreground"
                              TargetName="_text"
                              Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
-                        </Trigger>
+                  </Trigger>
+                  <MultiDataTrigger>
+                     <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding ShowDescriptionByTooltip, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=pg:PropertyGrid}}"
+                                   Value="True" />
+                        <Condition Binding="{Binding Description, RelativeSource={RelativeSource Self}, Converter={StaticResource IsStringEmptyConverter}}"
+                                   Value="False" />
+                     </MultiDataTrigger.Conditions>
+                     <Setter Property="ToolTipService.ToolTip"
+                             Value="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}"
+                             TargetName="PART_Name" />
+                  </MultiDataTrigger>
                   <Trigger Property="Validation.HasError"
                            Value="true">
-                            <Setter Property="ToolTip"
-                                Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
-                        </Trigger>
+                     <Setter Property="ToolTip"
+                             Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+                  </Trigger>
                   <Trigger Property="Visibility"
                            Value="Visible"
                            SourceName="_expandableButton">
                      <Setter Property="Focusable"
                              Value="False" />
-                        </Trigger>
+                  </Trigger>
 
                   <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
                                Value="{x:Static pg:StringConstants.Local}">
                      <Setter TargetName="_optionsImage"
                              Property="Source"
                              Value="../Images/Local11.png" />
-                        </DataTrigger>
+                  </DataTrigger>
                   <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
                                Value="{x:Static pg:StringConstants.Resource}">
                      <Setter TargetName="_optionsImage"
                              Property="Source"
                              Value="../Images/Resource11.png" />
-                        </DataTrigger>
+                  </DataTrigger>
                   <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
                                Value="{x:Static pg:StringConstants.Databinding}">
                      <Setter TargetName="_optionsImage"
                              Property="Source"
                              Value="../Images/Database11.png" />
-                        </DataTrigger>
+                  </DataTrigger>
                   <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
                                Value="{x:Static pg:StringConstants.Inheritance}">
                      <Setter TargetName="_optionsImage"
                              Property="Source"
                              Value="../Images/Inheritance11.png" />
-                        </DataTrigger>
+                  </DataTrigger>
                   <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
                                Value="{x:Static pg:StringConstants.StyleSetter}">
                      <Setter TargetName="_optionsImage"
                              Property="Source"
                              Value="../Images/Style11.png" />
-                        </DataTrigger>
+                  </DataTrigger>
                   <DataTrigger Binding="{Binding ElementName=_optionsImage, Path=ToolTip}"
                                Value="{x:Static pg:StringConstants.AdvancedProperties}">
                      <Setter TargetName="_optionsImage"
                              Property="Source"
                              Value="../Images/AdvancedProperties11.png" />
-                        </DataTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+                  </DataTrigger>
+               </ControlTemplate.Triggers>
+            </ControlTemplate>
+         </Setter.Value>
+      </Setter>
+   </Style>
 
-    <Style TargetType="{x:Type pg:PropertyGrid}">
+   <Style TargetType="{x:Type pg:PropertyGrid}">
         <Style.Resources>
             <pgconv:SelectedObjectConverter x:Key="objectConverter" />
-        </Style.Resources>
+      </Style.Resources>
 
         <Setter Property="Background" Value="{DynamicResource {x:Static themes:ResourceKeys.ButtonNormalBackgroundKey}}" />
         <Setter Property="BorderBrush" Value="{DynamicResource {x:Static themes:ResourceKeys.ControlNormalBorderKey}}" />
@@ -735,15 +813,21 @@
                                         </Rectangle.Fill>
                                     </Rectangle>
                                 </Border>
-                                <StackPanel Orientation="Horizontal"
-                                            VerticalAlignment="Center"
-                                            Margin="6,2,0,4"
-                                 Visibility="{Binding ShowTitle, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <TextBlock Text="{TemplateBinding SelectedObjectTypeName}"
-                                               FontWeight="Bold" />
-                                    <TextBlock Text="{TemplateBinding SelectedObjectName}"
-                                               Margin="5,0,0,0" />
-                                </StackPanel>
+                                 <StackPanel Orientation="Horizontal"
+                                             VerticalAlignment="Center"
+                                             Margin="6,2,6,4"
+                                             Visibility="{Binding ShowTitle, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <Grid MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource HalfConverter}, ConverterParameter=17}">
+                                       <pg:TrimmedTextBlock Text="{TemplateBinding SelectedObjectTypeName}"
+                                                            TextTrimming="CharacterEllipsis"
+                                                            FontWeight="Bold" />
+                                    </Grid>
+                                    <Grid MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource HalfConverter}, ConverterParameter=17}"
+                                          Margin="5,0,0,0">
+                                       <pg:TrimmedTextBlock Text="{TemplateBinding SelectedObjectName}"
+                                                            TextTrimming="CharacterEllipsis" />
+                                    </Grid>
+                                 </StackPanel>
                             </StackPanel>
 
                             <Grid x:Name="toolsContainer" Grid.Row="1" Margin="4,0,4,4">
@@ -802,51 +886,24 @@
                             </Grid>
 
                             <Grid Grid.Row="2" Background="{x:Static SystemColors.WindowBrush}">
-                                <!--<ScrollViewer VerticalScrollBarVisibility="Auto">-->
-                                    <pg:PropertyItemsControl  x:Name="PART_PropertyItemsControl" IsTabStop="False" Focusable="False"
-                                                     ItemsSource="{Binding Properties, RelativeSource={RelativeSource TemplatedParent}}"
-                                                     ItemContainerStyle="{Binding PropertyContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
-                                                     Background="{x:Static SystemColors.ControlBrush}"
-                                                     VerticalAlignment="Top">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <pg:PropertyItemsControl x:Name="PART_PropertyItemsControl" IsTabStop="False" Focusable="False"
+                                                             ItemsSource="{Binding Properties, RelativeSource={RelativeSource TemplatedParent}}"
+                                                             ItemContainerStyle="{Binding PropertyContainerStyle, RelativeSource={RelativeSource TemplatedParent}}"
+                                                             Background="{x:Static SystemColors.ControlBrush}"
+                                                             VerticalAlignment="Top">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <VirtualizingStackPanel />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
 
-                                        <ItemsControl.Template>
-                                            <ControlTemplate>
-                                            <ScrollViewer x:Name="ScrollViewer" CanContentScroll="False" Padding="{TemplateBinding Padding}">
-                                                    <ItemsPresenter />
-                                                </ScrollViewer>
-                                            </ControlTemplate>
-                                        </ItemsControl.Template> 
-
                                         <ItemsControl.GroupStyle>
-                                            <GroupStyle>
-                                                <GroupStyle.ContainerStyle>
-                                                    <Style TargetType="{x:Type GroupItem}">
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate>
-                                                                    <Border>
-                                                                        <Expander Header="{Binding Name}"
-                                                                                  Style="{StaticResource ExpanderStyle}">
-                                                                            <Expander.IsExpanded>
-                                                                                <sys:Boolean>True</sys:Boolean>
-                                                                            </Expander.IsExpanded>
-                                                                            <ItemsPresenter />
-                                                                        </Expander>
-                                                                    </Border>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </GroupStyle.ContainerStyle>
-                                            </GroupStyle>
-                                        </ItemsControl.GroupStyle>
+                                          <GroupStyle ContainerStyle="{StaticResource PropertyItemGroupContainerStyle}" />
+                                       </ItemsControl.GroupStyle>
 
                                     </pg:PropertyItemsControl>
+                                </ScrollViewer>
 
                                 <Thumb x:Name="PART_DragThumb" HorizontalAlignment="Left" Width="5" Margin="6,0,0,0" Cursor="SizeWE">
                                     <Thumb.Template>

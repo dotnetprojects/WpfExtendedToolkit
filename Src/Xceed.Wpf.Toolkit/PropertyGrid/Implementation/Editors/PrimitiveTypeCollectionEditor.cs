@@ -43,9 +43,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       {
           Editor.ItemType = icollection.GetGenericArguments()[0];
       }
-      else if( type.ContainsGenericParameters )
+      else if( type.IsGenericType )
       {
-          Editor.ItemType = type.GetGenericArguments()[ 0 ];
+        var typeArguments = type.GetGenericArguments();
+        if( typeArguments.Length > 0 )
+        {
+          Editor.ItemType = typeArguments[ 0 ];
+        }
       }
 
       base.ResolveValueBinding( propertyItem );
