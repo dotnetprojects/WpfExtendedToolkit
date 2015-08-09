@@ -7,11 +7,10 @@ A fork of https://wpftoolkit.codeplex.com/
 
 NuGet
 -----
+https://www.nuget.org/packages/DotNetProjects.Extended.Wpf.Toolkit/
 
 Info
 ----
-https://www.nuget.org/packages/DotNetProjects.Extended.Wpf.Toolkit/
-
 The "Master" Branch will always be synced to the official Codeplex Version.
 
 In the "Extended" Branch will be a version with Patches
