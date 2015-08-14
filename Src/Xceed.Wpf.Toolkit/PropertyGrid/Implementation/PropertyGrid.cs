@@ -32,6 +32,7 @@ using System.Collections;
 using Xceed.Wpf.Toolkit.Core.Utilities;
 using System.Reflection;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Windows.Markup;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
@@ -195,6 +196,37 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
     #endregion //Filter
+
+    #region UseWildcardsInFilter
+
+    public static readonly DependencyProperty UseWildcardsInFilterProperty = DependencyProperty.Register( "UseWildcardsInFilter", typeof( bool ), typeof( PropertyGrid ), new UIPropertyMetadata( false, OnUseWildcardsInFilterPropertyChanged ) );
+    public bool UseWildcardsInFilter
+        {
+      get
+      {
+        return ( bool )GetValue( UseWildcardsInFilterProperty );
+      }
+      set
+      {
+        SetValue( UseWildcardsInFilterProperty, value );
+      }
+    }
+
+    private static void OnUseWildcardsInFilterPropertyChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
+    {
+      PropertyGrid propertyGrid = o as PropertyGrid;
+      if( propertyGrid != null )
+        propertyGrid.OnUseWildcardsInFilterPropertyChanged( ( bool )e.OldValue, ( bool )e.NewValue );
+    }
+
+    protected virtual void OnUseWildcardsInFilterPropertyChanged( bool oldValue, bool newValue )
+    {
+      // The OnUseWildcardsInFilterPropertyChanged property affects the resulting FilterInfo of IPropertyContainer. Raise an event corresponding
+      // to this property.
+      this.Notify( this.PropertyChanged, () => ( ( IPropertyContainer )this ).FilterInfo );
+    }
+
+    #endregion //UseWildcardsInFilter
 
     #region FilterWatermark
 
@@ -938,6 +970,24 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     /// <returns></returns>
     protected virtual Predicate<object> CreateFilter( string filter )
     {
+      if (UseWildcardsInFilter && filter != null)
+      {
+        var s = Regex.Escape(filter);
+        s = s.Replace("\\*", ".*").Replace("\\?", ".");
+        var regEx = new Regex(s, RegexOptions.IgnoreCase);
+          
+        return (item) =>
+        {
+          var property = item as PropertyItem;
+
+          if (property.DisplayName != null)
+          {
+            return regEx.IsMatch(property.DisplayName);
+          }
+          return false;  
+        };
+      }
+
       return null;
     }
 
