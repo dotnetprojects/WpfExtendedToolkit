@@ -18,6 +18,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 #pragma warning disable 0436
-[assembly: AssemblyVersion("2.5.*")]
+[assembly: AssemblyVersion("2.5.6")]
 #pragma warning restore 0436
 
