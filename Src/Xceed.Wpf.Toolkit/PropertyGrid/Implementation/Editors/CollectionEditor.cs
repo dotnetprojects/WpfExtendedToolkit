@@ -35,11 +35,17 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 
       Editor.ItemsSourceType = type;
 
-      if( type.BaseType == typeof( System.Array ) )
+      if (propertyItem.DescriptorDefinition != null 
+          && propertyItem.DescriptorDefinition.NewItemTypes != null 
+          && propertyItem.DescriptorDefinition.NewItemTypes.Count > 0)
       {
-        Editor.NewItemTypes = new List<Type>() { type.GetElementType() };
+          Editor.NewItemTypes = propertyItem.DescriptorDefinition.NewItemTypes;
       }
-      else if( type.GetGenericArguments().Count() > 0 )
+      else if (type.BaseType == typeof(System.Array))
+      {
+          Editor.NewItemTypes = new List<Type>() { type.GetElementType() };
+      }
+      else if (type.GetGenericArguments().Count() > 0)
       {
         Editor.NewItemTypes = new List<Type>() { type.GetGenericArguments()[ 0 ] };
       }
