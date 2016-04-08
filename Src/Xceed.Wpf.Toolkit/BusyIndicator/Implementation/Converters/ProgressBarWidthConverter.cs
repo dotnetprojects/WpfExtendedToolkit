@@ -2,7 +2,7 @@
 
    Extended WPF Toolkit
 
-   Copyright (C) 2007-2015 Xceed Software Inc.
+   Copyright (C) 2007-2013 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
@@ -13,30 +13,29 @@
    Stay informed: follow @datagrid on Twitter or Like http://facebook.com/datagrids
 
   ***********************************************************************************/
+
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Xceed.Wpf.Toolkit.LiveExplorer
+namespace Xceed.Wpf.Toolkit.Converters
 {
-  /// <summary>
-  /// Interaction logic for HomeView.xaml
-  /// </summary>
-  public partial class HomeView : DemoView
+  public class ProgressBarWidthConverter : IMultiValueConverter
   {
-    public HomeView()
+    public object Convert( object[] values, Type targetType, object parameter, CultureInfo culture )
+    { 
+      var contentWidth = ( double )values[ 0 ];
+      var parentMinWidth = ( double )values[ 1 ];
+
+      return Math.Max( contentWidth, parentMinWidth );
+    }
+
+    public object[] ConvertBack( object value, Type[] targetTypes, object parameter, CultureInfo culture )
     {
-      InitializeComponent();
+      throw new NotImplementedException();
     }
   }
 }
