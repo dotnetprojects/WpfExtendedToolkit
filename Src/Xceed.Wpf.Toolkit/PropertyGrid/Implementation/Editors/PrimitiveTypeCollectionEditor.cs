@@ -15,6 +15,7 @@
   ***********************************************************************************/
 
 using System.Windows;
+using Xceed.Wpf.Toolkit.Core.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -43,13 +44,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
       {
           Editor.ItemType = icollection.GetGenericArguments()[0];
       }
-      else if( type.IsGenericType )
+      else
       {
-        var typeArguments = type.GetGenericArguments();
-        if( typeArguments.Length > 0 )
-        {
-          Editor.ItemType = typeArguments[ 0 ];
-        }
+        Editor.ItemType = ListUtilities.GetListItemType( type );
       }
 
       base.ResolveValueBinding( propertyItem );

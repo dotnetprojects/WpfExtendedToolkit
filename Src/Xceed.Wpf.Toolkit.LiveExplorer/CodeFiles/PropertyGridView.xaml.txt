@@ -2,7 +2,7 @@
 
    Extended WPF Toolkit
 
-   Copyright (C) 2007-2014 Xceed Software Inc.
+   Copyright (C) 2007-2015 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
@@ -43,6 +43,7 @@
                 Margin="5">
          <Grid Margin="5">
             <Grid.RowDefinitions>
+               <RowDefinition Height="Auto" />
                <RowDefinition Height="Auto" />
                <RowDefinition Height="Auto" />
                <RowDefinition Height="Auto" />
@@ -138,7 +139,17 @@
                       VerticalAlignment="Center"
                       Margin="5"
                       ToolTip="Update the source of a TextBox when True and Enter key is pressed." />
-
+            <TextBlock Text="HideInheritedProperties:"
+                       VerticalAlignment="Center"
+                       Grid.Row="4"
+                       Grid.Column="2"
+                       Margin="10,0,0,0" />
+            <CheckBox Grid.Row="4"
+                      Grid.Column="3"
+                      IsChecked="{Binding HideInheritedProperties, ElementName=_propertyGrid}"
+                      VerticalAlignment="Center"
+                      Margin="5"
+                      ToolTip="When True, inherited properties are hidden." />
 
 
          </Grid>
@@ -175,6 +186,7 @@
                                UpdateTextBoxSourceOnEnterKey="True"
                                IsMiscCategoryLabelHidden="False"
                                ShowPreview="True"
+                               HideInheritedProperties="False"
                                SelectedObject="{Binding ElementName=_button}">
             </xctk:PropertyGrid>
          </Grid>

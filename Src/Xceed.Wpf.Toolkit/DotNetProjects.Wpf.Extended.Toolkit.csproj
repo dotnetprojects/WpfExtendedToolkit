@@ -404,6 +404,7 @@
     <Compile Include="BrushPicker\Implementation\TextBoxBehavior.cs" />
     <Compile Include="BrushPicker\Implementation\UpDownBase.cs" />
     <Compile Include="BusyIndicator\Implementation\BusyIndicator.cs" />
+    <Compile Include="BusyIndicator\Implementation\Converters\ProgressBarWidthConverter.cs" />
     <Compile Include="ButtonSpinner\Implementation\ButtonSpinner.cs" />
     <Compile Include="CalculatorUpDown\Implementation\CalculatorUpDown.cs" />
     <Compile Include="Calculator\Implementation\Calculator.cs" />
@@ -436,8 +437,10 @@
     <Compile Include="Core\Converters\HalfConverter.cs" />
     <Compile Include="Core\Converters\IntToThicknessConverter.cs" />
     <Compile Include="Core\Converters\ThicknessToDoubleConverter.cs" />
+    <Compile Include="MaterialControls\MaterialTabs\Implementation\Converters\TranslateSelectedTabItemConverter.cs" />
     <Compile Include="Primitives\DateTimePickerBase.cs" />
     <Compile Include="Core\Utilities\DateTimeUtilities.cs" />
+    <Compile Include="PropertyGrid\Implementation\Converters\IsDefaultCategoryConverter.cs" />
     <Compile Include="PropertyGrid\Implementation\Converters\IsStringEmptyConverter.cs" />
     <Compile Include="PropertyGrid\Implementation\Editors\CollectionEditor.cs" />
     <Compile Include="PropertyGrid\Implementation\TrimmedTextBlock.cs" />
