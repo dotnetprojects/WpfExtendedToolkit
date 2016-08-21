@@ -230,6 +230,7 @@ namespace Xceed.Wpf.Toolkit
     {
       int PIndex = stringToTest.IndexOf( "P" );
       if( PIndex >= 0 )
+      {
         //stringToTest contains a "P" between 2 "'", it's considered as text, not percent
         bool isText = (stringToTest.Substring( 0, PIndex ).Contains( "'" )
                       && stringToTest.Substring( PIndex, FormatString.Length - PIndex ).Contains( "'" ));
