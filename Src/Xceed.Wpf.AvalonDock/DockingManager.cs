@@ -163,7 +163,7 @@ namespace Xceed.Wpf.AvalonDock
             CommandManager.InvalidateRequerySuggested();
         }
 
-        DispatcherOperation _setFocusAsyncOperation = null;
+      //  DispatcherOperation _setFocusAsyncOperation = null;
 
         void OnLayoutRootPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -183,21 +183,25 @@ namespace Xceed.Wpf.AvalonDock
 
                     //set focus on active element only after a layout pass is completed
                     //it's possible that it is not yet visible in the visual tree
-                    if (_setFocusAsyncOperation == null)
-                    {
-                        _setFocusAsyncOperation = Dispatcher.BeginInvoke(new Action(() =>
-                            {
+                    //if (_setFocusAsyncOperation == null)
+                    //{
+                    //    _setFocusAsyncOperation = Dispatcher.BeginInvoke(new Action(() =>
+                           // {
                                 if (Layout.ActiveContent != null)
                                     FocusElementManager.SetFocusOnLastElement(Layout.ActiveContent);
-                                _setFocusAsyncOperation = null;
-                            } ), DispatcherPriority.Input );
-                    }
+                                //_setFocusAsyncOperation = null;
+                          //  } ), DispatcherPriority.Input );
+                    //}
                 }
 
-                if (!_insideInternalSetActiveContent)
-                    ActiveContent = Layout.ActiveContent != null ?
-                        Layout.ActiveContent.Content : null;
+            //if (!_insideInternalSetActiveContent)
+            //    ActiveContent = Layout.ActiveContent != null ?
+            //        Layout.ActiveContent.Content : null;
+            if( !_insideInternalSetActiveContent && (Layout.ActiveContent != null) )
+            {
+              this.ActiveContent = Layout.ActiveContent.Content;
             }
+          }
         }
 
         void OnLayoutRootUpdated(object sender, EventArgs e)
@@ -267,7 +271,7 @@ namespace Xceed.Wpf.AvalonDock
         {
             base.OnApplyTemplate();
 
-            SetupAutoHideWindow();
+          //  SetupAutoHideWindow();
         }
 
         protected override void OnInitialized( EventArgs e )
@@ -287,6 +291,8 @@ namespace Xceed.Wpf.AvalonDock
                   RightSidePanel = CreateUIElementForModel( Layout.RightSide ) as LayoutAnchorSideControl;
                   BottomSidePanel = CreateUIElementForModel( Layout.BottomSide ) as LayoutAnchorSideControl;
                 }
+
+                SetupAutoHideWindow();
 
                 //load windows not already loaded!
                 foreach (var fw in Layout.FloatingWindows.Where(fw => !_fwList.Any(fwc => fwc.Model == fw)))
@@ -2387,6 +2393,7 @@ namespace Xceed.Wpf.AvalonDock
                     var anchorablesToRemove = Layout.Descendents().OfType<LayoutAnchorable>().Where(d => e.OldItems.Contains(d.Content)).ToArray();
                     foreach (var anchorableToRemove in anchorablesToRemove)
                     {
+                        anchorableToRemove.Content = null;
                         (anchorableToRemove.Parent as ILayoutContainer).RemoveChild(
                             anchorableToRemove);
                     }

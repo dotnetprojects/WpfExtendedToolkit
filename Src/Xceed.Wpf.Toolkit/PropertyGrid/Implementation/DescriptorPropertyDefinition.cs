@@ -29,6 +29,7 @@ using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using Xceed.Wpf.Toolkit.PropertyGrid.Commands;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 using System.Reflection;
+using System.Globalization;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
@@ -100,10 +101,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       //Bind the value property with the source object.
       var binding = new Binding( PropertyDescriptor.Name )
       {
-        Source = SelectedObject,
+        Source = this.GetValueInstance( SelectedObject ),
         Mode = PropertyDescriptor.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
         ValidatesOnDataErrors = true,
-        ValidatesOnExceptions = true
+        ValidatesOnExceptions = true,
+        ConverterCulture = CultureInfo.CurrentCulture 
       };
 
       return binding;

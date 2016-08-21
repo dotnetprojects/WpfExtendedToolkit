@@ -977,11 +977,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
           // remove it. Otherwise, it is a custom menu provided by the user.
           // This "default" menu is only valid for the SelectedObject[s] case. Otherwise, 
           // it is useless and we must remove it.
-          var defaultAdvancedMenu = ( ContextMenu )this.FindResource( PropertyGrid.SelectedObjectAdvancedOptionsMenuKey );
-          if( this.AdvancedOptionsMenu == defaultAdvancedMenu )
-          {
+          //var defaultAdvancedMenu = ( ContextMenu )this.FindResource( PropertyGrid.SelectedObjectAdvancedOptionsMenuKey );
+          //if( this.AdvancedOptionsMenu == defaultAdvancedMenu )
+          //{
             this.AdvancedOptionsMenu = null;
-          }
+          //}
         }
       }
 
@@ -1118,6 +1118,12 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         RemoveHandler( SelectedObjectChangedEvent, value );
       }
     }
+
+    #endregion
+
+    #region IsPropertyBrowsable Event
+
+    public event IsPropertyBrowsableHandler IsPropertyBrowsable;
 
     #endregion
 
@@ -1284,6 +1290,21 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
 
+    bool? IPropertyContainer.IsPropertyVisible( PropertyDescriptor pd )
+    {
+      var handler = this.IsPropertyBrowsable;
+      //If anyone is registered to PropertyGrid.IsPropertyBrowsable event
+      if( handler != null )
+      {
+        var isBrowsableArgs = new IsPropertyBrowsableArgs( pd );
+        handler( this, isBrowsableArgs );
+
+        return isBrowsableArgs.IsBrowsable;
+      }
+
+      return null;
+    }
+
     #endregion
 
 
@@ -1338,6 +1359,56 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       this.Item = item;
     }
   }
+  #endregion
+
+  #region isPropertyBrowsableEvent Handler/Args
+
+  public delegate void IsPropertyBrowsableHandler( object sender, IsPropertyBrowsableArgs e );
+
+  public class IsPropertyBrowsableArgs : RoutedEventArgs
+  {
+    #region Constructors
+
+    public IsPropertyBrowsableArgs( PropertyDescriptor pd )
+    {
+      this.PropertyDescriptor = pd;
+    }
+
+    #endregion
+
+    #region Properties
+
+    #region IsBrowsable Property
+
+    public bool IsBrowsable
+    {
+      get
+      {
+        return _isBrowsable;
+      }
+      set
+      {
+        _isBrowsable = value;
+      }
+    }
+
+    private bool _isBrowsable = true;
+
+    #endregion
+
+    #region PropertyDescriptor Property
+
+    public PropertyDescriptor PropertyDescriptor
+    {
+      get;
+      private set;
+    }
+
+    #endregion
+
+    #endregion
+  }
+
   #endregion
 
 }

@@ -81,6 +81,8 @@ namespace Xceed.Wpf.Toolkit.Core.Utilities
       for( int i = 0; i < VisualTreeHelper.GetChildrenCount( parent ); i++ )
       {
         var child = VisualTreeHelper.GetChild( parent, i );
+        if( child == null )
+          continue;
 
         object buttonType = child.GetValue( Button.CommandParameterProperty );
 
@@ -232,7 +234,9 @@ namespace Xceed.Wpf.Toolkit.Core.Utilities
 
     public static decimal ParseDecimal( string text )
     {
-      return Decimal.Parse( text, CultureInfo.CurrentCulture );
+      decimal result; 
+      var success = Decimal.TryParse( text, NumberStyles.Any, CultureInfo.CurrentCulture, out result );
+      return success ? result : decimal.Zero;      
     }
 
     public static decimal Add( decimal firstNumber, decimal secondNumber )
