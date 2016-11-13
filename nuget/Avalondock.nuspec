@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>DotNetProjects.Extended.Wpf.Toolkit</id>
+    <id>DotNetProjects.AvalonDock</id>
     <version>$version$</version>
     <authors>DotNetProjects</authors>
     <owners>DotNetProjects</owners>
     <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
     <projectUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A fork of WPF Extended Toolkit</description>
+    <description>A fork of WPF Extended Toolkit AvalonDock</description>
     <copyright>Copyright 2015</copyright>
   </metadata>
   <files>
-    <file src="..\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.dll" target="lib\net40" />
-    <file src="..\Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.pdb" target="lib\net40" />
+    <file src="..\Src\Xceed.Wpf.AvalonDock\bin\Release\DotNetProjects.Wpf.AvalonDock.dll" target="lib\net40" />
+    <file src="..\Src\Xceed.Wpf.AvalonDock\bin\Release\DotNetProjects.Wpf.AvalonDock.pdb" target="lib\net40" />
   </files>
 </package>

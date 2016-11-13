@@ -20,6 +20,10 @@ after_build:
 test: off
 
 artifacts:
+  - path: Src\Xceed.Wpf.AvalonDock\bin\Release\DotNetProjects.Wpf.AvalonDock.dll
+    name: DotNetProjects.Wpf.AvalonDock.dll
+  - path: Src\Xceed.Wpf.AvalonDock\bin\Release\DotNetProjects.Wpf.AvalonDock.pdb
+    name: DotNetProjects.Wpf.AvalonDock.pdb
   - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.dll
     name: DotNetProjects.Wpf.Extended.Toolkit.dll
   - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.pdb

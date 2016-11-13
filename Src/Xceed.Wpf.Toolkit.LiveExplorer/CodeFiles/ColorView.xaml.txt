@@ -317,10 +317,12 @@
             </Grid>
          </GroupBox>
 
-         <TextBlock Text="ColorPicker Usage: "
+            <TextBlock
                     Grid.Row="1"
-                    Style="{StaticResource Header}" />
-         <xctk:ColorPicker x:Name="_colorPicker"
+                    Style="{StaticResource Header}" ><Run Text="ColorPicker Usage: "/><InlineUIContainer>
+                 <Button x:Name="button" Content="Button" Width="75" Click="button_Click"/>
+             </InlineUIContainer></TextBlock>
+            <xctk:ColorPicker x:Name="_colorPicker"
                            Grid.Row="2"
                            VerticalAlignment="Top" />
       </Grid>
