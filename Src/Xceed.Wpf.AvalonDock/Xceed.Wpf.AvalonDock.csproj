@@ -58,7 +58,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyVersionInfo.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Controls\AnchorablePaneControlOverlayArea.cs" />
     <Compile Include="Controls\AnchorablePaneDropTarget.cs" />

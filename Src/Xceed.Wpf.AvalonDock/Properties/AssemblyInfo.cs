@@ -73,4 +73,7 @@ using System;
 [assembly: AssemblyKeyName( "" )]
 #pragma warning restore 1699
 
+[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyFileVersion("1.0.*")]
+
 
