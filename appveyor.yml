@@ -18,6 +18,7 @@ build:
 
 after_build:
   - ps: .\nuget\pack.ps1
+  - ps: .\nuget\pack2.ps1
 
 test: off
 
