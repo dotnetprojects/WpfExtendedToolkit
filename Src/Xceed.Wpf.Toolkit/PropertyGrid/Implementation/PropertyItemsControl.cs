@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Automation.Peers;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
@@ -102,5 +103,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       this.RaiseClearPropertyItemEvent( ( PropertyItemBase )element, item );
       base.ClearContainerForItemOverride( element, item );
     }
-  }
+
+        protected override AutomationPeer OnCreateAutomationPeer()
+        {
+            return new PropertyItemsControlAutomationPeer(this);
+        }
+    }
 }
