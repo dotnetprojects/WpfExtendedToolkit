@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 
-namespace Xceed.Wpf.Toolkit.PropertyGrid.Implementation
+namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
     public class PropertyItemAutomationPeer : ItemAutomationPeer, IValueProvider
     {
@@ -52,7 +49,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Implementation
         {
             get
             {
-                return PropertyItem != null ? PropertyItem.Value.ToString() : null;
+                return PropertyItem != null && PropertyItem.Value != null ? PropertyItem.Value.ToString() : null;
             }
         }
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Automation.Peers;
+﻿using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
@@ -18,10 +14,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
             var propertyItem = item as PropertyItem;
             if (propertyItem != null)
             {
-                return (ItemAutomationPeer)CreatePeerForElement(propertyItem);
-            }
+                return new PropertyItemAutomationPeer(item, this);
 
-            return null;
+            }
+            return (ItemAutomationPeer)CreatePeerForElement(propertyItem);
         }
 
         protected override AutomationControlType GetAutomationControlTypeCore()
