@@ -34,6 +34,7 @@ using System.Reflection;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
+using System.Windows.Automation.Peers;
 
 namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
@@ -864,11 +865,16 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
-    #endregion //Base Class Overrides
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new PropertyGridAutomationPeer(this);
+    }
 
-    #region Event Handlers
+        #endregion //Base Class Overrides
 
-    private void OnItemSelectionChanged( object sender, RoutedEventArgs args )
+        #region Event Handlers
+
+        private void OnItemSelectionChanged( object sender, RoutedEventArgs args )
     {
       PropertyItemBase item = ( PropertyItemBase )args.OriginalSource;
       if( item.IsSelected )
