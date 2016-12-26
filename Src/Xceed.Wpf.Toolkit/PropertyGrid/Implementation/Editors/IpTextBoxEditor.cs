@@ -32,7 +32,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
             _ipAddressConverter = new IpAddressConverter(this);
         }
 
-        protected override void SetControlProperties()
+        protected override void SetControlProperties(PropertyItem propertyItem)
         {
             Editor.BorderThickness = new System.Windows.Thickness(0);
             //this.Editor.ValueDataType = typeof (IPAddress);

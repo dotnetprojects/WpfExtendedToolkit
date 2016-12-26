@@ -18,8 +18,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Editors
 {
   public class BrushEditor : TypeEditor<ColorBox.ColorBox>
   {
-    protected override void SetControlProperties()
-    {
+    protected override void SetControlProperties(PropertyItem propertyItem)
+        {
       Editor.BorderThickness = new System.Windows.Thickness( 0 );
       //Editor.DisplayColorAndName = true;
       //Editor.Style = PropertyGridUtilities.ColorPickerStyle;
