@@ -2579,9 +2579,10 @@ namespace Xceed.Wpf.AvalonDock
             return;
 
           var layoutItem = this.GetLayoutItemFromModel( layoutContent );
-          if( layoutItem != null )
+          if (layoutItem != null && layoutItem.Parent != null)
           {
-            this.InternalRemoveLogicalChild( layoutItem.View );
+              var view = layoutItem.View;
+              this.InternalRemoveLogicalChild( view );
           }
         }
 
