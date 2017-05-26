@@ -500,27 +500,32 @@ namespace Xceed.Wpf.AvalonDock.Controls
         {
             get
             {
-                var ptMouse = new Win32Helper.Win32Point();
-                if (!Win32Helper.GetCursorPos(ref ptMouse))
-                    return false;
+                try
+                {
+                    var ptMouse = new Win32Helper.Win32Point();
+                    if (!Win32Helper.GetCursorPos(ref ptMouse))
+                        return false;
 
-                Point location = this.PointToScreenDPI(new Point());
+                    Point location = this.PointToScreenDPI(new Point());
 
-                Rect rectWindow = this.GetScreenArea();
-                if (rectWindow.Contains(new Point(ptMouse.X, ptMouse.Y)))
-                    return true;
+                    Rect rectWindow = this.GetScreenArea();
+                    if (rectWindow.Contains(new Point(ptMouse.X, ptMouse.Y)))
+                        return true;
 
-                var manager = Model.Root.Manager;
-                var anchor = manager.FindVisualChildren<LayoutAnchorControl>().Where(c => c.Model == Model).FirstOrDefault();
+                    var manager = Model.Root.Manager;
+                    var anchor = manager.FindVisualChildren<LayoutAnchorControl>().Where(c => c.Model == Model)
+                        .FirstOrDefault();
 
-                if (anchor == null)
-                    return false;
+                    if (anchor == null)
+                        return false;
 
-                location = anchor.PointToScreenDPI(new Point());
+                    location = anchor.PointToScreenDPI(new Point());
 
-                if (anchor.IsMouseOver)
-                    return true;
-
+                    if (anchor.IsMouseOver)
+                        return true;
+                }
+                catch (Exception)
+                { }
                 return false;
             }
         }
