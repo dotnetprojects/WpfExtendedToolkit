@@ -200,6 +200,7 @@ namespace Xceed.Wpf.AvalonDock
             if( !_insideInternalSetActiveContent && (Layout.ActiveContent != null) )
             {
               this.ActiveContent = Layout.ActiveContent.Content;
+              this.ActiveLayoutContent = Layout.ActiveContent;
             }
           }
         }
@@ -2585,6 +2586,22 @@ namespace Xceed.Wpf.AvalonDock
               this.InternalRemoveLogicalChild( view );
           }
         }
+
+        #region ActiveLayoutContent
+
+        public LayoutContent ActiveLayoutContent
+        {
+            get { return (LayoutContent)GetValue(ActiveLayoutContentProperty); }
+            private set { SetValue(ActiveLayoutContentProperty, value); }
+        }
+
+        /// <summary>
+        /// ActiveLayoutContent Dependency Property
+        /// </summary>
+        public static readonly DependencyProperty ActiveLayoutContentProperty =
+            DependencyProperty.Register("ActiveLayoutContent", typeof(LayoutContent), typeof(DockingManager), new PropertyMetadata(null));
+
+        #endregion
 
         #region ActiveContent
 
