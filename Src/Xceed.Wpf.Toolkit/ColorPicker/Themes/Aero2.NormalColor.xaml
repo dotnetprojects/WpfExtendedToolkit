@@ -226,7 +226,6 @@
                 <ControlTemplate TargetType="{x:Type local:ColorPicker}">
                     <Grid>
                         <ToggleButton x:Name="PART_ColorPickerToggleButton"
-                            MinHeight="22"
                             Padding="{TemplateBinding Padding}"
                             HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
