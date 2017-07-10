@@ -41,10 +41,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
                 _windowHandler = new WindowHookHandler();
                 _windowHandler.FocusChanged += new EventHandler<FocusChangeEventArgs>(WindowFocusChanging);
                 //_windowHandler.Activate += new EventHandler<WindowActivateEventArgs>(WindowActivating);
-                _windowHandler.Attach();
 
                 if (Application.Current != null)
-                    Application.Current.Exit += new ExitEventHandler(Current_Exit);
+                    Application.Current.Exit += Current_Exit;
+                else
+                    AppDomain.CurrentDomain.ProcessExit += Current_Exit;
             }
 
             manager.PreviewGotKeyboardFocus += new KeyboardFocusChangedEventHandler(manager_PreviewGotKeyboardFocus);
@@ -71,9 +72,10 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
         }
 
-        private static void Current_Exit(object sender, ExitEventArgs e)
+        private static void Current_Exit(object sender, EventArgs e)
         {
-            Application.Current.Exit -= new ExitEventHandler(Current_Exit);
+            AppDomain.CurrentDomain.ProcessExit -= Current_Exit;
+
             if (_windowHandler != null)
             {
                 _windowHandler.FocusChanged -= new EventHandler<FocusChangeEventArgs>(WindowFocusChanging);

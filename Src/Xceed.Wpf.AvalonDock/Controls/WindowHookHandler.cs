@@ -42,16 +42,35 @@ namespace Xceed.Wpf.AvalonDock.Controls
         }
     }
 
-    class WindowHookHandler
+    class WindowHookHandler : IDisposable
     {
         public WindowHookHandler()
         { 
+            Attach();
+        }
 
+        ~WindowHookHandler()
+        {
+            Dispose(disposing:false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                GC.SuppressFinalize(this);
+            }
+            Detach();
         }
 
         IntPtr _windowHook;
         Win32Helper.HookProc _hookProc;
-        public void Attach()
+        private void Attach()
         {
             _hookProc = new Win32Helper.HookProc(this.HookProc);
             _windowHook = Win32Helper.SetWindowsHookEx(
