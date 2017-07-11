@@ -116,26 +116,6 @@ namespace Xceed.Wpf.Toolkit
             return _fromGreaterThan(value1.Value, value2.Value);
         }
 
-        private bool HandleNullSpin()
-        {
-            if (!Value.HasValue)
-            {
-                T forcedValue = (DefaultValue.HasValue)
-                  ? DefaultValue.Value
-                  : default(T);
-
-                Value = CoerceValueMinMax(forcedValue);
-
-                return true;
-            }
-            else if (!Increment.HasValue)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         internal bool IsValid(T? value)
         {
             return !IsLowerThan(value, Minimum) && !IsGreaterThan(value, Maximum);
@@ -153,21 +133,79 @@ namespace Xceed.Wpf.Toolkit
 
         #region Base Class Overrides
 
+        /// Edited by DH. for IUEditor
+        /// @brief Value가 null일때 Increase하는 경우, DefaultValue에서 증가시킨다.
         protected override void OnIncrement()
         {
-            if (!HandleNullSpin())
+            if (!Increment.HasValue)
             {
-                var result = this.IncrementValue(Value.Value, Increment.Value);
-                this.Value = this.CoerceValueMinMax(result);
+                return;
+            }
+
+            if (Value.HasValue)
+            {
+                var result = IncrementValue(Value.Value, Increment.Value);
+                this.Value = CoerceValueMinMax(result);
+            }
+            else
+            {
+                // get default value
+                T forcedValue = (DefaultValue.HasValue)
+                  ? DefaultValue.Value
+                  : default(T);
+
+                // get coerce value
+                T? coerceValue = CoerceValueMinMax(forcedValue);
+                if (coerceValue.HasValue && Maximum.HasValue)
+                {
+                    if (IsLowerThan(coerceValue, Maximum))
+                    {
+                        var result = IncrementValue(coerceValue.Value, Increment.Value);
+                        Value = CoerceValueMinMax(result);
+                    }
+                }
+                else
+                {
+                    Value = coerceValue;
+                }
             }
         }
 
+        /// Edited by DH. for IUEditor
+        /// @brief Value가 null일때 Decrease하는 경우, DefaultValue에서 감소시킨다.
         protected override void OnDecrement()
         {
-            if (!HandleNullSpin())
+            if (!Increment.HasValue)
             {
-                var result = this.DecrementValue(Value.Value, Increment.Value);
-                this.Value = this.CoerceValueMinMax(result);
+                return;
+            }
+
+            if (Value.HasValue)
+            {
+                var result = DecrementValue(Value.Value, Increment.Value);
+                Value = CoerceValueMinMax(result);
+            }
+            else
+            {
+                // get default value
+                T forcedValue = (DefaultValue.HasValue)
+                  ? DefaultValue.Value
+                  : default(T);
+
+                // get coerce value
+                T? coerceValue = CoerceValueMinMax(forcedValue);
+                if (coerceValue.HasValue && Minimum.HasValue)
+                {
+                    if (IsGreaterThan(coerceValue, Minimum))
+                    {
+                        var result = DecrementValue(coerceValue.Value, Increment.Value);
+                        Value = CoerceValueMinMax(result);
+                    }
+                }
+                else
+                {
+                    Value = coerceValue;
+                }
             }
         }
 
@@ -228,6 +266,8 @@ namespace Xceed.Wpf.Toolkit
             return Value.Value.ToString(FormatString, CultureInfo);
         }
 
+        /// Edited by DH. for IUEditor
+        /// @brief MinValue, MaxValue일때 IsEnabled가 변하지않도록 변경
         protected override void SetValidSpinDirection()
         {
             ValidSpinDirections validDirections = ValidSpinDirections.None;
@@ -235,11 +275,7 @@ namespace Xceed.Wpf.Toolkit
             // Null increment always prevents spin.
             if ((this.Increment != null) && !IsReadOnly)
             {
-                if (IsLowerThan(Value, Maximum) || !Value.HasValue || !Maximum.HasValue)
-                    validDirections = validDirections | ValidSpinDirections.Increase;
-
-                if (IsGreaterThan(Value, Minimum) || !Value.HasValue || !Minimum.HasValue)
-                    validDirections = validDirections | ValidSpinDirections.Decrease;
+                validDirections = validDirections | ValidSpinDirections.Increase | ValidSpinDirections.Decrease;
             }
 
             if (Spinner != null)
