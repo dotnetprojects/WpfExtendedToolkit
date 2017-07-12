@@ -134,7 +134,8 @@ namespace Xceed.Wpf.Toolkit
         #region Base Class Overrides
 
         /// Edited by DH. for IUEditor
-        /// @brief Value가 null일때 Increase하는 경우, DefaultValue에서 증가시킨다.
+        /// 2017.07.12 : Value가 null일때 Increase하는 경우, DefaultValue에서 증가시킨다.
+        /// 2017.06.30 : UpdateValueOnEnterKey = true인 경우에도 Spinner로 Update하면 Enter key 없이 Update되도록 변경 
         protected override void OnIncrement()
         {
             if (!Increment.HasValue)
@@ -169,10 +170,31 @@ namespace Xceed.Wpf.Toolkit
                     Value = coerceValue;
                 }
             }
+            /// original code
+            /*
+            if (!HandleNullSpin())
+            {
+                // if UpdateValueOnEnterKey is true, 
+                // Sync Value on Text only when Enter Key is pressed.
+                if (this.UpdateValueOnEnterKey)
+                {
+                    var currentValue = this.ConvertTextToValue(this.TextBox.Text);
+                    var result = this.IncrementValue(currentValue.Value, Increment.Value);
+                    var newValue = this.CoerceValueMinMax(result);
+                    this.TextBox.Text = newValue.Value.ToString(this.FormatString, this.CultureInfo);
+                }
+                else
+                {
+                    var result = this.IncrementValue(Value.Value, Increment.Value);
+                    this.Value = this.CoerceValueMinMax(result);
+                }
+            }
+            */
         }
 
         /// Edited by DH. for IUEditor
-        /// @brief Value가 null일때 Decrease하는 경우, DefaultValue에서 감소시킨다.
+        /// 2017.07.12 : Value가 null일때 Decrease하는 경우, DefaultValue에서 감소시킨다.
+        /// 2017.06.30 : UpdateValueOnEnterKey = true인 경우에도 Spinner로 Update하면 Enter key 없이 Update되도록 변경 
         protected override void OnDecrement()
         {
             if (!Increment.HasValue)
@@ -207,6 +229,26 @@ namespace Xceed.Wpf.Toolkit
                     Value = coerceValue;
                 }
             }
+            /// original code
+            /*
+            if (!HandleNullSpin())
+            {
+                // if UpdateValueOnEnterKey is true, 
+                // Sync Value on Text only when Enter Key is pressed.
+                if (this.UpdateValueOnEnterKey)
+                {
+                    var currentValue = this.ConvertTextToValue(this.TextBox.Text);
+                    var result = this.DecrementValue(currentValue.Value, Increment.Value);
+                    var newValue = this.CoerceValueMinMax(result);
+                    this.TextBox.Text = newValue.Value.ToString(this.FormatString, this.CultureInfo);
+                }
+                else
+                {
+                    var result = this.DecrementValue(Value.Value, Increment.Value);
+                    this.Value = this.CoerceValueMinMax(result);
+                }
+            }
+            */
         }
 
         protected override void OnMinimumChanged(T? oldValue, T? newValue)
