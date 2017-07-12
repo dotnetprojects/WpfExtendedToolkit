@@ -12,7 +12,6 @@ The "Master" Branch will always be synced to the official Codeplex Version.
 ## History
 * 2017-07-12 : CommonNumericUpDown Spinner
 	> Value가 null일 때, increase/decrease를 하는 경우, DefaultValue가 있으면 DefaultValue를 기준으로 변경
-	> Spinner disabled 안되도록 변경 (Minimum에서 down button 누르면 아무동작안함)
 
 * 2017-06-30 : CommonNumericUpDown Spinner for UpdateValueOnEnterKey
 	> UpdateValueOnEnterKey = true 이어도 Spinner로 Update하는 경우에는 Enter key없이 Update 되도록 변경

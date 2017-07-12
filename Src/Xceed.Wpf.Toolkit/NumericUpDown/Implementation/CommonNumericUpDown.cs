@@ -116,6 +116,27 @@ namespace Xceed.Wpf.Toolkit
             return _fromGreaterThan(value1.Value, value2.Value);
         }
 
+        private bool HandleNullSpin()
+        {
+            if (!Value.HasValue)
+            {
+                T forcedValue = (DefaultValue.HasValue)
+                  ? DefaultValue.Value
+                  : default(T);
+
+                Value = CoerceValueMinMax(forcedValue);
+
+                return true;
+            }
+            else if (!Increment.HasValue)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
         internal bool IsValid(T? value)
         {
             return !IsLowerThan(value, Minimum) && !IsGreaterThan(value, Maximum);
@@ -317,7 +338,11 @@ namespace Xceed.Wpf.Toolkit
             // Null increment always prevents spin.
             if ((this.Increment != null) && !IsReadOnly)
             {
-                validDirections = validDirections | ValidSpinDirections.Increase | ValidSpinDirections.Decrease;
+                if (IsLowerThan(Value, Maximum) || !Value.HasValue || !Maximum.HasValue)
+                    validDirections = validDirections | ValidSpinDirections.Increase;
+
+                if (IsGreaterThan(Value, Minimum) || !Value.HasValue || !Minimum.HasValue)
+                    validDirections = validDirections | ValidSpinDirections.Decrease;
             }
 
             if (Spinner != null)
