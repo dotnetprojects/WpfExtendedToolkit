@@ -136,6 +136,7 @@ namespace Xceed.Wpf.Toolkit
             return false;
         }
 
+
         internal bool IsValid(T? value)
         {
             return !IsLowerThan(value, Minimum) && !IsGreaterThan(value, Maximum);
@@ -153,22 +154,122 @@ namespace Xceed.Wpf.Toolkit
 
         #region Base Class Overrides
 
+        /// Edited by DH. for IUEditor
+        /// 2017.07.12 : Value가 null일때 Increase하는 경우, DefaultValue에서 증가시킨다.
+        /// 2017.06.30 : UpdateValueOnEnterKey = true인 경우에도 Spinner로 Update하면 Enter key 없이 Update되도록 변경 
         protected override void OnIncrement()
         {
+            if (!Increment.HasValue)
+            {
+                return;
+            }
+
+            if (Value.HasValue)
+            {
+                var result = IncrementValue(Value.Value, Increment.Value);
+                this.Value = CoerceValueMinMax(result);
+            }
+            else
+            {
+                // get default value
+                T forcedValue = (DefaultValue.HasValue)
+                  ? DefaultValue.Value
+                  : default(T);
+
+                // get coerce value
+                T? coerceValue = CoerceValueMinMax(forcedValue);
+                if (coerceValue.HasValue && Maximum.HasValue)
+                {
+                    if (IsLowerThan(coerceValue, Maximum))
+                    {
+                        var result = IncrementValue(coerceValue.Value, Increment.Value);
+                        Value = CoerceValueMinMax(result);
+                    }
+                }
+                else
+                {
+                    Value = coerceValue;
+                }
+            }
+            /// original code
+            /*
             if (!HandleNullSpin())
             {
-                var result = this.IncrementValue(Value.Value, Increment.Value);
-                this.Value = this.CoerceValueMinMax(result);
+                // if UpdateValueOnEnterKey is true, 
+                // Sync Value on Text only when Enter Key is pressed.
+                if (this.UpdateValueOnEnterKey)
+                {
+                    var currentValue = this.ConvertTextToValue(this.TextBox.Text);
+                    var result = this.IncrementValue(currentValue.Value, Increment.Value);
+                    var newValue = this.CoerceValueMinMax(result);
+                    this.TextBox.Text = newValue.Value.ToString(this.FormatString, this.CultureInfo);
+                }
+                else
+                {
+                    var result = this.IncrementValue(Value.Value, Increment.Value);
+                    this.Value = this.CoerceValueMinMax(result);
+                }
             }
+            */
         }
 
+        /// Edited by DH. for IUEditor
+        /// 2017.07.12 : Value가 null일때 Decrease하는 경우, DefaultValue에서 감소시킨다.
+        /// 2017.06.30 : UpdateValueOnEnterKey = true인 경우에도 Spinner로 Update하면 Enter key 없이 Update되도록 변경 
         protected override void OnDecrement()
         {
+            if (!Increment.HasValue)
+            {
+                return;
+            }
+
+            if (Value.HasValue)
+            {
+                var result = DecrementValue(Value.Value, Increment.Value);
+                Value = CoerceValueMinMax(result);
+            }
+            else
+            {
+                // get default value
+                T forcedValue = (DefaultValue.HasValue)
+                  ? DefaultValue.Value
+                  : default(T);
+
+                // get coerce value
+                T? coerceValue = CoerceValueMinMax(forcedValue);
+                if (coerceValue.HasValue && Minimum.HasValue)
+                {
+                    if (IsGreaterThan(coerceValue, Minimum))
+                    {
+                        var result = DecrementValue(coerceValue.Value, Increment.Value);
+                        Value = CoerceValueMinMax(result);
+                    }
+                }
+                else
+                {
+                    Value = coerceValue;
+                }
+            }
+            /// original code
+            /*
             if (!HandleNullSpin())
             {
-                var result = this.DecrementValue(Value.Value, Increment.Value);
-                this.Value = this.CoerceValueMinMax(result);
+                // if UpdateValueOnEnterKey is true, 
+                // Sync Value on Text only when Enter Key is pressed.
+                if (this.UpdateValueOnEnterKey)
+                {
+                    var currentValue = this.ConvertTextToValue(this.TextBox.Text);
+                    var result = this.DecrementValue(currentValue.Value, Increment.Value);
+                    var newValue = this.CoerceValueMinMax(result);
+                    this.TextBox.Text = newValue.Value.ToString(this.FormatString, this.CultureInfo);
+                }
+                else
+                {
+                    var result = this.DecrementValue(Value.Value, Increment.Value);
+                    this.Value = this.CoerceValueMinMax(result);
+                }
             }
+            */
         }
 
         protected override void OnMinimumChanged(T? oldValue, T? newValue)
@@ -228,6 +329,8 @@ namespace Xceed.Wpf.Toolkit
             return Value.Value.ToString(FormatString, CultureInfo);
         }
 
+        /// Edited by DH. for IUEditor
+        /// @brief MinValue, MaxValue일때 IsEnabled가 변하지않도록 변경
         protected override void SetValidSpinDirection()
         {
             ValidSpinDirections validDirections = ValidSpinDirections.None;
