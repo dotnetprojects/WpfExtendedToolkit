@@ -342,7 +342,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         var displayName = PropertyDescriptor.DisplayName;
       #else
         var displayAttribute = PropertyGridUtilities.GetAttribute<DisplayAttribute>( PropertyDescriptor );
-        var displayName = (displayAttribute != null) ? displayAttribute.GetName() : PropertyDescriptor.DisplayName;
+        var displayName = (displayAttribute != null) ? (displayAttribute.GetName() ?? PropertyDescriptor.DisplayName) : PropertyDescriptor.DisplayName;
       #endif
 
       var attribute = PropertyGridUtilities.GetAttribute<ParenthesizePropertyNameAttribute>( PropertyDescriptor );
