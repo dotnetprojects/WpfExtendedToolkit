@@ -19,11 +19,12 @@
                 xmlns:local="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer"
                 xmlns:conv="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer.Samples.RangeSlider.Converters"
                 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib"
                 Title="RangeSlider">
 
    <local:DemoView.Resources>
 
-      <xctkconv:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
+      <xctk:SolidColorBrushToColorConverter x:Key="SolidColorBrushToColorConverter" />
       <conv:AbsoluteAdditionConverter x:Key="AbsoluteAdditionConverter"/>
       <conv:RangeSliderEnabledConverter x:Key="RangeSliderEnabledConverter"/>
 
