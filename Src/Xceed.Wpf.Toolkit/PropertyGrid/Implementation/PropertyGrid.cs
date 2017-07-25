@@ -26,11 +26,9 @@ using System.Windows.Input;
 using Xceed.Wpf.Toolkit.PropertyGrid.Commands;
 using System.Collections.Specialized;
 using System.Windows.Media;
-using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using System.Collections.ObjectModel;
 using System.Collections;
 using Xceed.Wpf.Toolkit.Core.Utilities;
-using System.Reflection;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
@@ -162,7 +160,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private void OnEditorDefinitionsCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
     {
-      _containerHelper.NotifyEditorDefinitionsCollectionChanged();
+      if( _containerHelper != null )
+      {
+        _containerHelper.NotifyEditorDefinitionsCollectionChanged();
+      }
     }
 
     #endregion //EditorDefinitions
@@ -331,6 +332,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
 
 
+
+
+
+
+
     #region NameColumnWidth
 
     public static readonly DependencyProperty NameColumnWidthProperty = DependencyProperty.Register( "NameColumnWidth", typeof( double ), typeof( PropertyGrid ), new UIPropertyMetadata( 150.0, OnNameColumnWidthChanged ) );
@@ -367,7 +373,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       get
       {
-        return _containerHelper.Properties;
+        return (_containerHelper != null) ? _containerHelper.Properties : null;
       }
     }
 
@@ -442,7 +448,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private void OnPropertyDefinitionsCollectionChanged( object sender, NotifyCollectionChangedEventArgs e )
     {
-      _containerHelper.NotifyPropertyDefinitionsCollectionChanged();
+      if( _containerHelper != null )
+      {
+        _containerHelper.NotifyPropertyDefinitionsCollectionChanged();
+      }
       if( this.IsLoaded )
       {
         this.UpdateContainerHelper();
@@ -633,7 +642,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       if( newValue != null )
         newValue.IsSelected = true;
 
-      this.SelectedProperty = ( newValue != null ) ? _containerHelper.ItemFromContainer( newValue ) : null;
+      this.SelectedProperty = ( (newValue != null) && (_containerHelper != null) ) ? _containerHelper.ItemFromContainer( newValue ) : null;
 
       RaiseEvent( new RoutedPropertyChangedEventArgs<PropertyItemBase>( oldValue, newValue, PropertyGrid.SelectedPropertyItemChangedEvent ) );
     }
@@ -671,10 +680,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       // Do not update the SelectedPropertyItem if the Current SelectedPropertyItem
       // item is the same as the new SelectedProperty. There may be 
       // duplicate items and the result could be to change the selection to the wrong item.
-      object currentSelectedProperty = _containerHelper.ItemFromContainer( this.SelectedPropertyItem );
-      if( !object.Equals( currentSelectedProperty, newValue ) )
+      if( _containerHelper != null )
       {
-        this.SelectedPropertyItem = _containerHelper.ContainerFromItem( newValue );
+        object currentSelectedProperty = _containerHelper.ItemFromContainer( this.SelectedPropertyItem );
+        if( !object.Equals( currentSelectedProperty, newValue ) )
+        {
+          this.SelectedPropertyItem = _containerHelper.ContainerFromItem( newValue );
+        }
       }
     }
 
@@ -820,7 +832,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       if( _dragThumb != null )
         _dragThumb.DragDelta += DragThumb_DragDelta;
 
-      _containerHelper.ChildrenItemsControl = GetTemplateChild( PART_PropertyItemsControl ) as PropertyItemsControl;
+      if( _containerHelper != null )
+      {
+        _containerHelper.ChildrenItemsControl = GetTemplateChild( PART_PropertyItemsControl ) as PropertyItemsControl;
+      }
 
       //Update TranslateTransform in code-behind instead of XAML to remove the
       //output window error.
@@ -892,13 +907,19 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     private void OnPreparePropertyItemInternal( object sender, PropertyItemEventArgs args )
     {
-      _containerHelper.PrepareChildrenPropertyItem( args.PropertyItem, args.Item );
+      if( _containerHelper != null )
+      {
+        _containerHelper.PrepareChildrenPropertyItem( args.PropertyItem, args.Item );
+      }
       args.Handled = true;
     }
 
     private void OnClearPropertyItemInternal( object sender, PropertyItemEventArgs args )
     {
-      _containerHelper.ClearChildrenPropertyItem( args.PropertyItem, args.Item );
+      if( _containerHelper != null )
+      {
+        _containerHelper.ClearChildrenPropertyItem( args.PropertyItem, args.Item );
+      }
       args.Handled = true;
     }
 
@@ -955,6 +976,84 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
 
 
+    public double GetScrollPosition()
+    {
+      var scrollViewer = this.GetScrollViewer();
+      if( scrollViewer != null )
+      {
+        return scrollViewer.VerticalOffset;
+      }
+      return 0d;
+    }
+
+    public void ScrollToPosition( double position )
+    {
+      var scrollViewer = this.GetScrollViewer();
+      if( scrollViewer != null )
+      {
+        scrollViewer.ScrollToVerticalOffset( position );
+      }
+    }
+
+    public void ScrollToTop()
+    {
+      var scrollViewer = this.GetScrollViewer();
+      if( scrollViewer != null )
+      {
+        scrollViewer.ScrollToTop();
+      }
+    }
+
+    public void ScrollToBottom()
+    {
+      var scrollViewer = this.GetScrollViewer();
+      if( scrollViewer != null )
+      {
+        scrollViewer.ScrollToBottom();
+      }
+    }
+
+    public void CollapseAllProperties()
+    {
+      if( _containerHelper != null )
+      {
+        _containerHelper.SetPropertiesExpansion( false );
+      }
+    }
+
+    public void ExpandAllProperties()
+    {
+      if( _containerHelper != null )
+      {
+        _containerHelper.SetPropertiesExpansion( true );
+      }
+    }
+
+    public void ExpandProperty( string propertyName )
+    {
+      if( _containerHelper != null )
+      {
+        _containerHelper.SetPropertiesExpansion( propertyName, true );
+      }
+    }
+
+    public void CollapseProperty( string propertyName )
+    {
+      if( _containerHelper != null )
+      {
+        _containerHelper.SetPropertiesExpansion( propertyName, false );
+      }
+    }
+
+    private ScrollViewer GetScrollViewer()
+    {
+      if( (_containerHelper != null) && (_containerHelper.ChildrenItemsControl != null) )
+      {
+        return TreeHelper.FindParent<ScrollViewer>( _containerHelper.ChildrenItemsControl );
+      }
+      return null;
+    }
+
     private void RebuildEditor( PropertyItem propertyItem )
     {
       ObjectContainerHelperBase objectContainerHelperBase = propertyItem.ContainerHelper as ObjectContainerHelperBase;
@@ -991,7 +1090,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
           // remove it. Otherwise, it is a custom menu provided by the user.
           // This "default" menu is only valid for the SelectedObject[s] case. Otherwise, 
           // it is useless and we must remove it.
-          //var defaultAdvancedMenu = ( ContextMenu )this.FindResource( PropertyGrid.SelectedObjectAdvancedOptionsMenuKey );
+          //var defaultAdvancedMenu = (ContextMenu)this.FindResource( PropertyGrid.SelectedObjectAdvancedOptionsMenuKey );
           //if( this.AdvancedOptionsMenu == defaultAdvancedMenu )
           //{
             this.AdvancedOptionsMenu = null;
@@ -1002,11 +1101,17 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
 
 
-      _containerHelper = new ObjectContainerHelper( this, SelectedObject );
-      ( ( ObjectContainerHelper )_containerHelper ).GenerateProperties();
+      if( SelectedObject != null )
+      {
+        _containerHelper = new ObjectContainerHelper( this, SelectedObject );
+        ( ( ObjectContainerHelper )_containerHelper ).GenerateProperties();
+      }
 
 
-      _containerHelper.ChildrenItemsControl = childrenItemsControl;
+      if( _containerHelper != null )
+      {
+        _containerHelper.ChildrenItemsControl = childrenItemsControl;
+      }
       // Since the template will bind on this property and this property
       // will be different when the property parent is updated.
       this.Notify( this.PropertyChanged, () => this.Properties );
@@ -1070,7 +1175,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     /// </summary>
     public void Update()
     {
-      _containerHelper.UpdateValuesFromSource();
+      if( _containerHelper != null )
+      {
+        _containerHelper.UpdateValuesFromSource();
+      }
     }
 
 
@@ -1266,7 +1374,10 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
           this.UpdateContainerHelper();
           _hasPendingSelectedObjectChanged = false;
         }
-        _containerHelper.OnEndInit();
+        if( _containerHelper != null )
+        {
+          _containerHelper.OnEndInit();
+        }
       }
     }
 

@@ -517,6 +517,10 @@
                                                  SampleType="{x:Type views:PropertyGridBindingToStructsView}" />
                   <core:LiveExplorerTreeViewItem Header="Category Ordering"
                                                  SampleType="{x:Type views:PropertyGridCategoryOrderView}" />
+                  <core:LiveExplorerTreeViewItem Header="Expanding non-primitives"
+                                                 SampleType="{x:Type views:PropertyGridExpandingNonPrimitivesView}"
+                                                 IsPlusOnlyFeature="True"
+                                                 IsNewFeature="True"/>
                   <core:LiveExplorerTreeViewItem Header="Localization"
                                                  SampleType="{x:Type views:PropertyGridDisplayLocalizationView}"
                                                  IsPlusOnlyFeature="True" />
@@ -583,8 +587,7 @@
                <core:LiveExplorerTreeViewItem Header="WatermarkTextBox"
                                               SampleType="{x:Type samples:Text.Views.WatermarkTextboxView}" />
                <core:LiveExplorerTreeViewItem Header="WatermarkPasswordBox"
-                                              SampleType="{x:Type samples:Text.Views.WatermarkPasswordBoxView}" 
-                                              IsNewFeature="True"/>
+                                              SampleType="{x:Type samples:Text.Views.WatermarkPasswordBoxView}" />
                <core:LiveExplorerTreeViewItem Header="TokenizedTextBox"
                                               SampleType="{x:Type views9:TokenizedTextBoxView}"
                                               IsPlusOnlyFeature="True" />
@@ -665,7 +668,6 @@
                                            SampleType="{x:Type views28:RadialGaugeView}"
                                            IsPlusOnlyFeature="True" />
             <core:LiveExplorerTreeViewItem Header="MultiCalendar"
-                                           IsNewFeature="True"
                                            IsPlusOnlyFeature="True"
                                            SampleType="{x:Type samples:MultiCalendar.Views.MultiCalendarView}" />
             <core:LiveExplorerTreeViewItem Header="Material Controls"
@@ -754,6 +756,12 @@
                                            IsPlusOnlyFeature="True" />
          </core:LiveExplorerTreeViewItem>
       </TreeView>
+
+      <TextBlock x:Name="VersionTextBlock"
+                 Grid.Column="1"
+                 HorizontalAlignment="Right"
+                 Margin="0,0,17,0"
+                 Foreground="Gray"/>
 
       <Grid Grid.Column="1"
             Grid.Row="1">

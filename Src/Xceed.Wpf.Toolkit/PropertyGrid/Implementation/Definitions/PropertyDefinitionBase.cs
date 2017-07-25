@@ -25,12 +25,19 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 {
   public abstract class PropertyDefinitionBase : DefinitionBase
   {
-    private IList _targetProperties;
+    #region Constructors
 
     internal PropertyDefinitionBase()
     {
       _targetProperties = new List<object>();
+      this.PropertyDefinitions = new PropertyDefinitionCollection();
     }
+
+    #endregion
+
+    #region Properties
+
+    #region TargetProperties
 
     [TypeConverter(typeof(ListConverter))]
     public IList TargetProperties 
@@ -43,7 +50,34 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
     }
 
+    private IList _targetProperties;
+
+    #endregion
+
     public Type HasAttribute { get; set; }
+
+    #region PropertyDefinitions
+
+    public PropertyDefinitionCollection PropertyDefinitions
+    {
+      get
+      {
+        return _propertyDefinitions;
+      }
+      set
+      {
+        this.ThrowIfLocked( () => this.PropertyDefinitions );
+        _propertyDefinitions = value;
+      }
+    }
+
+    private PropertyDefinitionCollection _propertyDefinitions;
+
+    #endregion //PropertyDefinitions
+
+    #endregion
+
+    #region Overrides
 
     internal override void Lock()
     {
@@ -76,5 +110,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
                           ? new Collection<object>( newList )
                           : new ReadOnlyCollection<object>( newList ) as IList;
     }
+
+    #endregion
   }
 }

@@ -189,7 +189,12 @@ namespace Xceed.Wpf.AvalonDock.Controls
             SetDefaultBindings();
         }
 
-        ContentPresenter _view;
+        internal bool IsViewExists()
+        {
+          return (_view != null);
+        }
+
+        ContentPresenter _view = null;
         public ContentPresenter View
         {
             get
