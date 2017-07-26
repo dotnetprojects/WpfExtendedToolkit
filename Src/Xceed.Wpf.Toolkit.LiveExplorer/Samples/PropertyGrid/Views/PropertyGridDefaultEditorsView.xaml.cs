@@ -131,7 +131,10 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Category( "Non-Numeric Editors" )]
       [Description( "This property uses a TimeSpanUpDown as the default editor." )]
       public System.TimeSpan TimeSpan { get; set; }
-      [Category( "Non-Numeric Editors" )]
+        [Category("Non-Numeric Editors")]
+        [Description("This property uses a TimeSpanUpDown as the default editor.")]
+        public System.TimeSpan? NTimeSpan { get; set; }
+            [Category( "Non-Numeric Editors" )]
       [Description( "This property uses a ColorPicker as the default editor." )]
       public System.Windows.Media.Color? Color { get; set; }
       [Category( "Non-Numeric Editors" )]

@@ -746,8 +746,11 @@ RoutedPropertyChangedEventHandler<object> ), typeof( UpDownBase<T> ) );
         {
           if( string.IsNullOrEmpty( text ) )
           {
-            // An empty input sets the value to the default value.
-            this.SetValueInternal( this.DefaultValue );
+            if (!typeof(T).IsClass && Nullable.GetUnderlyingType(typeof(T)) == null)
+            {
+              // An empty input sets the value to the default value.
+              this.SetValueInternal( this.DefaultValue );
+            }
           }
           else
           {
