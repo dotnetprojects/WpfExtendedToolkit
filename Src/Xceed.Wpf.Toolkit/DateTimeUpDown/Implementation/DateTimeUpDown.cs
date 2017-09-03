@@ -695,6 +695,8 @@ namespace Xceed.Wpf.Toolkit
         if( currentValue.HasValue )
         {
           var newValue = this.UpdateDateTime( currentValue, step );
+          if (newValue == null)
+            return;
           this.TextBox.Text = newValue.Value.ToString( this.GetFormatString( this.Format ), this.CultureInfo );
         }
         else
