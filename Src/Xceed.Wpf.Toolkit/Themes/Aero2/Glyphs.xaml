@@ -1,27 +1,37 @@
-﻿<!--***********************************************************************************
+﻿<!--
+    ***********************************************************************************
+    
+    Extended WPF Toolkit
+    
+    Copyright (C) 2007-2013 Xceed Software Inc.
+    
+    This program is provided to you under the terms of the Microsoft Public
+    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license
+    
+    For more features, controls, and fast professional support,
+    pick up the Plus Edition at http://xceed.com/wpf_toolkit
+    
+    Stay informed: follow @datagrid on Twitter or Like http://facebook.com/datagrids
+    
+    **********************************************************************************
+-->
 
-   Extended WPF Toolkit
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:themes="clr-namespace:Xceed.Wpf.Toolkit.Themes">
 
-   Copyright (C) 2007-2013 Xceed Software Inc.
+    <Geometry x:Key="UpArrowGeometry">M0,5 L4.5,.5 9,5 6,5 4.5,3.5 3,5 z</Geometry>
+    <Geometry x:Key="DownArrowGeometry">M0,0 L3,0 4.5,1.5 6,0 9,0 4.5,4.5 z</Geometry>
 
-   This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
-
-   For more features, controls, and fast professional support,
-   pick up the Plus Edition at http://xceed.com/wpf_toolkit
-
-   Stay informed: follow @datagrid on Twitter or Like http://facebook.com/datagrids
-
-  **********************************************************************************-->
-
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:themes="clr-namespace:Xceed.Wpf.Toolkit.Themes">
-
-   <Geometry x:Key="UpArrowGeometry">M0,5 L4.5,.5 9,5 6,5 4.5,3.5 3,5 z</Geometry>
-   <Geometry x:Key="DownArrowGeometry">M0,0 L3,0 4.5,1.5 6,0 9,0 4.5,4.5 z</Geometry>
-
-   <DataTemplate x:Key="IncreaseGlyphNormalKey">
+    <DataTemplate x:Key="IncreaseGlyphNormalKey">
+        <!--  IUEditor @s 20170912  -->
+        <Polygon
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Fill="{DynamicResource {x:Static themes:ResourceKeys.GlyphNormalForegroundKey}}"
+            Focusable="False" Points="2,0 4,3, 0,3" SnapsToDevicePixels="True"
+            Stroke="{DynamicResource {x:Static themes:ResourceKeys.GlyphNormalForegroundKey}}" />
+        <!-- Original
         <Path Width="9"
             Height="5"
             Data="{StaticResource UpArrowGeometry}"
@@ -30,38 +40,57 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Focusable="False" />
+        -->
     </DataTemplate>
     <DataTemplate x:Key="IncreaseGlyphDisabledKey">
-        <Path	Width="9"
-            Height="5"
+        <!--  IUEditor @s 20170912  -->
+        <Polygon
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Fill="{DynamicResource {x:Static themes:ResourceKeys.GlyphDisabledForegroundKey}}"
+            Focusable="False" Points="2,0 4,3, 0,3" SnapsToDevicePixels="True"
+            Stroke="{DynamicResource {x:Static themes:ResourceKeys.GlyphDisabledForegroundKey}}" />
+        <!-- Original
+        <Path
+            Width="9" Height="5"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
             Data="{StaticResource UpArrowGeometry}"
             Fill="{DynamicResource {x:Static themes:ResourceKeys.GlyphDisabledForegroundKey}}"
-            SnapsToDevicePixels="True"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Focusable="False" />
+            Focusable="False" SnapsToDevicePixels="True" />
+        -->
     </DataTemplate>
 
     <DataTemplate x:Key="DecreaseGlyphNormalKey">
-        <Path Width="9"
-            Height="5"
+        <!--  IUEditor @s 20170912  -->
+        <Polygon
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Fill="{DynamicResource {x:Static themes:ResourceKeys.GlyphNormalForegroundKey}}"
+            Focusable="False" Points="0,0 2,3, 4,0" SnapsToDevicePixels="True"
+            Stroke="{DynamicResource {x:Static themes:ResourceKeys.GlyphNormalForegroundKey}}" />
+        <!-- Original
+        <Path
+            Width="9" Height="5"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
             Data="{StaticResource DownArrowGeometry}"
             Fill="{DynamicResource {x:Static themes:ResourceKeys.GlyphNormalForegroundKey}}"
-            SnapsToDevicePixels="True"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Focusable="False" />
+            Focusable="False" SnapsToDevicePixels="True" />
+        -->
     </DataTemplate>
 
     <DataTemplate x:Key="DecreaseGlyphDisabledKey">
-        <Path	Width="9"
-            Height="5"
+        <!--  IUEditor @s 20170912  -->
+        <Polygon
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Fill="{DynamicResource {x:Static themes:ResourceKeys.GlyphDisabledForegroundKey}}"
+            Focusable="False" Points="0,0 2,3, 4,0" SnapsToDevicePixels="True"
+            Stroke="{DynamicResource {x:Static themes:ResourceKeys.GlyphDisabledForegroundKey}}" />
+        <!-- Original
+        <Path
+            Width="9" Height="5"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
             Data="{StaticResource DownArrowGeometry}"
             Fill="{DynamicResource {x:Static themes:ResourceKeys.GlyphDisabledForegroundKey}}"
-            SnapsToDevicePixels="True"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Focusable="False" />
+            Focusable="False" SnapsToDevicePixels="True" />
+        -->
     </DataTemplate>
 
 </ResourceDictionary>
