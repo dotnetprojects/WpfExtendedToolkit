@@ -10,12 +10,12 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A fork of WPF Extended Toolkit AvalonDock</description>
     <copyright>Copyright 2015</copyright>
+	<dependencies>
+        <dependency id="DotNetProjects.AvalonDock" />
+	</dependencies>
   </metadata>
   <files>
     <file src="..\Src\Xceed.Wpf.AvalonDock.Themes.Metro\bin\Release\DotNetProjects.Wpf.AvalonDock.Themes.Metro.dll" target="lib\net40" />
     <file src="..\Src\Xceed.Wpf.AvalonDock.Themes.Metro\bin\Release\DotNetProjects.Wpf.AvalonDock.Themes.Metro.pdb" target="lib\net40" />
   </files>
-  <dependencies>
-    <dependency id="DotNetProjects.AvalonDock" />
-</dependencies>
 </package>
