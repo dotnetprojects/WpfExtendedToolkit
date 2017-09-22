@@ -206,12 +206,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
                 PreviousContainer = parentAsGroup;
                 if (parentAsGroup != null)
                 {
-                    try
-                    {
-                        PreviousContainerIndex = parentAsGroup.IndexOfChild(this);
-                    }
-                    catch (Exception)
-                    { }
+                    PreviousContainerIndex = parentAsGroup.IndexOfChild(this);
                 }
             }
             Root.Hidden.Add(this);
