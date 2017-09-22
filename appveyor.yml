@@ -19,6 +19,9 @@ build:
 after_build:
   - ps: .\nuget\pack.ps1
   - ps: .\nuget\pack2.ps1
+  - ps: .\nuget\pack3.ps1
+  - ps: .\nuget\pack4.ps1
+  - ps: .\nuget\pack5.ps1
 
 test: off
 
