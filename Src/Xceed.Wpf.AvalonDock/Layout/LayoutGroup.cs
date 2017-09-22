@@ -173,7 +173,7 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
         public int IndexOfChild(ILayoutElement element)
         {
-            return _children.TakeWhile(x => x != element).Count();
+            return _children.IndexOf((T)element);
         }
 
         public void InsertChildAt(int index, ILayoutElement element)
