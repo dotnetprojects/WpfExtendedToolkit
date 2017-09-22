@@ -199,22 +199,21 @@ namespace Xceed.Wpf.AvalonDock.Controls
         {
             get
             {
-                if (_view != null)
+                if (_view == null)
                 {
-                    return _view;
-                }
+                    _view = new ContentPresenter();
 
-                _view = new ContentPresenter();
-                var layoutElementRoot = LayoutElement.Root;
-                if (layoutElementRoot != null)
-                {
-                    var dockingManager = layoutElementRoot.Manager;
-
-                    _view.SetBinding(ContentPresenter.ContentProperty, new Binding("Content") { Source = LayoutElement });
-                    _view.SetBinding(ContentPresenter.ContentTemplateProperty, new Binding("LayoutItemTemplate") { Source = dockingManager });
-                    _view.SetBinding(ContentPresenter.ContentTemplateSelectorProperty, new Binding("LayoutItemTemplateSelector") { Source = dockingManager });
-                    dockingManager.InternalAddLogicalChild(_view);
-                }
+          _view.SetBinding( ContentPresenter.ContentProperty, new Binding( "Content" ) { Source = LayoutElement } );
+          if( ( LayoutElement != null ) && ( LayoutElement.Root != null ) )
+          {
+            _view.SetBinding( ContentPresenter.ContentTemplateProperty, new Binding( "LayoutItemTemplate" ) { Source = LayoutElement.Root.Manager } );
+            _view.SetBinding( ContentPresenter.ContentTemplateSelectorProperty, new Binding( "LayoutItemTemplateSelector" ) { Source = LayoutElement.Root.Manager } );
+            if( LayoutElement.Root.Manager != null )
+            {
+              LayoutElement.Root.Manager.InternalAddLogicalChild( _view );
+            }
+          }
+        }
 
                 return _view;
             }

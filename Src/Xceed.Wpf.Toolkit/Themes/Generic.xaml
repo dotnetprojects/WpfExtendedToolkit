@@ -42,6 +42,7 @@
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="ColorCanvas/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="ColorPicker/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="DropDownButton/Themes/Generic.xaml" />
+      <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="IconButton/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="Magnifier/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="MessageBox/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="DateTimeUpDown/Themes/Generic.xaml" />

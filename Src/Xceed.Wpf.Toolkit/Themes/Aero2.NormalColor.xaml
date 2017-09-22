@@ -40,6 +40,7 @@
         <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/ColorCanvas/Themes/Aero2.NormalColor.xaml" />
         <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/ColorPicker/Themes/Aero2.NormalColor.xaml" />
         <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/DropDownButton/Themes/Aero2.NormalColor.xaml" />
+        <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/IconButton/Themes/Aero2.NormalColor.xaml" />
         <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/MessageBox/Themes/Aero2.NormalColor.xaml" />
         <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/DateTimeUpDown/Themes/Aero2.NormalColor.xaml" />
         <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/DateTimePicker/Themes/Aero2.NormalColor.xaml" />
