@@ -1165,6 +1165,7 @@
             Value="{Binding RelativeSource={RelativeSource Self}, Path=SelectedObject, Converter={StaticResource objectConverter}, ConverterParameter=TypeName}" />
     <Setter Property="SelectedObjectName"
             Value="{Binding RelativeSource={RelativeSource Self}, Path=SelectedObject, Converter={StaticResource objectConverter}, ConverterParameter=SelectedObjectName}" />
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type pg:PropertyGrid}">
@@ -1322,8 +1323,7 @@
                               SnapsToDevicePixels="True">
                         <ScrollViewer Padding="{TemplateBinding Padding}"
                                       Focusable="False"
-                                      VerticalScrollBarVisibility="Auto"
-                                      HorizontalScrollBarVisibility="Auto">
+                                      VerticalScrollBarVisibility="Auto">
                           <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </ScrollViewer>
                       </Border>
