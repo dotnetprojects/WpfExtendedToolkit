@@ -408,20 +408,20 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       }
 
       // PropertyItem.PropertyType's defaultValue equals current PropertyItem's value => set the DefaultValue attribute
-      if( pd.DefaultValue != null )
-      {
-        var typeDefaultValue = this.GetTypeDefaultValue( propertyItem.PropertyType );
+//      if( pd.DefaultValue != null )
+//      {
+//        var typeDefaultValue = this.GetTypeDefaultValue( propertyItem.PropertyType );
 
-        if( ( (propertyItem.Value != null) && propertyItem.Value.Equals( typeDefaultValue ) )
-              || ( (propertyItem.Value == null) && ( typeDefaultValue == propertyItem.Value ) ) ) 
-        {
-#if VS2008
-        propertyItem.Value = pd.DefaultValue;
-#else
-          propertyItem.SetCurrentValue( PropertyItem.ValueProperty, pd.DefaultValue );
-#endif
-        }
-      }
+//        if( ( (propertyItem.Value != null) && propertyItem.Value.Equals( typeDefaultValue ) )
+//              || ( (propertyItem.Value == null) && ( typeDefaultValue == propertyItem.Value ) ) ) 
+//        {
+//#if VS2008
+//        propertyItem.Value = pd.DefaultValue;
+//#else
+//          propertyItem.SetCurrentValue( PropertyItem.ValueProperty, pd.DefaultValue );
+//#endif
+//        }
+//      }
     }
 
     private object GetTypeDefaultValue( Type type )
