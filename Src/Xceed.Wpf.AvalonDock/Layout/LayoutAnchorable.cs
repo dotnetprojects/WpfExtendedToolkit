@@ -29,6 +29,12 @@ namespace Xceed.Wpf.AvalonDock.Layout
     [Serializable]
     public class LayoutAnchorable : LayoutContent
     {
+    public LayoutAnchorable()
+    {
+      // LayoutAnchorable will hide by default, not close.
+      _canClose = false;
+    }
+
         #region CloseWhenTabbedDocument
         [XmlIgnore]
         public bool CloseWhenTabbedDocument
@@ -100,7 +106,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
         private double _autohideWidth = 0.0;
         public double AutoHideWidth
         {
-            get { return _autohideWidth; }
+      get
+      {
+        return _autohideWidth;
+      }
             set
             {
                 if (_autohideWidth != value)
@@ -120,7 +129,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
         private double _autohideMinWidth = 100.0;
         public double AutoHideMinWidth
         {
-            get { return _autohideMinWidth; }
+      get
+      {
+        return _autohideMinWidth;
+      }
             set
             {
                 if (_autohideMinWidth != value)
@@ -141,7 +153,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
         private double _autohideHeight = 0.0;
         public double AutoHideHeight
         {
-            get { return _autohideHeight; }
+      get
+      {
+        return _autohideHeight;
+      }
             set
             {
                 if (_autohideHeight != value)
@@ -161,7 +176,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
         private double _autohideMinHeight = 100.0;
         public double AutoHideMinHeight
         {
-            get { return _autohideMinHeight; }
+      get
+      {
+        return _autohideMinHeight;
+      }
             set
             {
                 if (_autohideMinHeight != value)
@@ -205,10 +223,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
                 var parentAsGroup = Parent as ILayoutGroup;
                 PreviousContainer = parentAsGroup;
                 if (parentAsGroup != null)
-                    PreviousContainerIndex = parentAsGroup.IndexOfChild(this);
+                PreviousContainerIndex = parentAsGroup.IndexOfChild(this);
             }
             if (Root != null)
-                Root.Hidden.Add(this);
+            Root.Hidden.Add(this);
             RaisePropertyChanged("IsVisible");
             RaisePropertyChanged("IsHidden");
             NotifyIsVisibleChanged();
@@ -414,7 +432,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
         /// </summary>
         public bool IsAutoHidden
         {
-            get { return Parent != null && Parent is LayoutAnchorGroup; }
+      get
+      {
+        return Parent != null && Parent is LayoutAnchorGroup;
+      }
         }
 
 
@@ -521,14 +542,23 @@ namespace Xceed.Wpf.AvalonDock.Layout
                     }
                 }
 
-
                 foreach (var anchorableToToggle in parentGroup.Children.ToArray())
                 {
                     previousContainer.Children.Add(anchorableToToggle);
                 }
 
                 parentSide.Children.Remove(parentGroup);
+
+        var parent = previousContainer.Parent as LayoutGroupBase;
+        while( ( parent != null ) )
+        {
+          if( parent is LayoutGroup<ILayoutPanelElement> )
+          {
+            (( LayoutGroup<ILayoutPanelElement> )parent).ComputeVisibility();
             }
+          parent = parent.Parent as LayoutGroupBase;
+        }
+      }
             #endregion
             #region Anchorable is docked
             else if (Parent is LayoutAnchorablePane)
@@ -549,16 +579,28 @@ namespace Xceed.Wpf.AvalonDock.Layout
                 switch (anchorSide)
                 {
                     case AnchorSide.Right:
+            if( root.RightSide != null )
+            {
                         root.RightSide.Children.Add(newAnchorGroup);
+            }
                         break;
                     case AnchorSide.Left:
+            if( root.LeftSide != null )
+            {
                         root.LeftSide.Children.Add(newAnchorGroup);
+            }
                         break;
                     case AnchorSide.Top:
+            if( root.TopSide != null )
+            {
                         root.TopSide.Children.Add(newAnchorGroup);
+            }
                         break;
                     case AnchorSide.Bottom:
+            if( root.BottomSide != null )
+            {
                         root.BottomSide.Children.Add(newAnchorGroup);
+            }
                         break;
                 }
             }
@@ -575,7 +617,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
         private bool _canHide = true;
         public bool CanHide
         {
-            get { return _canHide; }
+      get
+      {
+        return _canHide;
+      }
             set
             {
                 if (_canHide != value)
@@ -593,7 +638,10 @@ namespace Xceed.Wpf.AvalonDock.Layout
         private bool _canAutoHide = true;
         public bool CanAutoHide
         {
-            get { return _canAutoHide; }
+      get
+      {
+        return _canAutoHide;
+      }
             set
             {
                 if (_canAutoHide != value)

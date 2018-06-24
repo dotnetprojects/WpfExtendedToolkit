@@ -17,14 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Markup;
 using System.ComponentModel;
 using System.Windows.Interop;
-using System.Diagnostics;
-
 using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.AvalonDock.Controls;
 using System.Windows.Input;
@@ -32,7 +29,6 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Windows.Data;
 using System.Windows.Threading;
-using Xceed.Wpf.AvalonDock.Commands;
 using Xceed.Wpf.AvalonDock.Themes;
 
 namespace Xceed.Wpf.AvalonDock
@@ -79,9 +75,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public LayoutRoot Layout
         {
-            get { return (LayoutRoot)GetValue(LayoutProperty); }
-            set { SetValue(LayoutProperty, value); }
+      get
+      {
+        return ( LayoutRoot )GetValue( LayoutProperty );
         }
+      set
+      {
+        SetValue( LayoutProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the Layout property.
@@ -258,9 +260,15 @@ namespace Xceed.Wpf.AvalonDock
         /// Set this property to an object that will be asked to insert the anchorable to the desidered position.</remarks>
         public ILayoutUpdateStrategy LayoutUpdateStrategy
         {
-            get { return (ILayoutUpdateStrategy)GetValue(LayoutUpdateStrategyProperty); }
-            set { SetValue(LayoutUpdateStrategyProperty, value); }
+      get
+      {
+        return ( ILayoutUpdateStrategy )GetValue( LayoutUpdateStrategyProperty );
         }
+      set
+      {
+        SetValue( LayoutUpdateStrategyProperty, value );
+      }
+    }
 
         #endregion
 
@@ -272,13 +280,15 @@ namespace Xceed.Wpf.AvalonDock
         {
             base.OnApplyTemplate();
 
-          //  SetupAutoHideWindow();
+
+      _autohideArea = GetTemplateChild( "PART_AutoHideArea" ) as FrameworkElement;
         }
 
         protected override void OnInitialized( EventArgs e )
         {
             base.OnInitialized(e);
         }
+
 
         void DockingManager_Loaded(object sender, RoutedEventArgs e)
         {
@@ -462,9 +472,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public ControlTemplate DocumentPaneTemplate
         {
-            get { return (ControlTemplate)GetValue(DocumentPaneTemplateProperty); }
-            set { SetValue(DocumentPaneTemplateProperty, value); }
+      get
+      {
+        return ( ControlTemplate )GetValue( DocumentPaneTemplateProperty );
         }
+      set
+      {
+        SetValue( DocumentPaneTemplateProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the DocumentPaneTemplate property.
@@ -499,9 +515,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public ControlTemplate AnchorablePaneTemplate
         {
-            get { return (ControlTemplate)GetValue(AnchorablePaneTemplateProperty); }
-            set { SetValue(AnchorablePaneTemplateProperty, value); }
+      get
+      {
+        return ( ControlTemplate )GetValue( AnchorablePaneTemplateProperty );
         }
+      set
+      {
+        SetValue( AnchorablePaneTemplateProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the AnchorablePaneDataTemplate property.
@@ -535,8 +557,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public ControlTemplate AnchorSideTemplate
         {
-            get { return (ControlTemplate)GetValue(AnchorSideTemplateProperty); }
-            set { SetValue(AnchorSideTemplateProperty, value); }
+      get
+      {
+        return ( ControlTemplate )GetValue( AnchorSideTemplateProperty );
+      }
+      set
+      {
+        SetValue( AnchorSideTemplateProperty, value );
+      }
         }
 
         #endregion
@@ -556,9 +584,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public ControlTemplate AnchorGroupTemplate
         {
-            get { return (ControlTemplate)GetValue(AnchorGroupTemplateProperty); }
-            set { SetValue(AnchorGroupTemplateProperty, value); }
+      get
+      {
+        return ( ControlTemplate )GetValue( AnchorGroupTemplateProperty );
         }
+      set
+      {
+        SetValue( AnchorGroupTemplateProperty, value );
+      }
+    }
 
         #endregion
 
@@ -577,9 +611,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public ControlTemplate AnchorTemplate
         {
-            get { return (ControlTemplate)GetValue(AnchorTemplateProperty); }
-            set { SetValue(AnchorTemplateProperty, value); }
+      get
+      {
+        return ( ControlTemplate )GetValue( AnchorTemplateProperty );
+      }
+      set
+      {
+        SetValue( AnchorTemplateProperty, value );
         }
+    }
 
         #endregion
 
@@ -599,9 +639,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public Style DocumentPaneControlStyle
         {
-            get { return (Style)GetValue(DocumentPaneControlStyleProperty); }
-            set { SetValue(DocumentPaneControlStyleProperty, value); }
+      get
+      {
+        return ( Style )GetValue( DocumentPaneControlStyleProperty );
         }
+      set
+      {
+        SetValue( DocumentPaneControlStyleProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the DocumentPaneControlStyle property.
@@ -636,9 +682,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public Style AnchorablePaneControlStyle
         {
-            get { return (Style)GetValue(AnchorablePaneControlStyleProperty); }
-            set { SetValue(AnchorablePaneControlStyleProperty, value); }
+      get
+      {
+        return ( Style )GetValue( AnchorablePaneControlStyleProperty );
         }
+      set
+      {
+        SetValue( AnchorablePaneControlStyleProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the AnchorablePaneControlStyle property.
@@ -674,8 +726,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplate DocumentHeaderTemplate
         {
-            get { return (DataTemplate)GetValue(DocumentHeaderTemplateProperty); }
-            set { SetValue(DocumentHeaderTemplateProperty, value); }
+      get
+      {
+        return ( DataTemplate )GetValue( DocumentHeaderTemplateProperty );
+      }
+      set
+      {
+        SetValue( DocumentHeaderTemplateProperty, value );
+      }
         }
 
         /// <summary>
@@ -723,9 +781,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplateSelector DocumentHeaderTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(DocumentHeaderTemplateSelectorProperty); }
-            set { SetValue(DocumentHeaderTemplateSelectorProperty, value); }
+      get
+      {
+        return ( DataTemplateSelector )GetValue( DocumentHeaderTemplateSelectorProperty );
+      }
+      set
+      {
+        SetValue( DocumentHeaderTemplateSelectorProperty, value );
         }
+    }
 
         /// <summary>
         /// Handles changes to the DocumentHeaderTemplateSelector property.
@@ -776,9 +840,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplate DocumentTitleTemplate
         {
-            get { return (DataTemplate)GetValue(DocumentTitleTemplateProperty); }
-            set { SetValue(DocumentTitleTemplateProperty, value); }
+      get
+      {
+        return ( DataTemplate )GetValue( DocumentTitleTemplateProperty );
         }
+      set
+      {
+        SetValue( DocumentTitleTemplateProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the DocumentTitleTemplate property.
@@ -826,8 +896,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplateSelector DocumentTitleTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(DocumentTitleTemplateSelectorProperty); }
-            set { SetValue(DocumentTitleTemplateSelectorProperty, value); }
+      get
+      {
+        return ( DataTemplateSelector )GetValue( DocumentTitleTemplateSelectorProperty );
+      }
+      set
+      {
+        SetValue( DocumentTitleTemplateSelectorProperty, value );
+      }
         }
 
         /// <summary>
@@ -874,9 +950,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplate AnchorableTitleTemplate
         {
-            get { return (DataTemplate)GetValue(AnchorableTitleTemplateProperty); }
-            set { SetValue(AnchorableTitleTemplateProperty, value); }
+      get
+      {
+        return ( DataTemplate )GetValue( AnchorableTitleTemplateProperty );
         }
+      set
+      {
+        SetValue( AnchorableTitleTemplateProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the AnchorableTitleTemplate property.
@@ -922,9 +1004,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplateSelector AnchorableTitleTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(AnchorableTitleTemplateSelectorProperty); }
-            set { SetValue(AnchorableTitleTemplateSelectorProperty, value); }
+      get
+      {
+        return ( DataTemplateSelector )GetValue( AnchorableTitleTemplateSelectorProperty );
         }
+      set
+      {
+        SetValue( AnchorableTitleTemplateSelectorProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the AnchorableTitleTemplateSelector property.
@@ -963,9 +1051,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplate AnchorableHeaderTemplate
         {
-            get { return (DataTemplate)GetValue(AnchorableHeaderTemplateProperty); }
-            set { SetValue(AnchorableHeaderTemplateProperty, value); }
+      get
+      {
+        return ( DataTemplate )GetValue( AnchorableHeaderTemplateProperty );
+      }
+      set
+      {
+        SetValue( AnchorableHeaderTemplateProperty, value );
         }
+    }
 
         /// <summary>
         /// Handles changes to the AnchorableHeaderTemplate property.
@@ -1012,8 +1106,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplateSelector AnchorableHeaderTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(AnchorableHeaderTemplateSelectorProperty); }
-            set { SetValue(AnchorableHeaderTemplateSelectorProperty, value); }
+      get
+      {
+        return ( DataTemplateSelector )GetValue( AnchorableHeaderTemplateSelectorProperty );
+      }
+      set
+      {
+        SetValue( AnchorableHeaderTemplateSelectorProperty, value );
+      }
         }
 
         /// <summary>
@@ -1051,9 +1151,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public LayoutPanelControl LayoutRootPanel
         {
-            get { return (LayoutPanelControl)GetValue(LayoutRootPanelProperty); }
-            set { SetValue(LayoutRootPanelProperty, value); }
+      get
+      {
+        return ( LayoutPanelControl )GetValue( LayoutRootPanelProperty );
         }
+      set
+      {
+        SetValue( LayoutRootPanelProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the LayoutRootPanel property.
@@ -1092,9 +1198,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public LayoutAnchorSideControl RightSidePanel
         {
-            get { return (LayoutAnchorSideControl)GetValue(RightSidePanelProperty); }
-            set { SetValue(RightSidePanelProperty, value); }
+      get
+      {
+        return ( LayoutAnchorSideControl )GetValue( RightSidePanelProperty );
+      }
+      set
+      {
+        SetValue( RightSidePanelProperty, value );
         }
+    }
 
         /// <summary>
         /// Handles changes to the RightSidePanel property.
@@ -1133,9 +1245,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public LayoutAnchorSideControl LeftSidePanel
         {
-            get { return (LayoutAnchorSideControl)GetValue(LeftSidePanelProperty); }
-            set { SetValue(LeftSidePanelProperty, value); }
+      get
+      {
+        return ( LayoutAnchorSideControl )GetValue( LeftSidePanelProperty );
         }
+      set
+      {
+        SetValue( LeftSidePanelProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the LeftSidePanel property.
@@ -1174,9 +1292,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public LayoutAnchorSideControl TopSidePanel
         {
-            get { return (LayoutAnchorSideControl)GetValue(TopSidePanelProperty); }
-            set { SetValue(TopSidePanelProperty, value); }
+      get
+      {
+        return ( LayoutAnchorSideControl )GetValue( TopSidePanelProperty );
         }
+      set
+      {
+        SetValue( TopSidePanelProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the TopSidePanel property.
@@ -1215,8 +1339,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public LayoutAnchorSideControl BottomSidePanel
         {
-            get { return (LayoutAnchorSideControl)GetValue(BottomSidePanelProperty); }
-            set { SetValue(BottomSidePanelProperty, value); }
+      get
+      {
+        return ( LayoutAnchorSideControl )GetValue( BottomSidePanelProperty );
+      }
+      set
+      {
+        SetValue( BottomSidePanelProperty, value );
+      }
         }
 
         /// <summary>
@@ -1319,8 +1449,6 @@ namespace Xceed.Wpf.AvalonDock
 
         void SetupAutoHideWindow()
         {
-            _autohideArea = GetTemplateChild("PART_AutoHideArea") as FrameworkElement;
-
             if (_autoHideWindowManager != null)
                 _autoHideWindowManager.HideAutoWindow();
             else
@@ -1359,7 +1487,10 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public LayoutAutoHideWindowControl AutoHideWindow
         {
-            get { return (LayoutAutoHideWindowControl)GetValue(AutoHideWindowProperty); }
+      get
+      {
+        return ( LayoutAutoHideWindowControl )GetValue( AutoHideWindowProperty );
+      }
         }
 
         /// <summary>
@@ -1531,9 +1662,9 @@ namespace Xceed.Wpf.AvalonDock
                 fwHeight = parentPaneAsPositionableElement.FloatingHeight;
 
             if (fwWidth == 0.0)
-                fwWidth = parentPaneAsWithActualSize.ActualWidth;
+        fwWidth = parentPaneAsWithActualSize.ActualWidth + 10;      //10 includes BorderThickness and Margins inside LayoutDocumentFloatingWindowControl.
             if (fwHeight == 0.0)
-                fwHeight = parentPaneAsWithActualSize.ActualHeight;
+        fwHeight = parentPaneAsWithActualSize.ActualHeight + 10;    //10 includes BorderThickness and Margins inside LayoutDocumentFloatingWindowControl.
 
             LayoutFloatingWindow fw;
             LayoutFloatingWindowControl fwc;
@@ -1618,12 +1749,10 @@ namespace Xceed.Wpf.AvalonDock
             double fwLeft = paneAsPositionableElement.FloatingLeft;
             double fwTop = paneAsPositionableElement.FloatingTop;
 
-
-
             if (fwWidth == 0.0)
-                fwWidth = paneAsWithActualSize.ActualWidth;
+        fwWidth = paneAsWithActualSize.ActualWidth + 10;       //10 includes BorderThickness and Margins inside LayoutAnchorableFloatingWindowControl.
             if (fwHeight == 0.0)
-                fwHeight = paneAsWithActualSize.ActualHeight;
+        fwHeight = paneAsWithActualSize.ActualHeight + 10;   //10 includes BorderThickness and Margins inside LayoutAnchorableFloatingWindowControl.
 
             var destPane = new LayoutAnchorablePane()
             {
@@ -1727,7 +1856,10 @@ namespace Xceed.Wpf.AvalonDock
 
         public IEnumerable<LayoutFloatingWindowControl> FloatingWindows
         {
-            get { return _fwList; }
+      get
+      {
+        return _fwList;
+      }
         }
         #endregion
 
@@ -1741,8 +1873,11 @@ namespace Xceed.Wpf.AvalonDock
 
         DockingManager IOverlayWindowHost.Manager
         {
-            get { return this; }
+      get
+      {
+        return this;
         }
+    }
 
         OverlayWindow _overlayWindow = null;
         void CreateOverlayWindow()
@@ -1858,9 +1993,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplate LayoutItemTemplate
         {
-            get { return (DataTemplate)GetValue(LayoutItemTemplateProperty); }
-            set { SetValue(LayoutItemTemplateProperty, value); }
+      get
+      {
+        return ( DataTemplate )GetValue( LayoutItemTemplateProperty );
         }
+      set
+      {
+        SetValue( LayoutItemTemplateProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the AnchorableTemplate property.
@@ -1895,9 +2036,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplateSelector LayoutItemTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(LayoutItemTemplateSelectorProperty); }
-            set { SetValue(LayoutItemTemplateSelectorProperty, value); }
+      get
+      {
+        return ( DataTemplateSelector )GetValue( LayoutItemTemplateSelectorProperty );
         }
+      set
+      {
+        SetValue( LayoutItemTemplateSelectorProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the LayoutItemTemplateSelector property.
@@ -1935,8 +2082,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public IEnumerable DocumentsSource
         {
-            get { return (IEnumerable)GetValue(DocumentsSourceProperty); }
-            set { SetValue(DocumentsSourceProperty, value); }
+      get
+      {
+        return ( IEnumerable )GetValue( DocumentsSourceProperty );
+      }
+      set
+      {
+        SetValue( DocumentsSourceProperty, value );
+      }
         }
 
         /// <summary>
@@ -2189,7 +2342,7 @@ namespace Xceed.Wpf.AvalonDock
                 DocumentClosed( this, evargs );
               }
             }
-        }        
+        }
 
         /// <summary>
         /// Event fired when a document is about to be closed
@@ -2257,9 +2410,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public ContextMenu DocumentContextMenu
         {
-            get { return (ContextMenu)GetValue(DocumentContextMenuProperty); }
-            set { SetValue(DocumentContextMenuProperty, value); }
+      get
+      {
+        return ( ContextMenu )GetValue( DocumentContextMenuProperty );
+      }
+      set
+      {
+        SetValue( DocumentContextMenuProperty, value );
         }
+    }
 
         #endregion
 
@@ -2279,9 +2438,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public IEnumerable AnchorablesSource
         {
-            get { return (IEnumerable)GetValue(AnchorablesSourceProperty); }
-            set { SetValue(AnchorablesSourceProperty, value); }
+      get
+      {
+        return ( IEnumerable )GetValue( AnchorablesSourceProperty );
         }
+      set
+      {
+        SetValue( AnchorablesSourceProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the AnchorablesSource property.
@@ -2549,7 +2714,6 @@ namespace Xceed.Wpf.AvalonDock
             var model = anchorable as LayoutAnchorable;
             if (model != null)
             {
-                //by default hide the anchorable
                 model.Hide();
             }
         }
@@ -2621,9 +2785,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public object ActiveContent
         {
-            get { return (object)GetValue(ActiveContentProperty); }
-            set { SetValue(ActiveContentProperty, value); }
+      get
+      {
+        return ( object )GetValue( ActiveContentProperty );
         }
+      set
+      {
+        SetValue( ActiveContentProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the ActiveContent property.
@@ -2672,9 +2842,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public ContextMenu AnchorableContextMenu
         {
-            get { return (ContextMenu)GetValue(AnchorableContextMenuProperty); }
-            set { SetValue(AnchorableContextMenuProperty, value); }
+      get
+      {
+        return ( ContextMenu )GetValue( AnchorableContextMenuProperty );
         }
+      set
+      {
+        SetValue( AnchorableContextMenuProperty, value );
+      }
+    }
 
         #endregion
 
@@ -2694,9 +2870,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public Theme Theme
         {
-            get { return (Theme)GetValue(ThemeProperty); }
-            set { SetValue(ThemeProperty, value); }
+      get
+      {
+        return ( Theme )GetValue( ThemeProperty );
+      }
+      set
+      {
+        SetValue( ThemeProperty, value );
         }
+    }
 
         /// <summary>
         /// Handles changes to the Theme property.
@@ -2774,9 +2956,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public double GridSplitterWidth
         {
-            get { return (double)GetValue(GridSplitterWidthProperty); }
-            set { SetValue(GridSplitterWidthProperty, value); }
+      get
+      {
+        return ( double )GetValue( GridSplitterWidthProperty );
         }
+      set
+      {
+        SetValue( GridSplitterWidthProperty, value );
+      }
+    }
 
         #endregion
 
@@ -2795,8 +2983,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public double GridSplitterHeight
         {
-            get { return (double)GetValue(GridSplitterHeightProperty); }
-            set { SetValue(GridSplitterHeightProperty, value); }
+      get
+      {
+        return ( double )GetValue( GridSplitterHeightProperty );
+      }
+      set
+      {
+        SetValue( GridSplitterHeightProperty, value );
+      }
         }
 
         #endregion
@@ -2823,9 +3017,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplate DocumentPaneMenuItemHeaderTemplate
         {
-            get { return (DataTemplate)GetValue(DocumentPaneMenuItemHeaderTemplateProperty); }
-            set { SetValue(DocumentPaneMenuItemHeaderTemplateProperty, value); }
+      get
+      {
+        return ( DataTemplate )GetValue( DocumentPaneMenuItemHeaderTemplateProperty );
+      }
+      set
+      {
+        SetValue( DocumentPaneMenuItemHeaderTemplateProperty, value );
         }
+    }
 
         /// <summary>
         /// Handles changes to the DocumentPaneMenuItemHeaderTemplate property.
@@ -2875,9 +3075,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplateSelector DocumentPaneMenuItemHeaderTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty); }
-            set { SetValue(DocumentPaneMenuItemHeaderTemplateSelectorProperty, value); }
+      get
+      {
+        return ( DataTemplateSelector )GetValue( DocumentPaneMenuItemHeaderTemplateSelectorProperty );
         }
+      set
+      {
+        SetValue( DocumentPaneMenuItemHeaderTemplateSelectorProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the DocumentPaneMenuItemHeaderTemplateSelector property.
@@ -2923,9 +3129,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplate IconContentTemplate
         {
-            get { return (DataTemplate)GetValue(IconContentTemplateProperty); }
-            set { SetValue(IconContentTemplateProperty, value); }
+      get
+      {
+        return ( DataTemplate )GetValue( IconContentTemplateProperty );
         }
+      set
+      {
+        SetValue( IconContentTemplateProperty, value );
+      }
+    }
 
         #endregion
 
@@ -2944,8 +3156,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public DataTemplateSelector IconContentTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(IconContentTemplateSelectorProperty); }
-            set { SetValue(IconContentTemplateSelectorProperty, value); }
+      get
+      {
+        return ( DataTemplateSelector )GetValue( IconContentTemplateSelectorProperty );
+      }
+      set
+      {
+        SetValue( IconContentTemplateSelectorProperty, value );
+      }
         }
 
         #endregion
@@ -3057,7 +3275,13 @@ namespace Xceed.Wpf.AvalonDock
         void CreateAnchorableLayoutItem(LayoutAnchorable contentToAttach)
         {
             if (_layoutItems.Any(item => item.LayoutElement == contentToAttach))
+      {
+        foreach( var item in _layoutItems )
+        {
+          ApplyStyleToLayoutItem( item );
+        }
                 return;
+      }
 
             var layoutItem = new LayoutAnchorableItem();
             layoutItem.Attach(contentToAttach);
@@ -3076,7 +3300,13 @@ namespace Xceed.Wpf.AvalonDock
         void CreateDocumentLayoutItem(LayoutDocument contentToAttach)
         {
             if (_layoutItems.Any(item => item.LayoutElement == contentToAttach))
+      {
+        foreach( var item in _layoutItems )
+        {
+          ApplyStyleToLayoutItem( item );
+        }
                 return;
+      }
 
             var layoutItem = new LayoutDocumentItem();
             layoutItem.Attach(contentToAttach);
@@ -3108,9 +3338,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public Style LayoutItemContainerStyle
         {
-            get { return (Style)GetValue(LayoutItemContainerStyleProperty); }
-            set { SetValue(LayoutItemContainerStyleProperty, value); }
+      get
+      {
+        return ( Style )GetValue( LayoutItemContainerStyleProperty );
+      }
+      set
+      {
+        SetValue( LayoutItemContainerStyleProperty, value );
         }
+    }
 
         /// <summary>
         /// Handles changes to the LayoutItemContainerStyle property.
@@ -3146,9 +3382,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public StyleSelector LayoutItemContainerStyleSelector
         {
-            get { return (StyleSelector)GetValue(LayoutItemContainerStyleSelectorProperty); }
-            set { SetValue(LayoutItemContainerStyleSelectorProperty, value); }
+      get
+      {
+        return ( StyleSelector )GetValue( LayoutItemContainerStyleSelectorProperty );
         }
+      set
+      {
+        SetValue( LayoutItemContainerStyleSelectorProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the LayoutItemContainerStyleSelector property.
@@ -3199,8 +3441,11 @@ namespace Xceed.Wpf.AvalonDock
 
         bool IsNavigatorWindowActive
         {
-            get { return _navigatorWindow != null; }
+      get
+      {
+        return _navigatorWindow != null;
         }
+    }
 
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
@@ -3237,9 +3482,15 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public bool ShowSystemMenu
         {
-            get { return (bool)GetValue(ShowSystemMenuProperty); }
-            set { SetValue(ShowSystemMenuProperty, value); }
+      get
+      {
+        return ( bool )GetValue( ShowSystemMenuProperty );
         }
+      set
+      {
+        SetValue( ShowSystemMenuProperty, value );
+      }
+    }
 
         #endregion
 
@@ -3258,8 +3509,14 @@ namespace Xceed.Wpf.AvalonDock
         /// </summary>
         public bool AllowMixedOrientation
         {
-            get { return (bool)GetValue(AllowMixedOrientationProperty); }
-            set { SetValue(AllowMixedOrientationProperty, value); }
+      get
+      {
+        return ( bool )GetValue( AllowMixedOrientationProperty );
+      }
+      set
+      {
+        SetValue( AllowMixedOrientationProperty, value );
+      }
         }
 
         #endregion

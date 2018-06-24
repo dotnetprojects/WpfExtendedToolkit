@@ -2,7 +2,7 @@
 
    Toolkit for WPF
 
-   Copyright (C) 2007-2016 Xceed Software Inc.
+   Copyright (C) 2007-2017 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
    License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
@@ -612,7 +612,7 @@
                                         ItemContainerStyle="{StaticResource TreeViewItemStyle}">
             <core:LiveExplorerTreeViewItem Header="DropDown and Split Buttons"
                                            SampleType="{x:Type views14:DropDownSplitButtonView}" />
-         </core:LiveExplorerTreeViewItem>
+          </core:LiveExplorerTreeViewItem>
          <core:LiveExplorerTreeViewItem Header="Charts"
                                         Style="{StaticResource TreeViewHeaderStyle}"
                                         ItemContainerStyle="{StaticResource TreeViewItemStyle}"
@@ -685,6 +685,8 @@
                                               SampleType="{x:Type samples:MaterialControls.Views.MaterialDropDownView}" />
                <core:LiveExplorerTreeViewItem Header="Frame"
                                               SampleType="{x:Type samples:MaterialControls.Views.MaterialFrameView}" />
+               <core:LiveExplorerTreeViewItem Header="Hamburger"
+                                              SampleType="{x:Type samples:MaterialControls.Views.MaterialHamburgerView}" />
                <core:LiveExplorerTreeViewItem Header="ListBox"
                                               SampleType="{x:Type samples:MaterialControls.Views.MaterialListBoxView}" />
                <core:LiveExplorerTreeViewItem Header="ProgressBar"
