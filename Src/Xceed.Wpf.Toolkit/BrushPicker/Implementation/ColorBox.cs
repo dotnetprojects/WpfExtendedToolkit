@@ -12,14 +12,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.ComponentModel;
+using System.Reflection;
 using System.Windows.Data;
+using Xceed.Wpf.Toolkit.BrushPicker.Implementation;
 
 namespace ColorBox
 {
@@ -41,9 +41,17 @@ namespace ColorBox
             private set;
         }
 
+        private static IEnumerable<BrushItem> _wpfBrushTypes;
+
         static ColorBox()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ColorBox), new FrameworkPropertyMetadata(typeof(ColorBox)));
+
+           _wpfBrushTypes = typeof(Brushes)
+            .GetProperties(BindingFlags.Static | BindingFlags.Public)
+            .Where(p => p.PropertyType == typeof(SolidColorBrush))
+            .Select(p => new BrushItem() {Name = p.Name, Brush = (Brush) p.GetValue(null, null)})
+            .ToArray();
         }
         
         public static RoutedCommand RemoveGradientStop = new RoutedCommand();
@@ -431,10 +439,18 @@ namespace ColorBox
         {
             get
             {
-                BrushTypes temp = BrushTypes.None | BrushTypes.Solid | BrushTypes.Linear | BrushTypes.Radial;
+                BrushTypes temp = BrushTypes.None | BrushTypes.Predefined | BrushTypes.Solid | BrushTypes.Linear | BrushTypes.Radial;
                 foreach (Enum value in Enum.GetValues(temp.GetType()))
                     if (temp.HasFlag(value))
                         yield return value;
+            }
+        }
+
+        public IEnumerable<BrushItem> WpfBrushTypes
+        {
+            get
+            {
+              return _wpfBrushTypes;
             }
         }
 
@@ -448,7 +464,7 @@ namespace ColorBox
             , new FrameworkPropertyMetadata(null, new PropertyChangedCallback(BrushChanged)));
         static void BrushChanged(DependencyObject property, DependencyPropertyChangedEventArgs args)
         {
-            ColorBox c = property as ColorBox;         
+            ColorBox c = property as ColorBox;
             Brush brush = args.NewValue as Brush;
 
             if (!c._BrushSetInternally)
@@ -461,8 +477,17 @@ namespace ColorBox
                 }
                 else if (brush is SolidColorBrush)
                 {
-                    c.BrushType = BrushTypes.Solid;
-                    c.Color = (brush as SolidColorBrush).Color;
+                    var fbrush = _wpfBrushTypes.First(x => x.Brush == brush);
+                    if (fbrush == null)
+                    {
+                        c.BrushType = BrushTypes.Predefined;
+                        //c.Color = (brush as SolidColorBrush).Color;
+                    }
+                    else
+                    {
+                        c.BrushType = BrushTypes.Solid;
+                        c.Color = (brush as SolidColorBrush).Color;
+                    }
                 }
                 else if (brush is LinearGradientBrush)
                 {
@@ -473,7 +498,7 @@ namespace ColorBox
                     c.EndX = lgb.EndPoint.X;
                     c.EndY = lgb.EndPoint.Y;
                     c.MappingMode = lgb.MappingMode;
-                    c.SpreadMethod = lgb.SpreadMethod;                       
+                    c.SpreadMethod = lgb.SpreadMethod;
                     c.Gradients = new ObservableCollection<GradientStop>(lgb.GradientStops);
                     c.BrushType = BrushTypes.Linear;
                     //c.Color = lgb.GradientStops.OrderBy(x => x.Offset).Last().Color;
@@ -756,17 +781,16 @@ namespace ColorBox
 
             switch (BrushType)
             {
+                case BrushTypes.Predefined: return;
                 case BrushTypes.None: Brush = null; break;
 
                 case BrushTypes.Solid:
-                    
                     Brush = new SolidColorBrush(this.Color);
-
                     break;
 
                 case BrushTypes.Linear:
 
-                    var brush = new LinearGradientBrush();                    
+                    var brush = new LinearGradientBrush();
                     foreach (GradientStop g in Gradients)
                     {
                         brush.GradientStops.Add(new GradientStop(g.Color, g.Offset));
@@ -781,7 +805,7 @@ namespace ColorBox
 
                 case BrushTypes.Radial:
 
-                    var brush1 = new RadialGradientBrush();                   
+                    var brush1 = new RadialGradientBrush();
                     foreach (GradientStop g in Gradients)
                     {
                         brush1.GradientStops.Add(new GradientStop(g.Color, g.Offset));

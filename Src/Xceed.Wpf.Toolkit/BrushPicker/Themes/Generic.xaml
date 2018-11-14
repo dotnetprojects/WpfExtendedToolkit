@@ -231,7 +231,7 @@
                                         </StackPanel.Resources>
                                         
                                         <!-- Available brush types -->
-                                        <ListBox x:Name="listAvailableBrushType"                                                
+                                        <ListBox x:Name="listAvailableBrushType"
                                                  HorizontalContentAlignment="Center"
                                                  SelectedItem="{Binding BrushType, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" 
                                                  ItemsSource="{Binding AvailableBrushTypes, RelativeSource={RelativeSource TemplatedParent}}">
@@ -246,10 +246,9 @@
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="ListBoxItem">
                                                                 <Border x:Name="Border" Background="Transparent" Padding="0,3">
-                                                                    <Path x:Name="Icon" Height="12" Width="20" Stretch="Fill" Fill="#FF403C3C" StrokeThickness="1" Stroke="Black"
+                                                                    <Path x:Name="Icon" Height="12" Width="16" Stretch="Fill" Fill="#FF403C3C" StrokeThickness="1" Stroke="Black"
                                                                           Data="M371,190L557,190 557,293 371,293 371,190z"/>
                                                                 </Border>
-                                                                
                                                                 <ControlTemplate.Triggers>
                                                                     <Trigger Property="IsMouseOver" Value="True">
                                                                         <Setter Property="Background" Value="Gray" TargetName="Border"/>
@@ -273,6 +272,10 @@
                                                                         <Setter Property="ToolTip" Value="Solid Color Brush"/>
                                                                         <Setter Property="Fill" TargetName="Icon" Value="#FF403C3C"/>
                                                                     </DataTrigger>
+                                                                   <DataTrigger Binding="{Binding}" Value="Predefined">
+                                                                        <Setter Property="ToolTip" Value="Predefined Brush"/>
+                                                                        <Setter Property="Fill" TargetName="Icon" Value="#FF707C3C"/>
+                                                                    </DataTrigger>
                                                                     <DataTrigger Binding="{Binding}" Value="Linear">
                                                                         <Setter Property="ToolTip" Value="Linear Gradient Brush"/>
                                                                         <Setter Property="Fill" TargetName="Icon">
@@ -283,7 +286,7 @@
                                                                                 </LinearGradientBrush>
                                                                             </Setter.Value>
                                                                         </Setter>
-                                                                    </DataTrigger>                                                                    
+                                                                    </DataTrigger>
                                                                     <DataTrigger Binding="{Binding}" Value="Radial">
                                                                         <Setter Property="ToolTip" Value="Radial Gradient Brush"/>
                                                                         <Setter Property="Fill" TargetName="Icon">
@@ -298,10 +301,9 @@
                                                                 </ControlTemplate.Triggers>
                                                             </ControlTemplate>
                                                         </Setter.Value>
-                                                    </Setter>                                                      
+                                                    </Setter>
                                                 </Style>
                                             </ListBox.ItemContainerStyle>
-                                                                                     
                                         </ListBox>
 
                                         <!-- Color selector -->
@@ -310,6 +312,9 @@
                                                 <Style TargetType="ScrollViewer">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding ElementName=listAvailableBrushType, Path=SelectedValue}" Value="None">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ElementName=listAvailableBrushType, Path=SelectedValue}" Value="Predefined">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -371,7 +376,42 @@
                                                 </Path>
                                             </Grid>
                                         </ScrollViewer>
-                                        
+
+                                        <!-- Predefined colors viewer -->
+                                        <Grid Margin="0,5,0,0">
+                                            <!-- Hide when brush type is None -->
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ElementName=listAvailableBrushType, Path=SelectedValue}" Value="Predefined">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+
+                                            <ListBox MaxHeight="300" 
+                                                     ItemsSource="{Binding WpfBrushTypes, RelativeSource={RelativeSource TemplatedParent}}"
+                                                     SelectedValuePath="Brush"
+                                                     SelectedValue="{Binding Brush, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                              <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                  <StackPanel Orientation="Horizontal">
+                                                    <Border Background="{Binding Brush}"
+                                                      Width="30"
+                                                      Height="15"
+                                                      Margin="2"
+                                                      BorderThickness="1"
+                                                      BorderBrush="Black" />
+                                                    <TextBlock Text="{Binding Name}"
+                                                      VerticalAlignment="Center" />
+                                                  </StackPanel>
+                                                  </DataTemplate>
+                                              </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
+
                                         <!-- Current color viewer -->
                                         <Grid Margin="0,5,0,0" Height="20">
 
@@ -382,6 +422,9 @@
                                                         <DataTrigger Binding="{Binding ElementName=listAvailableBrushType, Path=SelectedValue}" Value="None">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ElementName=listAvailableBrushType, Path=SelectedValue}" Value="Predefined">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Grid.Style>
@@ -389,7 +432,7 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="5" />
-                                                <ColumnDefinition Width="Auto" />                        
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
 
                                             <Rectangle>
@@ -415,30 +458,11 @@
                                                     </Style>
                                                 </TextBox.Style>
                                             </TextBox>
-                                            
-                                            <!--<Button Grid.Column="4" Content="XAML" FontSize="12"
-                                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                                    ToolTip="Copy XAML to clipboard">
-                                                <Button.Style>
-                                                    <Style TargetType="Button">
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="Button">
-                                                                    <Border BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" Background="Transparent">
-                                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                    </Border>
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </Button.Style>
-                                            </Button>-->
                                         </Grid>
 
                                         <!-- Gradient Stop editor -->
                                         <Grid Margin="0,5,0,0" Focusable="False">
-
-                                            <Grid.Style>                                                
+                                            <Grid.Style>
                                                 <Style TargetType="Grid">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                     <Style.Triggers>
@@ -499,11 +523,11 @@
                                                                                                   Style="{StaticResource GradientStopSliderStyle}" 
                                                                                                   Value="{Binding Offset}" Minimum="0" Maximum="1"
                                                                                                   ColorBox="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ColorBox}}}"
-                                                                                                  SelectedGradient="{Binding}"                                                                                                  
+                                                                                                  SelectedGradient="{Binding}"
                                                                                                   Margin="0,0,0,2">
                                                                             <local:GradientStopSlider.Background>
                                                                                 <SolidColorBrush Color="{Binding Color}"/>
-                                                                            </local:GradientStopSlider.Background>                                                                            
+                                                                            </local:GradientStopSlider.Background>
                                                                         </local:GradientStopSlider>
 
                                                                         <ControlTemplate.Triggers>
@@ -579,15 +603,15 @@
                                             
                                         </Grid>
 
-                                        
                                         <!-- Additional Properties -->
-
                                         <StackPanel Margin="0,5,0,0" >
-
                                             <StackPanel.Style>
                                                 <Style TargetType="StackPanel">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding ElementName=listAvailableBrushType, Path=SelectedValue}" Value="None">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ElementName=listAvailableBrushType, Path=SelectedValue}" Value="Predefined">
                                                             <Setter Property="Visibility" Value="Collapsed"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -643,6 +667,19 @@
 
                                             <StackPanel Margin="0,5"
                                                         Visibility="{Binding ElementName=PART_AdditionalPropertyOpen, Path=IsChecked, Converter={StaticResource BoolToVis}}">
+
+                                                <!-- Predefined brush -->
+                                                <DockPanel Margin="0,5,0,0">
+                                                    <DockPanel.Style>
+                                                        <Style TargetType="DockPanel">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </Style>
+                                                    </DockPanel.Style>
+
+                                                    <TextBlock Text="Opacity" VerticalAlignment="Center"/>
+                                                    <Slider Value="{Binding Brush.Opacity, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                    IsMoveToPointEnabled="True" Minimum="0" Maximum="1" Margin="10,0,0,0"/>
+                                                </DockPanel>
 
                                                 <!-- Solid brush -->
                                                 <DockPanel Margin="0,5,0,0">

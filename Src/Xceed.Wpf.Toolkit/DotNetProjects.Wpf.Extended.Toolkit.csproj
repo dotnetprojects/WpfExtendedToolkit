@@ -398,6 +398,7 @@
     <Compile Include="AutoSelectTextBox\Implementation\QueryMoveFocusEventArgs.cs" />
     <Compile Include="BrushPicker\Implementation\AlphaSelector.cs" />
     <Compile Include="BrushPicker\Implementation\BaseSelector.cs" />
+    <Compile Include="BrushPicker\Implementation\BrushItem.cs" />
     <Compile Include="BrushPicker\Implementation\ColorBox.cs" />
     <Compile Include="BrushPicker\Implementation\ColorChangedEventArgs.cs" />
     <Compile Include="BrushPicker\Implementation\ColorHelper.cs" />
