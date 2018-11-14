@@ -351,7 +351,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xceed.Wpf.Toolkit\Xceed.Wpf.Toolkit.csproj">
+    <ProjectReference Include="..\Xceed.Wpf.Toolkit\DotNetProjects.Wpf.Extended.Toolkit.csproj">
       <Project>{72e591d6-8f83-4d8c-8f67-9c325e623234}</Project>
       <Name>Xceed.Wpf.Toolkit</Name>
     </ProjectReference>

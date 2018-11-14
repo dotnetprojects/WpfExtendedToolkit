@@ -141,9 +141,12 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     #region Private Methods
 
-    private static void Current_Exit( object sender, ExitEventArgs e )
-        {
-      Application.Current.Exit -= new ExitEventHandler( Current_Exit );
+    private static void Current_Exit( object sender, EventArgs e )
+    {
+      if (Application.Current != null)
+        Application.Current.Exit -= Current_Exit;
+      else
+        AppDomain.CurrentDomain.ProcessExit -= Current_Exit;
       if( _windowHandler != null )
       {
         _windowHandler.FocusChanged -= new EventHandler<FocusChangeEventArgs>( WindowFocusChanging );
