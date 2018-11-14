@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
@@ -26,69 +25,44 @@ namespace Xceed.Wpf.AvalonDock.Layout
     [Serializable]
     public abstract class LayoutGroup<T> : LayoutGroupBase, ILayoutContainer, ILayoutGroup, IXmlSerializable where T : class, ILayoutElement
     {
+    #region Members
+
+    ObservableCollection<T> _children = new ObservableCollection<T>();
+
+    #endregion
+
+    #region Constructors
+
         internal LayoutGroup()
         {
             _children.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(_children_CollectionChanged);
         }
 
-        void _children_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove ||
-                e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Replace)
-            {
-                if (e.OldItems != null)
-                {
-                    foreach (LayoutElement element in e.OldItems)
-                    {
-                        if (element.Parent == this)
-                            element.Parent = null;
-                    }
-                }
-            }
+    #endregion
 
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add ||
-                e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Replace)
-            {
-                if (e.NewItems != null)
-                {
-                    foreach (LayoutElement element in e.NewItems)
-                    {
-                        if (element.Parent != this)
-                        {
-                            if (element.Parent != null)
-                                element.Parent.RemoveChild(element);
-                            element.Parent = this;
-                        }
+    #region Properties
 
-                    }
-                }
-            }
-
-            ComputeVisibility();
-            OnChildrenCollectionChanged();
-            NotifyChildrenTreeChanged(ChildrenTreeChange.DirectChildrenChanged);
-            RaisePropertyChanged("ChildrenCount");
-        }
-
-        ObservableCollection<T> _children = new ObservableCollection<T>();
+    #region Children
 
         public ObservableCollection<T> Children
         {
-            get { return _children; }
+      get
+      {
+        return _children;
+        }
         }
 
-        IEnumerable<ILayoutElement> ILayoutContainer.Children
-        {
-            get { return _children.Cast<ILayoutElement>(); }
-        }
-
+    #endregion
 
         #region IsVisible
 
         private bool _isVisible = true;
         public bool IsVisible
         {
-            get { return _isVisible; }
+      get
+      {
+        return _isVisible;
+      }
             protected set
             {
                 if (_isVisible != value)
@@ -101,25 +75,23 @@ namespace Xceed.Wpf.AvalonDock.Layout
             }
         }
 
-        protected virtual void OnIsVisibleChanged()
+    #endregion
+
+    #region ChildrenCount
+
+    public int ChildrenCount
+    {
+      get
         {
-            UpdateParentVisibility();
+        return _children.Count;
+        }
         }
 
-        void UpdateParentVisibility()
-        {
-            var parentPane = Parent as ILayoutElementWithVisibility;
-            if (parentPane != null)
-                parentPane.ComputeVisibility();
-        }
+    #endregion
 
+    #endregion
 
-        public void ComputeVisibility()
-        {
-            IsVisible = GetVisibility();
-        }
-
-        protected abstract bool GetVisibility();
+    #region Overrides
 
         protected override void OnParentChanged(ILayoutContainer oldValue, ILayoutContainer newValue)
         {
@@ -130,6 +102,12 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
         #endregion
 
+    #region Public Methods
+
+    public void ComputeVisibility()
+    {
+      IsVisible = GetVisibility();
+    }
         #region CacheTabsContent
 
         private bool _cacheTabsContent = false;
@@ -161,11 +139,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
             ChildMoved(oldIndex, newIndex);
         }
 
-        protected virtual void ChildMoved(int oldIndex, int newIndex)
-        { 
-
-        }
-
         public void RemoveChildAt(int childIndex)
         {
             _children.RemoveAt(childIndex);
@@ -191,11 +164,6 @@ namespace Xceed.Wpf.AvalonDock.Layout
             int index = _children.IndexOf((T)oldElement);
             _children.Insert(index, (T)newElement);
             _children.RemoveAt(index + 1);
-        }
-
-        public int ChildrenCount
-        {
-            get { return _children.Count; }
         }
 
         public void ReplaceChildAt(int index, ILayoutElement element)
@@ -275,6 +243,71 @@ namespace Xceed.Wpf.AvalonDock.Layout
 
         }
 
+    #endregion
+
+    #region Internal Methods
+
+    protected virtual void OnIsVisibleChanged()
+    {
+      UpdateParentVisibility();
+    }
+
+    protected abstract bool GetVisibility();
+
+    protected virtual void ChildMoved( int oldIndex, int newIndex )
+    {
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    private void _children_CollectionChanged( object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e )
+    {
+      if( e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove ||
+          e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Replace )
+      {
+        if( e.OldItems != null )
+        {
+          foreach( LayoutElement element in e.OldItems )
+          {
+            if( element.Parent == this )
+              element.Parent = null;
+          }
+        }
+      }
+
+      if( e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add ||
+          e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Replace )
+      {
+        if( e.NewItems != null )
+        {
+          foreach( LayoutElement element in e.NewItems )
+          {
+            if( element.Parent != this )
+            {
+              if( element.Parent != null )
+                element.Parent.RemoveChild( element );
+              element.Parent = this;
+            }
+
+          }
+        }
+      }
+
+      ComputeVisibility();
+      OnChildrenCollectionChanged();
+      NotifyChildrenTreeChanged( ChildrenTreeChange.DirectChildrenChanged );
+      RaisePropertyChanged( "ChildrenCount" );
+    }
+
+    private void UpdateParentVisibility()
+    {
+      var parentPane = Parent as ILayoutElementWithVisibility;
+      if( parentPane != null )
+        parentPane.ComputeVisibility();
+    }
+
         private Type FindType( string name )
         {
           foreach( var a in AppDomain.CurrentDomain.GetAssemblies() )
@@ -287,5 +320,20 @@ namespace Xceed.Wpf.AvalonDock.Layout
           }
           return null;
         }
+
+    #endregion
+
+    #region ILayoutContainer Interface
+
+    IEnumerable<ILayoutElement> ILayoutContainer.Children
+    {
+      get
+      {
+        return _children.Cast<ILayoutElement>();
+      }
+    }
+
+    #endregion
+
     }
 }

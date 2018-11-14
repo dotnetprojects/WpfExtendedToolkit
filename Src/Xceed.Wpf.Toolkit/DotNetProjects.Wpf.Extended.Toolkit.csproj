@@ -416,6 +416,9 @@
     <Compile Include="BusyIndicator\Implementation\Converters\ProgressBarWidthConverter.cs" />
     <Compile Include="ColorPicker\Implementation\ColorPickerTabItem.cs" />
     <Compile Include="Core\Converters\ColorModeToTabItemSelectedConverter.cs" />
+    <Compile Include="Primitives\SelectAllSelectorItem.cs" />
+    <Compile Include="Primitives\SelectAllSelector.cs" />
+    <Compile Include="PropertyGrid\Implementation\Converters\PropertyItemEditorConverter.cs" />
     <Compile Include="Core\LocationEnum.cs" />
     <Compile Include="IconButton\Implementation\IconButton.cs" />
     <Compile Include="ButtonSpinner\Implementation\ButtonSpinner.cs" />
@@ -813,6 +816,7 @@
     <Compile Include="PropertyGrid\Implementation\Definitions\DefinitionBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="CollectionControl\Images\Duplicate.png" />
     <Resource Include="TokenizedTextBox\Images\delete8.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

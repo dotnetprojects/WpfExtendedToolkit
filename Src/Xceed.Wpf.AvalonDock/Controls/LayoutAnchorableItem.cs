@@ -15,9 +15,6 @@
   ***********************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Xceed.Wpf.AvalonDock.Layout;
 using System.Windows.Input;
 using System.Windows;
@@ -28,133 +25,33 @@ namespace Xceed.Wpf.AvalonDock.Controls
 {
     public class LayoutAnchorableItem : LayoutItem
     {
-        LayoutAnchorable _anchorable;
-        internal LayoutAnchorableItem()
-        {
+    #region Members
 
+    private LayoutAnchorable _anchorable;
+    private ICommand _defaultHideCommand;
+    private ICommand _defaultAutoHideCommand;
+    private ICommand _defaultDockCommand;
+    private ReentrantFlag _visibilityReentrantFlag = new ReentrantFlag();
+
+    #endregion
+
+    #region Constructors
+
+    internal LayoutAnchorableItem()
+        {
         }
 
-        internal override void Attach(LayoutContent model)
-        {
-            _anchorable = model as LayoutAnchorable;
-            _anchorable.IsVisibleChanged += new EventHandler(_anchorable_IsVisibleChanged);
-            _anchorable.IsAutoHiddenChanged += new EventHandler(_anchorable_IsAutoHiddenChanged);
+    #endregion
 
-            base.Attach(model);
-        }
-
-        internal override void Detach()
-        {
-            _anchorable.IsVisibleChanged -= new EventHandler(_anchorable_IsVisibleChanged);
-            _anchorable.IsAutoHiddenChanged -= new EventHandler(_anchorable_IsAutoHiddenChanged);
-            _anchorable = null;
-            base.Detach();
-        }
-
-        protected override void Close()
-        {
-          if( (_anchorable.Root != null) && (_anchorable.Root.Manager != null) )
-          {
-            var dockingManager = _anchorable.Root.Manager;
-            dockingManager._ExecuteCloseCommand( _anchorable );
-          }
-        }
-
-        ICommand _defaultHideCommand;
-        ICommand _defaultAutoHideCommand;
-        ICommand _defaultDockCommand;
-
-        protected override void InitDefaultCommands()
-        {
-            _defaultHideCommand = new RelayCommand((p) => ExecuteHideCommand(p), (p) => CanExecuteHideCommand(p));
-            _defaultAutoHideCommand = new RelayCommand((p) => ExecuteAutoHideCommand(p), (p) => CanExecuteAutoHideCommand(p));
-            _defaultDockCommand = new RelayCommand((p) => ExecuteDockCommand(p), (p) => CanExecuteDockCommand(p));
-
-            base.InitDefaultCommands();
-        }
-
-        protected override void ClearDefaultBindings()
-        {
-            if (HideCommand == _defaultHideCommand)
-                BindingOperations.ClearBinding(this, HideCommandProperty);
-            if (AutoHideCommand == _defaultAutoHideCommand)
-                BindingOperations.ClearBinding(this, AutoHideCommandProperty);
-            if (DockCommand == _defaultDockCommand)
-                BindingOperations.ClearBinding(this, DockCommandProperty);
-
-            base.ClearDefaultBindings();
-        }
-
-        protected override void SetDefaultBindings()
-        {
-            if (HideCommand == null)
-                HideCommand = _defaultHideCommand;
-            if (AutoHideCommand == null)
-                AutoHideCommand = _defaultAutoHideCommand;
-            if (DockCommand == null)
-                DockCommand = _defaultDockCommand;
-
-            Visibility = _anchorable.IsVisible ? Visibility.Visible : System.Windows.Visibility.Hidden;
-            base.SetDefaultBindings();
-        }
-
-        #region IsHidden
-
-        /// <summary>
-        /// IsHidden Dependency Property
-        /// </summary>
-        public static readonly DependencyProperty IsHiddenProperty =
-            DependencyProperty.Register("IsHidden", typeof(bool), typeof(LayoutAnchorableItem),
-                                        new FrameworkPropertyMetadata(false,
-                                                                      new PropertyChangedCallback(OnIsHiddenChanged)));
-
-        /// <summary>
-        /// Gets or sets the IsHidden property.  This dependency property 
-        /// indicates the hidden state of the element.
-        /// </summary>
-        public bool IsHidden
-        {
-            get { return (bool)GetValue(IsHiddenProperty); }
-            set { SetValue(IsHiddenProperty, value); }
-        }
-
-        /// <summary>
-        /// Handles changes to the IsHidden property.
-        /// </summary>
-        private static void OnIsHiddenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((LayoutAnchorableItem)d).OnIsHiddenChanged(e);
-        }
-
-        /// <summary>
-        /// Provides derived classes an opportunity to handle changes to the IsHidden property.
-        /// </summary>
-        protected virtual void OnIsHiddenChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (_anchorable != null)
-            {
-                if (_anchorable.IsHidden != (bool)e.NewValue)
-                {
-                    if (_anchorable.IsHidden)
-                        _anchorable.Show();
-                    else
-                        _anchorable.Hide();
-                }
-            }
-        }
-
-        #endregion
+    #region Properties
 
         #region HideCommand
 
         /// <summary>
         /// HideCommand Dependency Property
         /// </summary>
-        public static readonly DependencyProperty HideCommandProperty =
-            DependencyProperty.Register("HideCommand", typeof(ICommand), typeof(LayoutAnchorableItem),
-                new FrameworkPropertyMetadata(null,
-                    new PropertyChangedCallback(OnHideCommandChanged),
-                    new CoerceValueCallback(CoerceHideCommandValue)));
+    public static readonly DependencyProperty HideCommandProperty = DependencyProperty.Register( "HideCommand", typeof( ICommand ), typeof( LayoutAnchorableItem ),
+            new FrameworkPropertyMetadata( null, new PropertyChangedCallback( OnHideCommandChanged ), new CoerceValueCallback( CoerceHideCommandValue ) ) );
 
         /// <summary>
         /// Gets or sets the HideCommand property.  This dependency property 
@@ -162,9 +59,15 @@ namespace Xceed.Wpf.AvalonDock.Controls
         /// </summary>
         public ICommand HideCommand
         {
-            get { return (ICommand)GetValue(HideCommandProperty); }
-            set { SetValue(HideCommandProperty, value); }
+      get
+      {
+        return ( ICommand )GetValue( HideCommandProperty );
+      }
+      set
+      {
+        SetValue( HideCommandProperty, value );
         }
+    }
 
         /// <summary>
         /// Handles changes to the HideCommand property.
@@ -188,7 +91,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
         {
             return value;
         }
-
 
         private bool CanExecuteHideCommand(object parameter)
         {
@@ -252,11 +154,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
         /// <summary>
         /// AutoHideCommand Dependency Property
         /// </summary>
-        public static readonly DependencyProperty AutoHideCommandProperty =
-            DependencyProperty.Register("AutoHideCommand", typeof(ICommand), typeof(LayoutAnchorableItem),
-                new FrameworkPropertyMetadata(null,
-                    new PropertyChangedCallback(OnAutoHideCommandChanged),
-                    new CoerceValueCallback(CoerceAutoHideCommandValue)));
+    public static readonly DependencyProperty AutoHideCommandProperty = DependencyProperty.Register( "AutoHideCommand", typeof( ICommand ), typeof( LayoutAnchorableItem ),
+            new FrameworkPropertyMetadata( null, new PropertyChangedCallback( OnAutoHideCommandChanged ), new CoerceValueCallback( CoerceAutoHideCommandValue ) ) );
 
         /// <summary>
         /// Gets or sets the AutoHideCommand property.  This dependency property 
@@ -265,9 +164,15 @@ namespace Xceed.Wpf.AvalonDock.Controls
         /// <remarks>By default this command toggles auto hide state for an anchorable.</remarks>
         public ICommand AutoHideCommand
         {
-            get { return (ICommand)GetValue(AutoHideCommandProperty); }
-            set { SetValue(AutoHideCommandProperty, value); }
+      get
+      {
+        return ( ICommand )GetValue( AutoHideCommandProperty );
         }
+      set
+      {
+        SetValue( AutoHideCommandProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the AutoHideCommand property.
@@ -322,11 +227,8 @@ namespace Xceed.Wpf.AvalonDock.Controls
         /// <summary>
         /// DockCommand Dependency Property
         /// </summary>
-        public static readonly DependencyProperty DockCommandProperty =
-            DependencyProperty.Register("DockCommand", typeof(ICommand), typeof(LayoutAnchorableItem),
-                new FrameworkPropertyMetadata(null,
-                    new PropertyChangedCallback(OnDockCommandChanged),
-                    new CoerceValueCallback(CoerceDockCommandValue)));
+    public static readonly DependencyProperty DockCommandProperty = DependencyProperty.Register( "DockCommand", typeof( ICommand ), typeof( LayoutAnchorableItem ),
+            new FrameworkPropertyMetadata( null, new PropertyChangedCallback( OnDockCommandChanged ), new CoerceValueCallback( CoerceDockCommandValue ) ) );
 
         /// <summary>
         /// Gets or sets the DockCommand property.  This dependency property 
@@ -335,9 +237,15 @@ namespace Xceed.Wpf.AvalonDock.Controls
         /// <remarks>By default this command moves the anchorable inside the container pane which previously hosted the object.</remarks>
         public ICommand DockCommand
         {
-            get { return (ICommand)GetValue(DockCommandProperty); }
-            set { SetValue(DockCommandProperty, value); }
+      get
+      {
+        return ( ICommand )GetValue( DockCommandProperty );
         }
+      set
+      {
+        SetValue( DockCommandProperty, value );
+      }
+    }
 
         /// <summary>
         /// Handles changes to the DockCommand property.
@@ -376,8 +284,110 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
         #endregion
 
-        #region Visibility
-        ReentrantFlag _visibilityReentrantFlag = new ReentrantFlag();
+    #region CanHide
+
+    /// <summary>
+    /// CanHide Dependency Property
+    /// </summary>
+    public static readonly DependencyProperty CanHideProperty = DependencyProperty.Register( "CanHide", typeof( bool ), typeof( LayoutAnchorableItem ), new FrameworkPropertyMetadata( ( bool )true,
+                new PropertyChangedCallback( OnCanHideChanged ) ) );
+
+    /// <summary>
+    /// Gets or sets the CanHide property.  This dependency property 
+    /// indicates if user can hide the anchorable item.
+    /// </summary>
+    public bool CanHide
+    {
+      get
+      {
+        return ( bool )GetValue( CanHideProperty );
+      }
+      set
+      {
+        SetValue( CanHideProperty, value );
+      }
+    }
+
+    /// <summary>
+    /// Handles changes to the CanHide property.
+    /// </summary>
+    private static void OnCanHideChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    {
+      ( ( LayoutAnchorableItem )d ).OnCanHideChanged( e );
+    }
+
+    /// <summary>
+    /// Provides derived classes an opportunity to handle changes to the CanHide property.
+    /// </summary>
+    protected virtual void OnCanHideChanged( DependencyPropertyChangedEventArgs e )
+    {
+      if( _anchorable != null )
+        _anchorable.CanHide = ( bool )e.NewValue;
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Overrides
+
+    internal override void Attach( LayoutContent model )
+    {
+      _anchorable = model as LayoutAnchorable;
+      _anchorable.IsVisibleChanged += new EventHandler( _anchorable_IsVisibleChanged );
+
+      base.Attach( model );
+    }
+
+    internal override void Detach()
+    {
+      _anchorable.IsVisibleChanged -= new EventHandler( _anchorable_IsVisibleChanged );
+      _anchorable = null;
+      base.Detach();
+    }
+
+    protected override void Close()
+    {
+      if( ( _anchorable.Root != null ) && ( _anchorable.Root.Manager != null ) )
+      {
+        var dockingManager = _anchorable.Root.Manager;
+        dockingManager._ExecuteCloseCommand( _anchorable );
+      }
+    }
+
+    protected override void InitDefaultCommands()
+    {
+      _defaultHideCommand = new RelayCommand( ( p ) => ExecuteHideCommand( p ), ( p ) => CanExecuteHideCommand( p ) );
+      _defaultAutoHideCommand = new RelayCommand( ( p ) => ExecuteAutoHideCommand( p ), ( p ) => CanExecuteAutoHideCommand( p ) );
+      _defaultDockCommand = new RelayCommand( ( p ) => ExecuteDockCommand( p ), ( p ) => CanExecuteDockCommand( p ) );
+
+      base.InitDefaultCommands();
+    }
+
+    protected override void ClearDefaultBindings()
+    {
+      if( HideCommand == _defaultHideCommand )
+        BindingOperations.ClearBinding( this, HideCommandProperty );
+      if( AutoHideCommand == _defaultAutoHideCommand )
+        BindingOperations.ClearBinding( this, AutoHideCommandProperty );
+      if( DockCommand == _defaultDockCommand )
+        BindingOperations.ClearBinding( this, DockCommandProperty );
+
+      base.ClearDefaultBindings();
+    }
+
+    protected override void SetDefaultBindings()
+    {
+      if( HideCommand == null )
+        HideCommand = _defaultHideCommand;
+      if( AutoHideCommand == null )
+        AutoHideCommand = _defaultAutoHideCommand;
+      if( DockCommand == null )
+        DockCommand = _defaultDockCommand;
+
+      Visibility = _anchorable.IsVisible ? Visibility.Visible : System.Windows.Visibility.Hidden;
+      base.SetDefaultBindings();
+    }
 
         protected override void OnVisibilityChanged()
         {
@@ -398,8 +408,11 @@ namespace Xceed.Wpf.AvalonDock.Controls
             base.OnVisibilityChanged();
         }
 
+    #endregion
 
-        void _anchorable_IsVisibleChanged(object sender, EventArgs e)
+    #region Private Methods
+
+    private void _anchorable_IsVisibleChanged( object sender, EventArgs e )
         {
             if (_anchorable != null && _anchorable.Root != null)
             {
@@ -416,47 +429,12 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-        #endregion
 
-        #region CanHide
 
-        /// <summary>
-        /// CanHide Dependency Property
-        /// </summary>
-        public static readonly DependencyProperty CanHideProperty =
-            DependencyProperty.Register("CanHide", typeof(bool), typeof(LayoutAnchorableItem),
-                new FrameworkPropertyMetadata((bool)true,
-                    new PropertyChangedCallback(OnCanHideChanged)));
 
-        /// <summary>
-        /// Gets or sets the CanHide property.  This dependency property 
-        /// indicates if user can hide the anchorable item.
-        /// </summary>
-        public bool CanHide
-        {
-            get { return (bool)GetValue(CanHideProperty); }
-            set { SetValue(CanHideProperty, value); }
-        }
 
-        /// <summary>
-        /// Handles changes to the CanHide property.
-        /// </summary>
-        private static void OnCanHideChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((LayoutAnchorableItem)d).OnCanHideChanged(e);
-        }
 
-        /// <summary>
-        /// Provides derived classes an opportunity to handle changes to the CanHide property.
-        /// </summary>
-        protected virtual void OnCanHideChanged(DependencyPropertyChangedEventArgs e)
-        {
-            if (_anchorable != null)
-                _anchorable.CanHide = (bool)e.NewValue;
-        }
 
         #endregion
-
-
     }
 }

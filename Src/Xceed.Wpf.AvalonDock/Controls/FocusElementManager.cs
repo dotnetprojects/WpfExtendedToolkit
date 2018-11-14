@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows;
@@ -30,8 +29,20 @@ namespace Xceed.Wpf.AvalonDock.Controls
 {
     internal static class FocusElementManager
     {
-        #region Focus Management
-        static List<DockingManager> _managers = new List<DockingManager>();
+    #region Member
+
+    private static List<DockingManager> _managers = new List<DockingManager>();
+    private static FullWeakDictionary<ILayoutElement, IInputElement> _modelFocusedElement = new FullWeakDictionary<ILayoutElement, IInputElement>();
+    private static WeakDictionary<ILayoutElement, IntPtr> _modelFocusedWindowHandle = new WeakDictionary<ILayoutElement, IntPtr>();
+    private static WeakReference _lastFocusedElement;
+    private static WindowHookHandler _windowHandler = null;
+    private static DispatcherOperation _setFocusAsyncOperation;
+    private static WeakReference _lastFocusedElementBeforeEnterMenuMode = null;
+
+    #endregion
+
+    #region Internal Methods
+
         internal static void SetupFocusManagement(DockingManager manager)
         {
             if (_managers.Count == 0)
@@ -72,45 +83,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
         }
 
-        private static void Current_Exit(object sender, EventArgs e)
-        {
-            AppDomain.CurrentDomain.ProcessExit -= Current_Exit;
-
-            if (_windowHandler != null)
-            {
-                _windowHandler.FocusChanged -= new EventHandler<FocusChangeEventArgs>(WindowFocusChanging);
-                //_windowHandler.Activate -= new EventHandler<WindowActivateEventArgs>(WindowActivating);
-                _windowHandler.Detach();
-                _windowHandler = null;
-            }
-        }
-
-        static void manager_PreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            var focusedElement = e.NewFocus as Visual;
-            if (focusedElement != null &&
-                !(focusedElement is LayoutAnchorableTabItem || focusedElement is LayoutDocumentTabItem))
-              //Avoid tracking focus for elements like this
-            {
-                var parentAnchorable = focusedElement.FindVisualAncestor<LayoutAnchorableControl>();
-                if (parentAnchorable != null)
-                {
-                    _modelFocusedElement[parentAnchorable.Model] = e.NewFocus;
-                }
-                else
-                {
-                    var parentDocument = focusedElement.FindVisualAncestor<LayoutDocumentControl>();
-                    if (parentDocument != null)
-                    {
-                        _modelFocusedElement[parentDocument.Model] = e.NewFocus;
-                    }
-                }
-            }
-        }
-
-        static FullWeakDictionary<ILayoutElement, IInputElement> _modelFocusedElement = new FullWeakDictionary<ILayoutElement, IInputElement>();
-        static WeakDictionary<ILayoutElement, IntPtr> _modelFocusedWindowHandle = new WeakDictionary<ILayoutElement, IntPtr>();
-
         /// <summary>
         /// Get the input element that was focused before user left the layout element
         /// </summary>
@@ -139,7 +111,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
             return IntPtr.Zero;
         }
-        static WeakReference _lastFocusedElement;
 
         /// <summary>
         /// Given a layout element tries to set the focus of the keyword where it was before user moved to another element
@@ -166,10 +137,47 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
         }
 
-        static WindowHookHandler _windowHandler = null;
+    #endregion
 
-        static void WindowFocusChanging(object sender, FocusChangeEventArgs e)
+    #region Private Methods
+
+    private static void Current_Exit( object sender, ExitEventArgs e )
         {
+      Application.Current.Exit -= new ExitEventHandler( Current_Exit );
+      if( _windowHandler != null )
+      {
+        _windowHandler.FocusChanged -= new EventHandler<FocusChangeEventArgs>( WindowFocusChanging );
+        //_windowHandler.Activate -= new EventHandler<WindowActivateEventArgs>(WindowActivating);
+        _windowHandler.Detach();
+        _windowHandler = null;
+      }
+    }
+
+    private static void manager_PreviewGotKeyboardFocus( object sender, KeyboardFocusChangedEventArgs e )
+    {
+      var focusedElement = e.NewFocus as Visual;
+      if( focusedElement != null &&
+          !( focusedElement is LayoutAnchorableTabItem || focusedElement is LayoutDocumentTabItem ) )
+      //Avoid tracking focus for elements like this
+      {
+        var parentAnchorable = focusedElement.FindVisualAncestor<LayoutAnchorableControl>();
+        if( parentAnchorable != null )
+        {
+          _modelFocusedElement[ parentAnchorable.Model ] = e.NewFocus;
+        }
+        else
+        {
+          var parentDocument = focusedElement.FindVisualAncestor<LayoutDocumentControl>();
+          if( parentDocument != null )
+          {
+            _modelFocusedElement[ parentDocument.Model ] = e.NewFocus;
+          }
+        }
+      }
+    }
+
+    private static void WindowFocusChanging( object sender, FocusChangeEventArgs e )
+    {
             foreach (var manager in _managers)
             {
                 var hostContainingFocusedHandle = manager.FindLogicalChildren<HwndHost>().FirstOrDefault(hw => Win32Helper.IsChild(hw.Handle, e.GotFocusWinHandle));
@@ -197,9 +205,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-        static DispatcherOperation _setFocusAsyncOperation;
-
-        static void WindowActivating(object sender, WindowActivateEventArgs e)
+    private static void WindowActivating( object sender, WindowActivateEventArgs e )
         {
             if (Keyboard.FocusedElement == null && 
                 _lastFocusedElement != null && 
@@ -234,9 +240,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-
-        static WeakReference _lastFocusedElementBeforeEnterMenuMode = null;
-        static void InputManager_EnterMenuMode(object sender, EventArgs e)
+    private static void InputManager_EnterMenuMode( object sender, EventArgs e )
         {
             if (Keyboard.FocusedElement == null)
                 return;
@@ -250,7 +254,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
             _lastFocusedElementBeforeEnterMenuMode = new WeakReference(Keyboard.FocusedElement);
         }
-        static void InputManager_LeaveMenuMode(object sender, EventArgs e)
+    private static void InputManager_LeaveMenuMode( object sender, EventArgs e )
         {
             if (_lastFocusedElementBeforeEnterMenuMode != null &&
                 _lastFocusedElementBeforeEnterMenuMode.IsAlive)
@@ -265,6 +269,5 @@ namespace Xceed.Wpf.AvalonDock.Controls
         }
 
         #endregion
-
     }
 }

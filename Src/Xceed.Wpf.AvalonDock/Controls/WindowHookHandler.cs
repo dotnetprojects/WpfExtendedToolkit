@@ -15,20 +15,22 @@
   ***********************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
-    class FocusChangeEventArgs : EventArgs
+  internal class FocusChangeEventArgs : EventArgs
     {
+    #region Constructors
+
         public FocusChangeEventArgs(IntPtr gotFocusWinHandle, IntPtr lostFocusWinHandle)
         {
             GotFocusWinHandle = gotFocusWinHandle;
             LostFocusWinHandle = lostFocusWinHandle;
         }
+
+    #endregion
+
+    #region Properties
 
         public IntPtr GotFocusWinHandle
         {
@@ -40,19 +42,46 @@ namespace Xceed.Wpf.AvalonDock.Controls
             get;
             private set;
         }
+
+    #endregion
     }
 
-    class WindowHookHandler : IDisposable
+    internal class WindowHookHandler : IDisposable
     {
+    #region Members
+
+    private IntPtr _windowHook;
+    private Win32Helper.HookProc _hookProc;
+    private ReentrantFlag _insideActivateEvent = new ReentrantFlag();
+
+    #endregion
+
+    #region Constructors
+
         public WindowHookHandler()
         { 
-            Attach();
+         Attach();
         }
 
         ~WindowHookHandler()
         {
             Dispose(disposing:false);
         }
+
+    #endregion
+
+    #region Public Methods
+
+        public void Attach()
+        {
+            _hookProc = new Win32Helper.HookProc(this.HookProc);
+            _windowHook = Win32Helper.SetWindowsHookEx(
+                Win32Helper.HookType.WH_CBT,
+                _hookProc,
+                IntPtr.Zero,
+                (int)Win32Helper.GetCurrentThreadId());
+        }
+
 
         public void Dispose()
         {
@@ -67,19 +96,6 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
             Detach();
         }
-
-        IntPtr _windowHook;
-        Win32Helper.HookProc _hookProc;
-        private void Attach()
-        {
-            _hookProc = new Win32Helper.HookProc(this.HookProc);
-            _windowHook = Win32Helper.SetWindowsHookEx(
-                Win32Helper.HookType.WH_CBT,
-                _hookProc,
-                IntPtr.Zero,
-                (int)Win32Helper.GetCurrentThreadId());
-        }
-
 
         public void Detach()
         {
@@ -109,10 +125,13 @@ namespace Xceed.Wpf.AvalonDock.Controls
             return Win32Helper.CallNextHookEx(_windowHook, code, wParam, lParam);
         }
 
-        public event EventHandler<FocusChangeEventArgs> FocusChanged;
+    #endregion
 
+    #region Events
+
+        public event EventHandler<FocusChangeEventArgs> FocusChanged;
         //public event EventHandler<WindowActivateEventArgs> Activate;
 
-        ReentrantFlag _insideActivateEvent = new ReentrantFlag();
+    #endregion
     }
 }

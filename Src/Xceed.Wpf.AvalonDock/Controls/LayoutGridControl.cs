@@ -15,21 +15,33 @@
   ***********************************************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Xceed.Wpf.AvalonDock.Layout;
-using System.Diagnostics;
 using System.Windows.Threading;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
     public abstract class LayoutGridControl<T> : Grid, ILayoutControl where T : class, ILayoutPanelElement
     {
+    #region Members
+
+    private LayoutPositionableGroup<T> _model;
+    private Orientation _orientation;
+    private bool _initialized;
+    private ChildrenTreeChange? _asyncRefreshCalled;
+    private ReentrantFlag _fixingChildrenDockLengths = new ReentrantFlag();
+    private Border _resizerGhost = null;
+    private Window _resizerWindowHost = null;
+    private Vector _initialStartPoint;
+
+    #endregion
+
+    #region Constructors
+
         static LayoutGridControl()
         {
         }
@@ -45,36 +57,47 @@ namespace Xceed.Wpf.AvalonDock.Controls
             FlowDirection = System.Windows.FlowDirection.LeftToRight;
         }
 
-        LayoutPositionableGroup<T> _model;
+    #endregion
+
+    #region Properties
+
         public ILayoutElement Model
         {
-            get { return _model; }
+      get
+      {
+        return _model;
         }
-
-        Orientation _orientation;
+    }   
 
         public Orientation Orientation
         {
-            get { return (_model as ILayoutOrientableGroup).Orientation; }
+      get
+      {
+        return ( _model as ILayoutOrientableGroup ).Orientation;
         }
+    } 
 
-        bool _initialized;
-        ChildrenTreeChange? _asyncRefreshCalled;
-
-        bool AsyncRefreshCalled
+    private bool AsyncRefreshCalled
         {
-            get { return _asyncRefreshCalled != null; }
+      get
+      {
+        return _asyncRefreshCalled != null;
+      }
         }
+
+    #endregion
+
+    #region Overrides
 
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
 
             _model.ChildrenTreeChanged += (s, args) =>
-            {
+                {
                   if (args.Change != ChildrenTreeChange.DirectChildrenChanged)
                         return;
-                  if (_asyncRefreshCalled.HasValue &&
+                    if (_asyncRefreshCalled.HasValue &&
                         _asyncRefreshCalled.Value == args.Change)
                         return;
                     _asyncRefreshCalled = args.Change;
@@ -88,8 +111,24 @@ namespace Xceed.Wpf.AvalonDock.Controls
             this.LayoutUpdated += new EventHandler(OnLayoutUpdated);
         }
 
-        void OnLayoutUpdated(object sender, EventArgs e)
+    #endregion
+
+    #region Internal Methods
+
+    protected void FixChildrenDockLengths()
         {
+      using( _fixingChildrenDockLengths.Enter() )
+        OnFixChildrenDockLengths();
+    }
+
+    protected abstract void OnFixChildrenDockLengths();
+
+    #endregion
+
+    #region Private Methods
+
+    private void OnLayoutUpdated( object sender, EventArgs e )
+    {
             var modelWithAtcualSize = _model as ILayoutPositionableElementWithActualSize;
             modelWithAtcualSize.ActualWidth = ActualWidth;
             modelWithAtcualSize.ActualHeight = ActualHeight;
@@ -101,7 +140,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-        void UpdateChildren()
+    private void UpdateChildren()
         {
             var alreadyContainedChildren = Children.OfType<ILayoutControl>().ToArray();
 
@@ -154,7 +193,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-        void OnChildModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private void OnChildModelPropertyChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
         {
             if (AsyncRefreshCalled)
                 return;
@@ -185,8 +224,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-
-        void UpdateRowColDefinitions()
+    private void UpdateRowColDefinitions()
         {
             var root = _model.Root;
             if (root == null)
@@ -289,18 +327,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             #endregion
         }
 
-        ReentrantFlag _fixingChildrenDockLengths = new ReentrantFlag();
-        protected void FixChildrenDockLengths()
-        {
-            using (_fixingChildrenDockLengths.Enter())
-                OnFixChildrenDockLengths();
-        }
-
-        protected abstract void OnFixChildrenDockLengths();
-
-        #region Splitters
-
-        void CreateSplitters()
+    private void CreateSplitters()
         {
             for (int iChild = 1; iChild < Children.Count; iChild++)
             {
@@ -311,7 +338,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-        void DetachOldSplitters()
+    private void DetachOldSplitters()
         {
             foreach (var splitter in Children.OfType<LayoutGridResizerControl>())
             {
@@ -321,7 +348,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-        void AttachNewSplitters()
+    private void AttachNewSplitters()
         {
             foreach (var splitter in Children.OfType<LayoutGridResizerControl>())
             {
@@ -331,13 +358,13 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-        void OnSplitterDragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+    private void OnSplitterDragStarted( object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e )
         {
             var resizer = sender as LayoutGridResizerControl;
             ShowResizerOverlayWindow(resizer);
         }
 
-        void OnSplitterDragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+    private void OnSplitterDragDelta( object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e )
         {
             LayoutGridResizerControl splitter = sender as LayoutGridResizerControl;
             var rootVisual = this.FindVisualTreeRoot() as Visual;
@@ -356,7 +383,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             }
         }
 
-        void OnSplitterDragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+    private void OnSplitterDragCompleted( object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e )
         {
             LayoutGridResizerControl splitter = sender as LayoutGridResizerControl;
             var rootVisual = this.FindVisualTreeRoot() as Visual;
@@ -430,11 +457,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             HideResizerOverlayWindow();
         }
 
-        Border _resizerGhost = null;
-        Window _resizerWindowHost = null;
-        Vector _initialStartPoint;
-
-        FrameworkElement GetNextVisibleChild(int index)
+    private FrameworkElement GetNextVisibleChild( int index )
         {
             for (int i = index + 1; i < InternalChildren.Count; i++)
             {
@@ -456,7 +479,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             return null;
         }
 
-        void ShowResizerOverlayWindow(LayoutGridResizerControl splitter)
+    private void ShowResizerOverlayWindow( LayoutGridResizerControl splitter )
         {
             _resizerGhost = new Border()
             {
@@ -524,7 +547,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             _resizerWindowHost = new Window()
             {
                 SizeToContent = System.Windows.SizeToContent.Manual,
-                ResizeMode = ResizeMode.NoResize,                
+                ResizeMode = ResizeMode.NoResize,
                 WindowStyle = System.Windows.WindowStyle.None,
                 ShowInTaskbar = false,
                 AllowsTransparency = true,
@@ -544,7 +567,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
             _resizerWindowHost.Show();
         }
 
-        void HideResizerOverlayWindow()
+    private  void HideResizerOverlayWindow()
         {
             if (_resizerWindowHost != null)
             {
@@ -554,9 +577,5 @@ namespace Xceed.Wpf.AvalonDock.Controls
         }
 
         #endregion
-
-
-
-
     }
 }
