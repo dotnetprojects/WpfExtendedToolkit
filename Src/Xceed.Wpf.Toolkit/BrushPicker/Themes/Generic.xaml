@@ -237,7 +237,7 @@
                                                  ItemsSource="{Binding AvailableBrushTypes, RelativeSource={RelativeSource TemplatedParent}}">
                                             <ListBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
-                                                    <UniformGrid Rows="1" Columns="4"/>
+                                                    <UniformGrid Rows="1" Columns="5"/>
                                                 </ItemsPanelTemplate>
                                             </ListBox.ItemsPanel>
                                             <ListBox.ItemContainerStyle>
