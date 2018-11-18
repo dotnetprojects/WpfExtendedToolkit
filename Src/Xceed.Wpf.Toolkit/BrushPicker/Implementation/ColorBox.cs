@@ -477,17 +477,17 @@ namespace ColorBox
                 }
                 else if (brush is SolidColorBrush)
                 {
-                    var fbrush = _wpfBrushTypes.First(x => x.Brush == brush);
-                    if (fbrush == null)
+                    var sbrush = (SolidColorBrush) brush;
+                    var fbrush = _wpfBrushTypes.FirstOrDefault(x => ((SolidColorBrush)x.Brush).Color == sbrush.Color);
+                    if (fbrush != null)
                     {
                         c.BrushType = BrushTypes.Predefined;
-                        //c.Color = (brush as SolidColorBrush).Color;
                     }
                     else
                     {
                         c.BrushType = BrushTypes.Solid;
-                        c.Color = (brush as SolidColorBrush).Color;
                     }
+                   c.Color = (brush as SolidColorBrush).Color;
                 }
                 else if (brush is LinearGradientBrush)
                 {
@@ -523,7 +523,7 @@ namespace ColorBox
 
                 c._BrushTypeSetInternally = false;
             }
-        }        
+        }
 
         public Color Color
         {
@@ -572,7 +572,7 @@ namespace ColorBox
 
                     c._RGBSetInternally = false;
                 }
-                
+
                 c.RaiseColorChangedEvent((Color)e.NewValue);
             }
         }
@@ -781,8 +781,10 @@ namespace ColorBox
 
             switch (BrushType)
             {
-                case BrushTypes.Predefined: return;
-                case BrushTypes.None: Brush = null; break;
+                case BrushTypes.Predefined:
+                  break;
+                case BrushTypes.None: Brush = null;
+                  break;
 
                 case BrushTypes.Solid:
                     Brush = new SolidColorBrush(this.Color);
@@ -800,7 +802,7 @@ namespace ColorBox
                     brush.MappingMode = this.MappingMode;
                     brush.SpreadMethod = this.SpreadMethod;
                     Brush = brush;
-                    
+
                     break;
 
                 case BrushTypes.Radial:
@@ -821,7 +823,7 @@ namespace ColorBox
                     break;
             }
 
-            if (this.BrushType != BrushTypes.None)
+            if (this.BrushType != BrushTypes.None && this.BrushType != BrushTypes.Predefined)
             {
                 this.Brush.Opacity = opacity;  // retain old opacity
                 if (tempTG != null)

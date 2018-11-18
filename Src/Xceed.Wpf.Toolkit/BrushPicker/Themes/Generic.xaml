@@ -210,11 +210,17 @@
                                                 </ControlTemplate>
                                             </Setter.Value>
                                         </Setter>
-                                    </Style>
+                                      <Setter Property="IsHitTestVisible" Value="True"/>
+                                      <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=Popup, Path=IsOpen}" Value="True">
+                                          <Setter Property="IsHitTestVisible" Value="False"/>
+                                        </DataTrigger>
+                                      </Style.Triggers>
+                                     </Style>
                                 </ToggleButton.Style>
                             </ToggleButton>
 
-                            <Popup IsOpen="{Binding ElementName=PART_OpenPopup,Path=IsChecked}" StaysOpen="False" AllowsTransparency="True"                                   
+                            <Popup Name="Popup" IsOpen="{Binding ElementName=PART_OpenPopup, Path=IsChecked, Mode=TwoWay}" StaysOpen="False" AllowsTransparency="True"
                                    Width="{Binding ActualWidth, ElementName=PART_Root}"
                                    MinWidth="250"
                                    HorizontalOffset="-1">
