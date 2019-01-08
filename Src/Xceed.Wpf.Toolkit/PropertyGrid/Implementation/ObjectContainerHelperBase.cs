@@ -472,10 +472,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       if( editorElement == null && definitionKeyAsType == null )
         editorElement = this.GenerateCustomEditingElement( propertyItem.PropertyType, propertyItem );
 
-      foreach (var edef in this.PropertyContainer.EditorDefinitions.Where(x => x.HasAttribute != null))
+      if (this.PropertyContainer != null && this.PropertyContainer.EditorDefinitions != null)
       {
-        if (propertyItem.PropertyDescriptor.Attributes.Cast<Attribute>().Any(x => x.GetType() == edef.HasAttribute))
-          return edef.GenerateEditingElementInternal(propertyItem);
+        foreach (var edef in this.PropertyContainer.EditorDefinitions.Where(x => x!= null && x.HasAttribute != null))
+        {
+          if (propertyItem.PropertyDescriptor.Attributes.Cast<Attribute>().Any(x => x.GetType() == edef.HasAttribute))
+            return edef.GenerateEditingElementInternal(propertyItem);
+        }
       }
 
       if( editorElement == null )
