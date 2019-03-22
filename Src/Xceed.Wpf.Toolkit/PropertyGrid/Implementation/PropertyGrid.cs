@@ -1181,11 +1181,8 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
 
 
-      //if( SelectedObject != null )
-      {
-        _containerHelper = new ObjectContainerHelper( this, SelectedObject );
-        ( ( ObjectContainerHelper )_containerHelper ).GenerateProperties();
-      }
+      _containerHelper = new ObjectContainerHelper( this, SelectedObject );
+      ( ( ObjectContainerHelper )_containerHelper ).GenerateProperties();
 
 
       if( _containerHelper != null )

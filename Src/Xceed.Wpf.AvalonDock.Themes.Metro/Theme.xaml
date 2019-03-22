@@ -487,6 +487,8 @@
   </Style>
 
   <Style TargetType="avalonDockControls:AnchorablePaneTitle">
+    <Setter Property="BorderThickness"
+            Value="0,3,0,0"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate>
@@ -578,8 +580,6 @@
                          Value="True">
               <Setter Property="BorderBrush"
                       Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor3}" />
-              <Setter Property="BorderThickness"
-                      Value="0,3,0,0" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Model.IsActive, RelativeSource={RelativeSource Mode=Self}}"
                          Value="True">
@@ -629,7 +629,8 @@
 
   <ControlTemplate x:Key="AvalonDock_ThemeMetro_AnchorSideTemplate"
                    TargetType="{x:Type avalonDockControls:LayoutAnchorSideControl}">
-    <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Children}">
+    <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Children}"
+                  Background="{TemplateBinding Background}">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <StackPanel MinWidth="4"
@@ -1148,15 +1149,19 @@
                                 Grid.Row="1" />
               <ContentPresenter Content="{TemplateBinding RightSidePanel}"
                                 Grid.Column="2"
-                                Grid.Row="1" />
+                                Grid.Row="0"
+                                Grid.RowSpan="3" />
               <ContentPresenter Content="{TemplateBinding LeftSidePanel}"
                                 Grid.Column="0"
-                                Grid.Row="1" />
+                                Grid.Row="0"
+                                Grid.RowSpan="3"/>
               <ContentPresenter Content="{TemplateBinding TopSidePanel}"
-                                Grid.Column="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
                                 Grid.Row="0" />
               <ContentPresenter Content="{TemplateBinding BottomSidePanel}"
-                                Grid.Column="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
                                 Grid.Row="2" />
               <ContentPresenter x:Name="PART_AutoHideArea"
                                 Content="{TemplateBinding AutoHideWindow}"
@@ -1193,7 +1198,7 @@
           <Border Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
                   BorderThickness="{TemplateBinding BorderThickness}">
-            <ContentPresenter Content="{Binding LayoutItem.View, RelativeSource={RelativeSource TemplatedParent}}"
+            <ContentPresenter Content="{Binding LayoutItem.View.Content, RelativeSource={RelativeSource TemplatedParent}}"
                               ContentTemplate="{Binding LayoutItem.View.ContentTemplate, RelativeSource={RelativeSource TemplatedParent}}"
                               ContentTemplateSelector="{Binding LayoutItem.View.ContentTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}" />
           </Border>
@@ -1342,7 +1347,7 @@
               </Border>
               <ContentPresenter Grid.Row="1"
                                 FlowDirection="{TemplateBinding FlowDirection}"
-                                Content="{Binding LayoutItem.View, RelativeSource={RelativeSource TemplatedParent}}" />
+                                Content="{Binding LayoutItem.View.Content, RelativeSource={RelativeSource TemplatedParent}}" />
 
               <!--<ContentPresenter 
                                 Content="{Binding Model.Content, RelativeSource={RelativeSource TemplatedParent}}" 
@@ -1589,7 +1594,7 @@
                 <Border x:Name="Header"
                         Padding="2,0,2,0"
                         TextElement.Foreground="{DynamicResource AvalonDock_ThemeMetro_BaseColor2}"
-                        Background="{DynamicResource AvalonDock_ThemeMetro_BaseColor1}">
+                        Background="{TemplateBinding Background}">
                   <Grid>
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="*" />

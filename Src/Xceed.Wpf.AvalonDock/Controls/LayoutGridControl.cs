@@ -417,8 +417,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
         }
         else
         {
-          var width = ( prevChildModel.DockWidth.IsAuto ) ? prevChildActualSize.Width : prevChildModel.DockWidth.Value;
-          prevChildModel.DockWidth = new GridLength( width + delta, GridUnitType.Pixel );
+          prevChildModel.DockWidth = new GridLength( prevChildModel.DockWidth.Value + delta, GridUnitType.Pixel );
         }
 
         if( nextChildModel.DockWidth.IsStar )
@@ -427,8 +426,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
         }
         else
         {
-          var width = ( nextChildModel.DockWidth.IsAuto ) ? nextChildActualSize.Width : nextChildModel.DockWidth.Value;
-          nextChildModel.DockWidth = new GridLength( width - delta, GridUnitType.Pixel );
+          nextChildModel.DockWidth = new GridLength( nextChildModel.DockWidth.Value - delta, GridUnitType.Pixel );
         }
       }
       else
@@ -439,8 +437,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
         }
         else
         {
-          var height = ( prevChildModel.DockHeight.IsAuto ) ? prevChildActualSize.Height : prevChildModel.DockHeight.Value;
-          prevChildModel.DockHeight = new GridLength( height + delta, GridUnitType.Pixel );
+          prevChildModel.DockHeight = new GridLength( prevChildModel.DockHeight.Value + delta, GridUnitType.Pixel );
         }
 
         if( nextChildModel.DockHeight.IsStar )
@@ -449,8 +446,7 @@ namespace Xceed.Wpf.AvalonDock.Controls
         }
         else
         {
-          var height = ( nextChildModel.DockHeight.IsAuto ) ? nextChildActualSize.Height : nextChildModel.DockHeight.Value;
-          nextChildModel.DockHeight = new GridLength( height - delta, GridUnitType.Pixel );
+          nextChildModel.DockHeight = new GridLength( nextChildModel.DockHeight.Value - delta, GridUnitType.Pixel );
         }
       }
 
