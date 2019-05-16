@@ -22,7 +22,7 @@ namespace Xceed.Wpf.AvalonDock.Themes
   {
     public override Uri GetResourceUri()
     {
-      return new Uri( "/Xceed.Wpf.AvalonDock;component/Themes/generic.xaml", UriKind.Relative );
+      return new Uri("/DotNetProjects.Wpf.AvalonDock;component/Themes/generic.xaml", UriKind.Relative );
     }
   }
 }

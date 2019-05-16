@@ -85,21 +85,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Xceed.Wpf.AvalonDock.Themes.Aero\Xceed.Wpf.AvalonDock.Themes.Aero.csproj">
+    <ProjectReference Include="..\Xceed.Wpf.AvalonDock.Themes.Aero\DotNetProjects.Wpf.AvalonDock.Themes.Aero.csproj">
       <Project>{BA72CCE0-A9FB-4995-B496-7FEC5C87B85B}</Project>
-      <Name>Xceed.Wpf.AvalonDock.Themes.Aero</Name>
+      <Name>DotNetProjects.Wpf.AvalonDock.Themes.Aero</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xceed.Wpf.AvalonDock.Themes.Metro\Xceed.Wpf.AvalonDock.Themes.Metro.csproj">
+    <ProjectReference Include="..\Xceed.Wpf.AvalonDock.Themes.Metro\DotNetProjects.Wpf.AvalonDock.Themes.Metro.csproj">
       <Project>{89286EB4-B4A1-418C-839A-067B00F442D8}</Project>
-      <Name>Xceed.Wpf.AvalonDock.Themes.Metro</Name>
+      <Name>DotNetProjects.Wpf.AvalonDock.Themes.Metro</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xceed.Wpf.AvalonDock.Themes.VS2010\Xceed.Wpf.AvalonDock.Themes.VS2010.csproj">
+    <ProjectReference Include="..\Xceed.Wpf.AvalonDock.Themes.VS2010\DotNetProjects.Wpf.AvalonDock.Themes.VS2010.csproj">
       <Project>{B3FC3E21-5F2D-4581-AEA2-59F671CFFC21}</Project>
-      <Name>Xceed.Wpf.AvalonDock.Themes.VS2010</Name>
+      <Name>DotNetProjects.Wpf.AvalonDock.Themes.VS2010</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj">
+    <ProjectReference Include="..\Xceed.Wpf.AvalonDock\DotNetProjects.Wpf.AvalonDock.csproj">
       <Project>{DB81988F-E0F2-45A0-A1FD-8C37F3D35244}</Project>
-      <Name>Xceed.Wpf.AvalonDock</Name>
+      <Name>DotNetProjects.Wpf.AvalonDock</Name>
     </ProjectReference>
     <ProjectReference Include="..\Xceed.Wpf.Toolkit\DotNetProjects.Wpf.Extended.Toolkit.csproj">
       <Project>{72E591D6-8F83-4D8C-8F67-9C325E623234}</Project>
