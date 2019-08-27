@@ -12,7 +12,7 @@
 WpfExToolkit
 ============
 
-A fork of https://wpftoolkit.codeplex.com/
+A fork of https://wpftoolkit.codeplex.com/ and now (https://github.com/xceedsoftware/wpftoolkit)
 
 AvalonDock
 ----------
@@ -24,7 +24,7 @@ https://www.nuget.org/packages/DotNetProjects.Extended.Wpf.Toolkit/
 
 Info
 ----
-The "Master" Branch will always be synced to the official Codeplex Version.
+The "Master" Branch will always be synced to the official Github Version.
 
 In the "Extended" Branch will be a version with Patches
 
