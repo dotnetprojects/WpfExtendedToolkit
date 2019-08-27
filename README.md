@@ -1,6 +1,12 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/c7mad20yer1iod92/branch/Extended?svg=true)](https://ci.appveyor.com/project/jogibear9988/wpfextoolkit/branch/Extended)
 
-| [![NuGet](https://img.shields.io/nuget/dt/DotNetProjects.Extended.Wpf.Toolkit.svg)](http://nuget.org/packages/DotNetProjects.Extended.Wpf.Toolkit) | DotNetProjects.Extended.Wpf.Toolkit |
+| [![NuGet](https://img.shields.io/nuget/dt/DotNetProjects.Extended.Wpf.Toolkit.svg)](http://nuget.org/packages/DotNetProjects.Extended.Wpf.Toolkit) | Dirkster.AvalonDock |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| [![NuGet](https://img.shields.io/nuget/dt/Dirkster.AvalonDock.Themes.Aero.svg)](http://nuget.org/packages/Dirkster.AvalonDock.Themes.Aero)              | Dirkster.AvalonDock.Themes.Aero            |
+| [![NuGet](https://img.shields.io/nuget/dt/Dirkster.AvalonDock.Themes.Expression.svg)](http://nuget.org/packages/Dirkster.AvalonDock.Themes.Expression)  | Dirkster.AvalonDock.Themes.Expression      |
+| [![NuGet](https://img.shields.io/nuget/dt/Dirkster.AvalonDock.Themes.Metro.svg)](http://nuget.org/packages/Dirkster.AvalonDock.Themes.Metro)            | Dirkster.AvalonDock.Themes.Metro           |
+| [![NuGet](https://img.shields.io/nuget/dt/Dirkster.AvalonDock.Themes.VS2010.svg)](http://nuget.org/packages/Dirkster.AvalonDock.Themes.VS2010)          | Dirkster.AvalonDock.Themes.VS2010 |
+| [![NuGet](https://img.shields.io/nuget/dt/Dirkster.AvalonDock.Themes.VS2013.svg)](http://nuget.org/packages/Dirkster.AvalonDock.Themes.VS2013)          | [Dirkster.AvalonDock.Themes.VS2013](https://github.com/Dirkster99/AvalonDock/wiki/WPF-VS-2013-Dark-Light-Demo-Client) |
 
 
 WpfExToolkit
@@ -10,7 +16,7 @@ A fork of https://wpftoolkit.codeplex.com/
 
 AvalonDock
 ----------
-Remove AvalonDock, it's now maintained by this Branch https://github.com/Dirkster99/AvalonDock
+Removed AvalonDock, it's maintained by Dirkster in this Repo https://github.com/Dirkster99/AvalonDock
 
 NuGet
 -----
