@@ -5,6 +5,10 @@ WpfExToolkit
 
 A fork of https://wpftoolkit.codeplex.com/
 
+AvalonDock
+----------
+Remove AvalonDock, it's now maintained by this Branch https://github.com/Dirkster99/AvalonDock
+
 NuGet
 -----
 https://www.nuget.org/packages/DotNetProjects.Extended.Wpf.Toolkit/

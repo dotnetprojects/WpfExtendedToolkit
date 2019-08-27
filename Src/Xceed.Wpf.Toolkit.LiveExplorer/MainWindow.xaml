@@ -40,7 +40,6 @@
         xmlns:views17="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer.Samples.BusyIndicator.Views"
         xmlns:views18="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer.Samples.Calculator.Views"
         xmlns:views19="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer.Samples.Wizard.Views"
-        xmlns:views20="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer.Samples.AvalonDock.Views"
         xmlns:views21="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer.Samples.Magnifier.Views"
         xmlns:views22="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer.Samples.Pie.Views"
         xmlns:views23="clr-namespace:Xceed.Wpf.Toolkit.LiveExplorer.Samples.Zoombox.Views"
@@ -711,12 +710,10 @@
                                               SampleType="{x:Type samples:MaterialControls.Views.MaterialToolTipView}" />
             </core:LiveExplorerTreeViewItem>
          </core:LiveExplorerTreeViewItem>
-         <core:LiveExplorerTreeViewItem Header="Other"
+      <core:LiveExplorerTreeViewItem Header="Other"
                                         Style="{StaticResource TreeViewHeaderStyle}"
                                         ItemContainerStyle="{StaticResource TreeViewItemStyle}">
-            <core:LiveExplorerTreeViewItem Header="AvalonDock"
-                                           SampleType="{x:Type views20:AvalonDockView}" />
-            <core:LiveExplorerTreeViewItem Header="Magnifier"
+        <core:LiveExplorerTreeViewItem Header="Magnifier"
                                            SampleType="{x:Type views21:MagnifierView}" />
             <core:LiveExplorerTreeViewItem Header="Pie"
                                            ItemContainerStyle="{StaticResource TreeViewItemStyle}"
@@ -742,12 +739,10 @@
          <core:LiveExplorerTreeViewItem Header="Theming"
                                         Style="{StaticResource TreeViewHeaderStyle}"
                                         ItemContainerStyle="{StaticResource TreeViewItemStyle}">
-            <core:LiveExplorerTreeViewItem Header="Toolkit for WPF controls"
+        <core:LiveExplorerTreeViewItem Header="Toolkit for WPF controls"
                                            SampleType="{x:Type views27:ThemingExtendedToolkitView}"
                                            IsPlusOnlyFeature="True" />
-            <core:LiveExplorerTreeViewItem Header="AvalonDock Controls"
-                                           SampleType="{x:Type views27:ThemingAvalonDockView}" />
-            <core:LiveExplorerTreeViewItem Header="Core WPF controls"
+        <core:LiveExplorerTreeViewItem Header="Core WPF controls"
                                            SampleType="{x:Type views27:ThemingCoreWPFView}"
                                            IsPlusOnlyFeature="True" />
             <core:LiveExplorerTreeViewItem Header="Datagrid control"

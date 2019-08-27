@@ -70,9 +70,3 @@ using System.Windows.Markup;
   //(used if a resource is not found in the page, 
   // app, or any theme specific resource dictionaries)
 )]
-
-#pragma warning disable 1699
-[assembly: AssemblyDelaySign( false )]
-[assembly: AssemblyKeyFile( @"..\..\sn.snk" )]
-[assembly: AssemblyKeyName( "" )]
-#pragma warning restore 1699
