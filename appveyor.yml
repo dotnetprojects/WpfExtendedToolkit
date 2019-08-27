@@ -18,30 +18,10 @@ build:
 
 after_build:
   - ps: .\nuget\pack.ps1
-  - ps: .\nuget\pack2.ps1
-  - ps: .\nuget\pack3.ps1
-  - ps: .\nuget\pack4.ps1
-  - ps: .\nuget\pack5.ps1
 
 test: off
 
 artifacts:
-  - path: Src\Xceed.Wpf.AvalonDock\bin\Release\DotNetProjects.Wpf.AvalonDock.dll
-    name: DotNetProjects.Wpf.AvalonDock.dll
-  - path: Src\Xceed.Wpf.AvalonDock\bin\Release\DotNetProjects.Wpf.AvalonDock.pdb
-    name: DotNetProjects.Wpf.AvalonDock.pdb
-  - path: Src\Xceed.Wpf.AvalonDock.Themes.Aero\bin\Release\DotNetProjects.Wpf.AvalonDock.Themes.Aero.dll
-    name: DotNetProjects.Wpf.AvalonDock.Themes.Aero.dll
-  - path: Src\Xceed.Wpf.AvalonDock.Themes.Aero\bin\Release\DotNetProjects.Wpf.AvalonDock.Themes.Aero.pdb
-    name: DotNetProjects.Wpf.AvalonDock.Themes.Aero.pdb
-  - path: Src\Xceed.Wpf.AvalonDock.Themes.Metro\bin\Release\DotNetProjects.Wpf.AvalonDock.Themes.Metro.dll
-    name: DotNetProjects.Wpf.AvalonDock.Themes.Metro.dll
-  - path: Src\Xceed.Wpf.AvalonDock.Themes.Metro\bin\Release\DotNetProjects.Wpf.AvalonDock.Themes.Metro.pdb
-    name: DotNetProjects.Wpf.AvalonDock.Themes.Metro.pdb
-  - path: Src\Xceed.Wpf.AvalonDock.Themes.VS2010\bin\Release\DotNetProjects.Wpf.AvalonDock.Themes.VS2010.dll
-    name: DotNetProjects.Wpf.AvalonDock.Themes.VS2010.dll
-  - path: Src\Xceed.Wpf.AvalonDock.Themes.VS2010\bin\Release\DotNetProjects.Wpf.AvalonDock.Themes.VS2010.pdb
-    name: DotNetProjects.Wpf.AvalonDock.Themes.VS2010.pdb
   - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.dll
     name: DotNetProjects.Wpf.Extended.Toolkit.dll
   - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.pdb
