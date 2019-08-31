@@ -31,11 +31,8 @@ using System.Windows.Markup;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "Xceed Toolkit for WPF" )]
 [assembly: AssemblyDescription("This assembly implements various Windows Presentation Framework controls.")]
 
-[assembly: AssemblyCompany("DotNetProjects")]
-[assembly: AssemblyProduct( "DotNetProjects.Extended.Wpf.Toolkit" )]
 [assembly: AssemblyCopyright( "" )]
 [assembly: AssemblyCulture( "" )]
 

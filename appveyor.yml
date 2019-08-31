@@ -4,6 +4,14 @@ branches:
   only:
     - Extended
 
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}' 
+  assembly_version: '{version}'
+  file_version: '{version}'
+  
 assembly_info:
   patch: true
   file: AssemblyInfo.*
