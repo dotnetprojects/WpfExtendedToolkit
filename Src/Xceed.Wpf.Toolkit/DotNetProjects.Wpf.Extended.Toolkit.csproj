@@ -10,7 +10,7 @@
 	<PackageProjectUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</RepositoryUrl>
 	<RepositoryType>Git</RepositoryType>
-	<PackageLicenseExpression>MSPL</PackageLicenseExpression>
+	<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
 	<Authors>DotNetProjects</Authors>
 	<PackageId>DotNetProjects.Extended.Wpf.Toolkit</PackageId>
   </PropertyGroup>
