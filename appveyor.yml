@@ -1,4 +1,4 @@
-version: 3.2.{build}
+version: 4.5.{build}
 
 branches:
   only:
@@ -15,9 +15,6 @@ configuration: Release
 
 build:
   project: DotNetProjects.Wpf.Extended.Toolkit.sln
-
-after_build:
-  - ps: .\nuget\pack.ps1
 
 test: off
 
