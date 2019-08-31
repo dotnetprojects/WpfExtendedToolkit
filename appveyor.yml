@@ -13,11 +13,13 @@ assembly_info:
 
 configuration: Release
 
-
 image: Visual Studio 2019 Preview
 
 install:
   - cmd: choco install dotnetcore-sdk --pre
+
+before_build:
+  - nuget restore DotNetProjects.Wpf.Extended.Toolkit.sln
   
 build:
   project: DotNetProjects.Wpf.Extended.Toolkit.sln
