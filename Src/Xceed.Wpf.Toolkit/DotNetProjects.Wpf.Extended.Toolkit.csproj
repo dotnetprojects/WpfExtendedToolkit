@@ -2,16 +2,19 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFrameworks>netcoreapp3.0;net4</TargetFrameworks>
-	<UseWPF>true</UseWPF>
-	<SignAssembly>true</SignAssembly>
-	<AssemblyOriginatorKeyFile>sn.snk</AssemblyOriginatorKeyFile>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageProjectUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</RepositoryUrl>
-	<RepositoryType>Git</RepositoryType>
-	<PackageLicenseExpression>MS-PL</PackageLicenseExpression>
-	<Authors>DotNetProjects</Authors>
-	<PackageId>DotNetProjects.Extended.Wpf.Toolkit</PackageId>
+    <UseWPF>true</UseWPF>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>sn.snk</AssemblyOriginatorKeyFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+    <Authors>DotNetProjects</Authors>
+    <PackageId>DotNetProjects.Extended.Wpf.Toolkit</PackageId>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
