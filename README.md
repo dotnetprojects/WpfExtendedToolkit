@@ -9,6 +9,8 @@ WpfExToolkit
 
 A fork of https://wpftoolkit.codeplex.com/ and now (https://github.com/xceedsoftware/wpftoolkit)
 
+But this fork is mantained and Pull Requests and Patches are accepted
+
 AvalonDock
 ----------
 Removed AvalonDock, it's maintained by Dirkster in this Repo https://github.com/Dirkster99/AvalonDock
