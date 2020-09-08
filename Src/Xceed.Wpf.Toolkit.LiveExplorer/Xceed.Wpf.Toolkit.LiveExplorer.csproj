@@ -10,6 +10,12 @@
 	<StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Samples\Zoombox\Resources\ZoomboxProperties.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Samples\Zoombox\Resources\ZoomboxProperties.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Data.Services" />
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="Xceed.Wpf.Samples.SampleData">

@@ -14,9 +14,11 @@
 
   ***********************************************************************************/
 
+using System;
 using System.IO;
 using System.Reflection;
 using System.Resources;
+using System.Windows;
 
 namespace Xceed.Wpf.Toolkit.Core.Utilities
 {
@@ -24,13 +26,7 @@ namespace Xceed.Wpf.Toolkit.Core.Utilities
   {
     internal static Stream LoadResourceStream( Assembly assembly, string resId )
     {
-      string basename = System.IO.Path.GetFileNameWithoutExtension( assembly.ManifestModule.Name ) + ".g";
-      ResourceManager resourceManager = new ResourceManager( basename, assembly );
-
-      // resource names are lower case and contain only forward slashes
-      resId = resId.ToLower();
-      resId = resId.Replace( '\\', '/' );
-      return ( resourceManager.GetObject( resId ) as Stream );
+      return Application.GetResourceStream(new Uri(assembly.GetName().Name + ";component/" + resId, UriKind.RelativeOrAbsolute)).Stream;
     }
   }
 }

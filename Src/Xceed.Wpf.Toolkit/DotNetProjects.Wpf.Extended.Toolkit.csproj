@@ -23,4 +23,12 @@
   <ItemGroup>
     <Resource Include="**\*.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Zoombox\Resources\Zoom.cur" />
+    <None Remove="Zoombox\Resources\ZoomRelative.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Zoombox\Resources\Zoom.cur" />
+    <Resource Include="Zoombox\Resources\ZoomRelative.cur" />
+  </ItemGroup>
 </Project>

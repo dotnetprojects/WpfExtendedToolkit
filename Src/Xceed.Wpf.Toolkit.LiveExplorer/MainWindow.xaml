@@ -472,7 +472,7 @@
          <RowDefinition />
       </Grid.RowDefinitions>
 
-      <Image Source="Resources/toolkitIcon.png"
+      <Rectangle 
              MouseLeftButtonDown="Image_MouseLeftButtonDown"
              RenderOptions.BitmapScalingMode="Fant"
              Width="190"
