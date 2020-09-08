@@ -53,6 +53,13 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid.Attributes
       private set;
     }
 
+    #region TypeId
+
+    public override object TypeId
+      => CategoryValue;
+
+    #endregion TypeId
+
     #endregion
 
     #endregion
