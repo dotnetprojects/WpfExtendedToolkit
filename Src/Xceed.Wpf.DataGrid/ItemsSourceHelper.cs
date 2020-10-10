@@ -20,7 +20,9 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
+#if !NETCOREAPP
 using System.Data.Objects.DataClasses;
+#endif
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -120,11 +122,13 @@ namespace Xceed.Wpf.DataGrid
           || ( typeof( Guid ) == itemType );
     }
 
+#if !NETCOREAPP
     internal static bool IsEntityObjectLoadable( EntityObject entityObject )
     {
       return ( ( entityObject.EntityState & EntityState.Added ) != EntityState.Added )
           && ( ( entityObject.EntityState & EntityState.Detached ) != EntityState.Detached );
     }
+#endif
 
     private static bool IsEntityFramework( Type itemType )
     {
@@ -1881,7 +1885,9 @@ namespace Xceed.Wpf.DataGrid
           && ( propertyType.BaseType.FullName == "System.Data.Objects.DataClasses.RelatedEnd" )
           && ( typeof( IEnumerable ).IsAssignableFrom( propertyType ) ) )
         {
+#if !NETCOREAPP
           detailDescriptions.Add( new EntityDetailDescription( propertyInfo.Name ) );
+#endif
         }
       }
 
@@ -2490,6 +2496,7 @@ namespace Xceed.Wpf.DataGrid
         if( propertyDescriptor == null )
           throw new ArgumentNullException( "propertyDescriptor" );
 
+#if !NETCOREAPP
         var attribute = propertyDescriptor.Attributes[ typeof( EdmScalarPropertyAttribute ) ] as EdmScalarPropertyAttribute;
         if( attribute != null )
         {
@@ -2498,9 +2505,12 @@ namespace Xceed.Wpf.DataGrid
         }
         else
         {
+#endif
           m_isEntityKey = false;
           m_supportDBNull = false;
+#if !NETCOREAPP
         }
+#endif
 
         m_isDisplayable = isDisplayable;
         m_propertyDescriptor = propertyDescriptor;

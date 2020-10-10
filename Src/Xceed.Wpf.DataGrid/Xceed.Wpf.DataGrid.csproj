@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net4</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;net4</TargetFrameworks>
 	<UseWPF>true</UseWPF>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<SignAssembly>true</SignAssembly>
@@ -10,8 +10,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Xceed.Wpf.Toolkit\DotNetProjects.Wpf.Extended.Toolkit.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Data" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net4'">
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data.Entity" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
   </ItemGroup>
 </Project>

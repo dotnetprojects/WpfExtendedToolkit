@@ -14,6 +14,7 @@
 
   ***********************************************************************************/
 
+#if !NETCOREAPP
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -105,3 +106,4 @@ namespace Xceed.Wpf.DataGrid
     }
   }
 }
+#endif

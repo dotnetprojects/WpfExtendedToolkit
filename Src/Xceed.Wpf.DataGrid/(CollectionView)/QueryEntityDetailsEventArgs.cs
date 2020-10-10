@@ -14,6 +14,7 @@
 
   ***********************************************************************************/
 
+#if !NETCOREAPP
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,3 +60,4 @@ namespace Xceed.Wpf.DataGrid
     #endregion Handled Property
   }
 }
+#endif
