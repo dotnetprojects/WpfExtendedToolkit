@@ -68,9 +68,12 @@ namespace Xceed.Wpf.DataGrid
         return true;
 
       var collectionView = source as CollectionView;
-      if( collectionView != null )
-        return ItemsSourceHelper.IsSupportingDBNull( collectionView.SourceCollection );
-
+      if (collectionView != null)
+      {
+        var sourceCollection = collectionView.SourceCollection;
+        if (collectionView != sourceCollection)
+          return ItemsSourceHelper.IsSupportingDBNull(sourceCollection);
+      }
       return false;
     }
 
