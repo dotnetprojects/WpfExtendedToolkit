@@ -9,6 +9,8 @@
 	<PackageProjectUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</RepositoryUrl>
 	<RepositoryType>Git</RepositoryType>
+    <PackageId>DotNetProjects.Extended.Wpf.DataGrid</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xceed.Wpf.Toolkit\DotNetProjects.Wpf.Extended.Toolkit.csproj" />
