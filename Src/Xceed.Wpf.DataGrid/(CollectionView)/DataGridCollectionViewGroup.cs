@@ -943,7 +943,11 @@ namespace Xceed.Wpf.DataGrid
 
       static ObservableCollectionHelper()
       {
+#if !NETCOREAPP
         var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly( new AssemblyName( ObservableCollectionHelper.AssemblyName ), AssemblyBuilderAccess.RunAndCollect );
+#else
+        var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(ObservableCollectionHelper.AssemblyName), AssemblyBuilderAccess.RunAndCollect);
+#endif
         var moduleBuilder = assemblyBuilder.DefineDynamicModule( ObservableCollectionHelper.AssemblyName );
 
         var typeBuilder = moduleBuilder.DefineType( "ObservableCollectionExtractor", TypeAttributes.Class | TypeAttributes.NotPublic | TypeAttributes.AutoLayout, typeof( ObservableCollection<object> ) );

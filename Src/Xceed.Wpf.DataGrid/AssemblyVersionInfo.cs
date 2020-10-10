@@ -14,8 +14,6 @@
 
   ***********************************************************************************/
 
-[assembly: System.Reflection.AssemblyVersion( _XceedVersionInfo.Version )]
-
 internal static class _XceedVersionInfo
 {
   [System.Diagnostics.CodeAnalysis.SuppressMessage( "Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields" )]
