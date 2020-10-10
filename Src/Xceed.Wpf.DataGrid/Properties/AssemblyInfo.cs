@@ -31,13 +31,6 @@ using System.Windows.Markup;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "Xceed Toolkit for WPF - DataGrid" )]
-[assembly: AssemblyDescription( "" )]
-
-[assembly: AssemblyCompany( "DotNetProjects" )]
-[assembly: AssemblyProduct( "DotNetProjects.Wpf.DataGrid" )]
-[assembly: AssemblyCopyright( "" )]
-
 
 [assembly: CLSCompliant( true )]
 [assembly: ComVisible( false )]
