@@ -6,6 +6,9 @@
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<SignAssembly>true</SignAssembly>
 	<AssemblyOriginatorKeyFile>sn.snk</AssemblyOriginatorKeyFile>
+	<PackageProjectUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</RepositoryUrl>
+	<RepositoryType>Git</RepositoryType>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Xceed.Wpf.Toolkit\DotNetProjects.Wpf.Extended.Toolkit.csproj" />

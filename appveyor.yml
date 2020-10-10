@@ -37,6 +37,10 @@ artifacts:
     name: DotNetProjects.Wpf.Extended.Toolkit.dll
   - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.Extended.Toolkit.pdb
     name: DotNetProjects.Wpf.Extended.Toolkit.pdb
+  - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.DataGrid.dll
+    name: DotNetProjects.Wpf.DataGrid.dll
+  - path: Src\Xceed.Wpf.Toolkit\bin\Release\DotNetProjects.Wpf.DataGrid.pdb
+    name: DotNetProjects.Wpf.DataGrid.pdb
   - path: '**\DotNetProjects.*.nupkg'
 
 #uncomment to publish to NuGet
