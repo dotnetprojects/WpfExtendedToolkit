@@ -39,7 +39,7 @@ namespace Xceed.Wpf.Toolkit.Core.Utilities
 
     public static string FormatColorString( string stringToFormat, bool isUsingAlphaChannel )
     {
-      if( !isUsingAlphaChannel && ( stringToFormat.Length == 9 ) )
+      if( !isUsingAlphaChannel && ( stringToFormat.Length == 9 ) && ( stringToFormat[0] == '#' ) )
         return stringToFormat.Remove( 1, 2 );
       return stringToFormat;
     }
