@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -36,7 +36,7 @@ namespace Xceed.Wpf.AvalonDock
 {
   [ContentProperty( "Layout" )]
   [TemplatePart( Name = "PART_AutoHideArea" )]
-  public class DockingManager : Control, IOverlayWindowHost//, ILogicalChildrenContainer
+  public class DockingManager : Control, IOverlayWindowHost, IWeakEventListener//, ILogicalChildrenContainer
   {
     #region Members
 
@@ -82,6 +82,12 @@ namespace Xceed.Wpf.AvalonDock
     #endregion
 
     #region Properties
+
+
+
+
+
+
 
     #region Layout
 
@@ -1981,6 +1987,8 @@ namespace Xceed.Wpf.AvalonDock
     /// <returns>Either a LayoutAnchorableItem or LayoutDocumentItem which contains the LayoutContent passed as argument</returns>
     public LayoutItem GetLayoutItemFromModel( LayoutContent content )
     {
+      if( _layoutItems == null )
+        return null;
       return _layoutItems.FirstOrDefault( item => item.LayoutElement == content );
     }
 
@@ -2079,13 +2087,14 @@ namespace Xceed.Wpf.AvalonDock
         Dispatcher.BeginInvoke( new Action( () =>
         {
            newFW.Show();
+
+          // Do not set the WindowState before showing or it will be lost
+          if( paneForExtensions != null && paneForExtensions.IsMaximized )
+          {
+            newFW.WindowState = WindowState.Maximized;
+          }
         } ), DispatcherPriority.Send );
 
-        // Do not set the WindowState before showing or it will be lost
-        if( paneForExtensions != null && paneForExtensions.IsMaximized )
-        {
-          newFW.WindowState = WindowState.Maximized;
-        }
         return newFW;
       }
 
@@ -2125,6 +2134,9 @@ namespace Xceed.Wpf.AvalonDock
       if( model is LayoutDocument )
       {
         var templateModelView = new LayoutDocumentControl() { Model = model as LayoutDocument };
+
+        templateModelView.SetResourcesFromObject( this );
+
         return templateModelView;
       }
 
@@ -2333,7 +2345,11 @@ namespace Xceed.Wpf.AvalonDock
 
         if( !_insideInternalSetActiveContent )
         {
+#if VS2008
           this.ActiveContent = ( Layout.ActiveContent != null ) ? Layout.ActiveContent.Content : null;
+#else
+          this.SetCurrentValue( DockingManager.ActiveContentProperty, ( Layout.ActiveContent != null ) ? Layout.ActiveContent.Content : null );
+#endif
         }
       }
     }
@@ -2513,7 +2529,9 @@ namespace Xceed.Wpf.AvalonDock
 
       var documentsSourceAsNotifier = documentsSource as INotifyCollectionChanged;
       if( documentsSourceAsNotifier != null )
-        documentsSourceAsNotifier.CollectionChanged += new NotifyCollectionChangedEventHandler( documentsSourceElementsChanged );
+      {
+        CollectionChangedEventManager.AddListener( documentsSourceAsNotifier, this );
+      }
     }
 
     private void documentsSourceElementsChanged( object sender, NotifyCollectionChangedEventArgs e )
@@ -2534,6 +2552,7 @@ namespace Xceed.Wpf.AvalonDock
           var documentsToRemove = Layout.Descendents().OfType<LayoutDocument>().Where( d => e.OldItems.Contains( d.Content ) ).ToArray();
           foreach( var documentToRemove in documentsToRemove )
           {
+            //documentToRemove.Content = null;
             ( documentToRemove.Parent as ILayoutContainer ).RemoveChild(
                 documentToRemove );
             this.RemoveViewFromLogicalChild( documentToRemove );
@@ -2642,7 +2661,9 @@ namespace Xceed.Wpf.AvalonDock
 
       var documentsSourceAsNotifier = documentsSource as INotifyCollectionChanged;
       if( documentsSourceAsNotifier != null )
-        documentsSourceAsNotifier.CollectionChanged -= new NotifyCollectionChangedEventHandler( documentsSourceElementsChanged );
+      {
+        CollectionChangedEventManager.RemoveListener( documentsSourceAsNotifier, this );
+      }
     }
 
     private void Close( LayoutContent contentToClose )
@@ -2749,7 +2770,9 @@ namespace Xceed.Wpf.AvalonDock
 
       var anchorablesSourceAsNotifier = anchorablesSource as INotifyCollectionChanged;
       if( anchorablesSourceAsNotifier != null )
-        anchorablesSourceAsNotifier.CollectionChanged += new NotifyCollectionChangedEventHandler( anchorablesSourceElementsChanged );
+      {
+        CollectionChangedEventManager.AddListener( anchorablesSourceAsNotifier, this );
+      }
     }
 
     private void anchorablesSourceElementsChanged( object sender, NotifyCollectionChangedEventArgs e )
@@ -2892,7 +2915,9 @@ namespace Xceed.Wpf.AvalonDock
 
       var anchorablesSourceAsNotifier = anchorablesSource as INotifyCollectionChanged;
       if( anchorablesSourceAsNotifier != null )
-        anchorablesSourceAsNotifier.CollectionChanged -= new NotifyCollectionChangedEventHandler( anchorablesSourceElementsChanged );
+      {
+        CollectionChangedEventManager.RemoveListener( anchorablesSourceAsNotifier, this );
+      }
     }
 
     private void RemoveViewFromLogicalChild( LayoutContent layoutContent )
@@ -3271,7 +3296,7 @@ namespace Xceed.Wpf.AvalonDock
       return fwc;
     }
 
-    #endregion
+#endregion
 
     #region Events
 
@@ -3337,32 +3362,42 @@ namespace Xceed.Wpf.AvalonDock
       if( _areas != null )
         return _areas;
 
+      var draggingWindowManager = draggingWindow.Model.Root.Manager;
       bool isDraggingDocuments = draggingWindow.Model is LayoutDocumentFloatingWindow;
 
       _areas = new List<IDropArea>();
 
       if( !isDraggingDocuments )
       {
-        _areas.Add( new DropArea<DockingManager>(
-            this,
-            DropAreaType.DockingManager ) );
+        if( draggingWindowManager == this )
+        {
+          _areas.Add( new DropArea<DockingManager>(
+          this,
+          DropAreaType.DockingManager ) );
+        }
 
         foreach( var areaHost in this.FindVisualChildren<LayoutAnchorablePaneControl>() )
         {
           if( areaHost.Model.Descendents().Any() )
           {
-            _areas.Add( new DropArea<LayoutAnchorablePaneControl>(
+            if( draggingWindowManager == areaHost.Model.Root.Manager )
+            {
+              _areas.Add( new DropArea<LayoutAnchorablePaneControl>(
                 areaHost,
                 DropAreaType.AnchorablePane ) );
+            }
           }
         }
       }
 
       foreach( var areaHost in this.FindVisualChildren<LayoutDocumentPaneControl>() )
       {
-        _areas.Add( new DropArea<LayoutDocumentPaneControl>(
+        if( draggingWindowManager == areaHost.Model.Root.Manager )
+        {
+          _areas.Add( new DropArea<LayoutDocumentPaneControl>(
             areaHost,
             DropAreaType.DocumentPane ) );
+        }
       }
 
       foreach( var areaHost in this.FindVisualChildren<LayoutDocumentPaneGroupControl>() )
@@ -3370,13 +3405,47 @@ namespace Xceed.Wpf.AvalonDock
         var documentGroupModel = areaHost.Model as LayoutDocumentPaneGroup;
         if( documentGroupModel.Children.Where( c => c.IsVisible ).Count() == 0 )
         {
-          _areas.Add( new DropArea<LayoutDocumentPaneGroupControl>(
+          if( draggingWindowManager == areaHost.Model.Root.Manager )
+          {
+            _areas.Add( new DropArea<LayoutDocumentPaneGroupControl>(
               areaHost,
               DropAreaType.DocumentPaneGroup ) );
+          }
         }
       }
 
       return _areas;
+    }
+
+    #endregion
+
+    #region IWeakEventListener
+
+    bool IWeakEventListener.ReceiveWeakEvent( Type managerType, object sender, EventArgs e )
+    {
+      return this.OnReceiveWeakEvent( managerType, sender, e );
+    }
+
+    protected virtual bool OnReceiveWeakEvent( Type managerType, object sender, EventArgs e )
+    {
+      if( typeof( CollectionChangedEventManager ) == managerType )
+      {
+        var args = (NotifyCollectionChangedEventArgs)e;
+        if( sender == this.DocumentsSource )
+        {
+          this.documentsSourceElementsChanged( sender, args );
+        }
+        else if( sender == this.AnchorablesSource )
+        {
+          this.anchorablesSourceElementsChanged( sender, args );
+        }
+      }
+      else
+      {
+        return false;
+      }
+
+      return true;
     }
 
     #endregion

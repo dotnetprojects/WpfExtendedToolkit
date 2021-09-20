@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -19,6 +19,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Xceed.Wpf.AvalonDock.Layout;
+using System.Collections;
+using System;
 
 namespace Xceed.Wpf.AvalonDock.Controls
 {
@@ -165,6 +167,34 @@ namespace Xceed.Wpf.AvalonDock.Controls
       base.OnMouseLeftButtonDown( e );
     }
 
+
+    #endregion
+
+    #region Internal Methods
+
+    internal void SetResourcesFromObject( FrameworkElement current )
+    {
+      while( current != null )
+      {
+        if( current.Resources.Count > 0 )
+        {
+          var entries = new DictionaryEntry[ current.Resources.Count ];
+          current.Resources.CopyTo( entries, 0 );
+          entries.ForEach( x =>
+          {
+            try
+            {
+              if( this.Resources[ x.Key ] == null )
+              {
+                this.Resources.Add( x.Key, x.Value );
+              }
+            }
+            catch( Exception ) { }
+          } );
+        }
+        current = current.Parent as FrameworkElement;
+      }
+    }
 
     #endregion
 

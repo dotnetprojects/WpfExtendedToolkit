@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -42,29 +42,29 @@ namespace Xceed.Wpf.AvalonDock.Controls
 
     protected override void OnFixChildrenDockLengths()
     {
-      //if( _model.Orientation == Orientation.Horizontal )
-      //{
-      //  for( int i = 0; i < _model.Children.Count; i++ )
-      //  {
-      //    var childModel = _model.Children[ i ] as ILayoutPositionableElement;
-      //    if( !childModel.DockWidth.IsStar )
-      //    {
-      //      childModel.DockWidth = new GridLength( 1.0, GridUnitType.Star );
-      //    }
-      //  }
-      //}
-      //else
-      //{
-      //  for( int i = 0; i < _model.Children.Count; i++ )
-      //  {
-      //    var childModel = _model.Children[ i ] as ILayoutPositionableElement;
-      //    if( !childModel.DockHeight.IsStar )
-      //    {
-      //      childModel.DockHeight = new GridLength( 1.0, GridUnitType.Star );
-      //    }
-      //  }
-      //}
-     // #endregion
+      if( _model.Orientation == Orientation.Horizontal )
+      {
+        for( int i = 0; i < _model.Children.Count; i++ )
+        {
+          var childModel = _model.Children[ i ] as ILayoutPositionableElement;
+          if( !childModel.DockWidth.IsStar )
+          {
+            childModel.DockWidth = new GridLength( 1.0, GridUnitType.Star );
+          }
+        }
+      }
+      else
+      {
+        for( int i = 0; i < _model.Children.Count; i++ )
+        {
+          var childModel = _model.Children[ i ] as ILayoutPositionableElement;
+          if( !childModel.DockHeight.IsStar )
+          {
+            childModel.DockHeight = new GridLength( 1.0, GridUnitType.Star );
+          }
+        }
+      }
+      // #endregion
     }
 
     #endregion

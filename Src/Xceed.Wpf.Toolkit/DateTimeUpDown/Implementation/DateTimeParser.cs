@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -139,7 +139,13 @@ namespace Xceed.Wpf.Toolkit
             dateParts[ "Year" ] = dateTimeParts[ i ] != "0" ? dateTimeParts[ i ] : "0000";
 
             if( dateParts[ "Year" ].Length == 2 )
-              dateParts[ "Year" ] = string.Format( "{0}{1}", currentDate.Year / 100, dateParts[ "Year" ] );
+            {
+              var yearDigits = int.Parse( dateParts[ "Year" ] );
+              var twoDigitYearMax = cultureInfo.Calendar.TwoDigitYearMax;
+              var hundredDigits = ( yearDigits <= twoDigitYearMax % 100 ) ? twoDigitYearMax / 100 : ( twoDigitYearMax / 100 ) - 1;
+
+              dateParts[ "Year" ] = string.Format( "{0}{1}", hundredDigits, dateParts[ "Year" ] );
+            }
           }
           else if( f.Contains( "hh" ) || f.Contains( "HH" ) )
           {

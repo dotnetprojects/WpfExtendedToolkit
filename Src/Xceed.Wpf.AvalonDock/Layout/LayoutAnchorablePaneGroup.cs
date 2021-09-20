@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -92,14 +92,14 @@ namespace Xceed.Wpf.AvalonDock.Layout
       base.OnDockHeightChanged();
     }
 
-    protected override void OnChildrenCollectionChanged()
-    {
-      if( DockWidth.IsAbsolute && ChildrenCount == 1 )
-        ( ( ILayoutPositionableElement )Children[ 0 ] ).DockWidth = DockWidth;
-      if( DockHeight.IsAbsolute && ChildrenCount == 1 )
-        ( ( ILayoutPositionableElement )Children[ 0 ] ).DockHeight = DockHeight;
-      base.OnChildrenCollectionChanged();
-    }
+    //protected override void OnChildrenCollectionChanged()
+    //{
+      //if( DockWidth.IsAbsolute && ChildrenCount == 1 )
+      //  ( (ILayoutPositionableElement)Children[ 0 ] ).DockWidth = DockWidth;
+      //if( DockHeight.IsAbsolute && ChildrenCount == 1 )
+      //  ( ( ILayoutPositionableElement )Children[ 0 ] ).DockHeight = DockHeight;
+      //base.OnChildrenCollectionChanged();
+    //}
 
     public override void WriteXml( System.Xml.XmlWriter writer )
     {

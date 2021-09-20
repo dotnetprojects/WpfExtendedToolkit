@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -521,7 +521,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #region IsReadOnly
 
-    public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register( "IsReadOnly", typeof( bool ), typeof( PropertyGrid ), new UIPropertyMetadata( false ) );
+    public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register( "IsReadOnly", typeof( bool ), typeof( PropertyGrid ), new UIPropertyMetadata( false, OnIsReadOnlyChanged ) );
     public bool IsReadOnly
     {
       get
@@ -532,6 +532,18 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       {
         SetValue( IsReadOnlyProperty, value );
       }
+    }
+
+    private static void OnIsReadOnlyChanged( DependencyObject o, DependencyPropertyChangedEventArgs e )
+    {
+      var propertyGrid = o as PropertyGrid;
+      if( propertyGrid != null )
+        propertyGrid.OnIsReadOnlyChanged( (bool)e.OldValue, (bool)e.NewValue );
+    }
+
+    protected virtual void OnIsReadOnlyChanged( bool oldValue, bool newValue )
+    {
+      this.UpdateContainerHelper();
     }
 
     #endregion //ReadOnly
@@ -658,6 +670,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     }
 
     #endregion //SelectedObjectName
+
 
 
 
@@ -1025,7 +1038,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         if( ( parentPropertyItem != null ) && parentPropertyItem.IsExpandable )
         {
           //Rebuild Editor for parent propertyItem if one of its sub-propertyItem have changed.
-          this.RebuildEditor( parentPropertyItem );
+          this.RebuildPropertyItemEditor( parentPropertyItem );
         }
       }
     }
@@ -1048,6 +1061,19 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     #endregion //Commands
 
     #region Methods
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1138,24 +1164,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       return null;
     }
 
-    private void RebuildEditor( PropertyItem propertyItem )
+    private void RebuildPropertyItemEditor( PropertyItem propertyItem )
     {
-      ObjectContainerHelperBase objectContainerHelperBase = propertyItem.ContainerHelper as ObjectContainerHelperBase;
-      //Re-build the editor to update this propertyItem
-      FrameworkElement editor = objectContainerHelperBase.GenerateChildrenEditorElement( propertyItem );
-      if( editor != null )
+      if( propertyItem != null )
       {
-        // Tag the editor as generated to know if we should clear it.
-        ContainerHelperBase.SetIsGenerated( editor, true );
-        propertyItem.Editor = editor;
-
-        //Update Source of binding and Validation of PropertyItem to update
-        var be = propertyItem.GetBindingExpression( PropertyItem.ValueProperty );
-        if( be != null )
-        {
-          be.UpdateSource();
-          propertyItem.SetRedInvalidBorder( be );
-        }
+        propertyItem.RebuildEditor();
       }
     }
 
@@ -1163,30 +1176,26 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     {
       // Keep a backup of the template element and initialize the
       // new helper with it.
-      ItemsControl childrenItemsControl = null;
+      ItemsControl childrenItemsControl = ( _containerHelper != null ) ? _containerHelper.ChildrenItemsControl : null;
+      ObjectContainerHelperBase objectContainerHelper = null;
+
+
+      objectContainerHelper = new ObjectContainerHelper( this, SelectedObject );
+      objectContainerHelper.ObjectsGenerated += this.ObjectContainerHelper_ObjectsGenerated;
+      objectContainerHelper.GenerateProperties();
+    }
+
+    private void SetContainerHelper( ContainerHelperBase containerHelper )
+    {
       if( _containerHelper != null )
       {
-        childrenItemsControl = _containerHelper.ChildrenItemsControl;
         _containerHelper.ClearHelper();
-        if( _containerHelper is ObjectContainerHelperBase )
-        {
-          // If the actual AdvancedOptionMenu is the default menu for selected object, 
-          // remove it. Otherwise, it is a custom menu provided by the user.
-          // This "default" menu is only valid for the SelectedObject[s] case. Otherwise, 
-          // it is useless and we must remove it.
-          //var defaultAdvancedMenu = (ContextMenu)this.FindResource( PropertyGrid.SelectedObjectAdvancedOptionsMenuKey );
-          //if( this.AdvancedOptionsMenu == defaultAdvancedMenu )
-          //{
-            this.AdvancedOptionsMenu = null;
-          //}
-        }
       }
+      _containerHelper = containerHelper;
+    }
 
-
-
-      _containerHelper = new ObjectContainerHelper( this, SelectedObject );
-      ( ( ObjectContainerHelper )_containerHelper ).GenerateProperties();
-
+    private void FinalizeUpdateContainerHelper( ItemsControl childrenItemsControl )
+    {
 
       if( _containerHelper != null )
       {
@@ -1254,6 +1263,23 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
 
     #endregion //Methods
 
+    #region Event Handlers
+
+    private void ObjectContainerHelper_ObjectsGenerated( object sender, EventArgs e )
+    {
+      var objectContainerHelper = sender as ObjectContainerHelperBase;
+      if( objectContainerHelper != null )
+      {
+        objectContainerHelper.ObjectsGenerated -= this.ObjectContainerHelper_ObjectsGenerated;
+        this.SetContainerHelper( objectContainerHelper );
+        this.FinalizeUpdateContainerHelper( objectContainerHelper.ChildrenItemsControl );
+
+        RaiseEvent( new RoutedEventArgs( PropertyGrid.PropertiesGeneratedEvent, this ) );
+      }
+    }
+
+    #endregion
+
     #region Events
 
     #region PropertyChanged Event
@@ -1315,6 +1341,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
     public event IsPropertyBrowsableHandler IsPropertyBrowsable;
 
     #endregion
+
 
 
 
@@ -1396,6 +1423,23 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         RemoveHandler( PropertyGrid.ClearPropertyItemEvent, value );
       }
     }
+
+    #region PropertiesGenerated Event
+
+    public static readonly RoutedEvent PropertiesGeneratedEvent = EventManager.RegisterRoutedEvent( "PropertiesGenerated", RoutingStrategy.Bubble, typeof( EventHandler ), typeof( PropertyGrid ) );
+    public event RoutedEventHandler PropertiesGenerated
+    {
+      add
+      {
+        AddHandler( PropertiesGeneratedEvent, value );
+      }
+      remove
+      {
+        RemoveHandler( PropertiesGeneratedEvent, value );
+      }
+    }
+
+    #endregion //PropertiesGenerated Event
 
     /// <summary>
     /// Adds a handler for the ClearPropertyItem attached event
