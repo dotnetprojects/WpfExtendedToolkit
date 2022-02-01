@@ -1,4 +1,4 @@
-version: 4.6.{build}
+version: 5.0.{build}
 
 branches:
   only:
@@ -22,7 +22,7 @@ assembly_info:
 
 configuration: Release
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 before_build:
   - nuget restore DotNetProjects.Wpf.Extended.Toolkit.sln

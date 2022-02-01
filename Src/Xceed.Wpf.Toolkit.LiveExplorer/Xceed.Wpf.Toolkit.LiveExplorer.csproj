@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net4</TargetFrameworks>
+    <TargetFramework>net6.0-windows</TargetFramework>
 	<UseWPF>true</UseWPF>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<SignAssembly>true</SignAssembly>
@@ -24,7 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
-	<Reference Include="System.Data" />
+	  <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
   </ItemGroup>
   <ItemGroup>
