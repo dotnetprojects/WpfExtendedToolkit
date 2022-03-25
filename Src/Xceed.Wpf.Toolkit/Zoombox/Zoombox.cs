@@ -3090,9 +3090,17 @@ namespace Xceed.Wpf.Toolkit.Zoombox
             else if( this.IsUsingScrollBars )
             {
               //Vertical scrollBar
+              if (_verticalScrollBar.ViewportSize == 0)
+              {
+                _verticalScrollBar.ViewportSize = this.RenderSize.Height;
+              }
               _verticalScrollBar.Maximum = scaledContentSize.Height - _verticalScrollBar.ViewportSize;
               _verticalScrollBar.Value = -newRelativePosition.Y;
               //Horizontal scrollBar
+              if (_horizontalScrollBar.ViewportSize == 0)
+              {
+                _horizontalScrollBar.ViewportSize = this.RenderSize.Width;
+              }
               _horizontalScrollBar.Maximum = scaledContentSize.Width - _horizontalScrollBar.ViewportSize;
               _horizontalScrollBar.Value = -newRelativePosition.X;
             }
