@@ -343,7 +343,7 @@ namespace Xceed.Wpf.Toolkit
       }
 
       if( Items.Count > 0 && CurrentPage == null )
-        CurrentPage = Items[ 0 ] as WizardPage;
+        this.SetCurrentValue( Wizard.CurrentPageProperty, Items[ 0 ] as WizardPage );
     }
 
     protected override void OnPropertyChanged( DependencyPropertyChangedEventArgs e )
