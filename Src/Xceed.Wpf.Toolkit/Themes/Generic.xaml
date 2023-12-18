@@ -25,9 +25,8 @@
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="Chromes/Themes/Generic.xaml" />
 
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="BusyIndicator/Themes/Generic.xaml" />
-
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="ButtonSpinner/Themes/Generic.xaml" />
-
+      <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="BrushPicker/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="Calculator/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="CalculatorUpDown/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="Primitives/Themes/Generic/WindowControl.xaml" />
@@ -51,7 +50,7 @@
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="SplitButton/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="PropertyGrid/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="RichTextBoxFormatBar/Themes/Generic.xaml" />
-
+      <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="TokenizedTextBox/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="TimePicker/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="TimeSpanUpDown/Themes/Generic.xaml" />
       <core:VersionResourceDictionary AssemblyName="DotNetProjects.Wpf.Extended.Toolkit" SourcePath="WatermarkComboBox/Themes/Generic.xaml" />

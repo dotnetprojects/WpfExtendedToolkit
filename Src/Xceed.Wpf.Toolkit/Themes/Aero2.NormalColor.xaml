@@ -26,9 +26,7 @@
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Chromes/Themes/Aero2.NormalColor.xaml" />
 
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/BusyIndicator/Themes/Aero2.NormalColor.xaml" />
-
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/ButtonSpinner/Themes/Aero2.NormalColor.xaml" />
-
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Calculator/Themes/Aero2.NormalColor.xaml" />
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/CalculatorUpDown/Themes/Aero2.NormalColor.xaml" />
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/Primitives/Themes/Aero2/WindowControl.xaml" />
@@ -51,8 +49,6 @@
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/RichTextBoxFormatBar/Themes/Aero2.NormalColor.xaml" />
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/SplitButton/Themes/Aero2.NormalColor.xaml" />
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/PropertyGrid/Themes/Aero2.NormalColor.xaml" />
-
-
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/TimePicker/Themes/Aero2.NormalColor.xaml" />
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/TimeSpanUpDown/Themes/Aero2.NormalColor.xaml" />
       <ResourceDictionary Source="/DotNetProjects.Wpf.Extended.Toolkit;component/WatermarkComboBox/Themes/Aero2.NormalColor.xaml" />

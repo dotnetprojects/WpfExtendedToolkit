@@ -6,15 +6,13 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>sn.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <PackageProjectUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dotnetprojects/WpfExtendedToolkit</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
     <Authors>DotNetProjects</Authors>
     <PackageId>DotNetProjects.Extended.Wpf.Toolkit</PackageId>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
     <RootNamespace>Xceed.Wpf.Toolkit</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
