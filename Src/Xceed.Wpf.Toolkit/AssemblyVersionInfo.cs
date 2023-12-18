@@ -1,5 +1,5 @@
 ﻿/*************************************************************************************
-   
+
    Toolkit for WPF
 
    Copyright (C) 2007-2019 Xceed Software Inc.
@@ -13,6 +13,10 @@
    Stay informed: follow @datagrid on Twitter or Like http://facebook.com/datagrids
 
   ***********************************************************************************/
+
+#pragma warning disable 0436
+[assembly: System.Reflection.AssemblyVersion(_XceedVersionInfo.Version)]
+#pragma warning restore 0436
 
 internal static class _XceedVersionInfo
 {
