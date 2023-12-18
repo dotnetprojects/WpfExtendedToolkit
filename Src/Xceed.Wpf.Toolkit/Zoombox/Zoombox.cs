@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -3090,17 +3090,9 @@ namespace Xceed.Wpf.Toolkit.Zoombox
             else if( this.IsUsingScrollBars )
             {
               //Vertical scrollBar
-              if (_verticalScrollBar.ViewportSize == 0)
-              {
-                _verticalScrollBar.ViewportSize = this.RenderSize.Height;
-              }
               _verticalScrollBar.Maximum = scaledContentSize.Height - _verticalScrollBar.ViewportSize;
               _verticalScrollBar.Value = -newRelativePosition.Y;
               //Horizontal scrollBar
-              if (_horizontalScrollBar.ViewportSize == 0)
-              {
-                _horizontalScrollBar.ViewportSize = this.RenderSize.Width;
-              }
               _horizontalScrollBar.Maximum = scaledContentSize.Width - _horizontalScrollBar.ViewportSize;
               _horizontalScrollBar.Value = -newRelativePosition.X;
             }
