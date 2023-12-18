@@ -932,7 +932,7 @@ namespace Xceed.Wpf.Toolkit
       }
 
       // Use this syntax for other themes to get the icons
-      this.ImageSource = new BitmapImage( new Uri( String.Format( "/Xceed.Wpf.Toolkit;component/MessageBox/Icons/{0}", iconName ), UriKind.RelativeOrAbsolute ) );
+      this.ImageSource = new BitmapImage( new Uri($"/DotNetProjects.Wpf.Extended.Toolkit;component/MessageBox/Icons/{iconName}", UriKind.RelativeOrAbsolute ) );
     }
 
     /// <summary>
