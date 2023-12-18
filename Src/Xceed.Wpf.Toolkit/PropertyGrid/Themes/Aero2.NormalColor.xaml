@@ -2,10 +2,10 @@
 
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -323,7 +323,7 @@
   <!-- Style for all internal derived types of NumericUpDown will be done in code-behind -->
   <!-- for external themes to redefine the default style. The reason is that the         -->
   <!-- toolkit.dll uses the InternalsVisibleTo attribute which makes internal data only  -->
-  <!-- available in code-behind(not xaml).                                               -->
+  <!-- available in code-behind (not xaml).                                              -->
   <!-- (ex. Office2007 theme)                                                            -->
   <!-- ===============================================================================   -->
 
@@ -1075,7 +1075,6 @@
             Value="{Binding RelativeSource={RelativeSource Self}, Path=SelectedObject, Converter={StaticResource objectConverter}, ConverterParameter=SelectedObjectName}" />
     <Setter Property="CategoryGroupHeaderTemplate"
             Value="{StaticResource DefaultCategoryGroupHeaderTemplate}"/>
-    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type pg:PropertyGrid}">

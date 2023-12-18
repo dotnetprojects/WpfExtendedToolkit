@@ -2,10 +2,10 @@
 
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md 
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -18,13 +18,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
-using System.Net;
 using System.Windows;
 using System.Windows.Media;
-using Xceed.Wpf.Toolkit.PropertyGrid.Converters;
 
 namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
 {
@@ -41,7 +38,6 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       selectedObject.Boolean = true;
       selectedObject.Byte = ( byte )1;
       selectedObject.Color = Colors.Blue;
-      selectedObject.Brush = new LinearGradientBrush(Colors.Red, Colors.Blue, new Point(0, 0), new Point(1, 1));
       selectedObject.DateTime = System.DateTime.Now;
       selectedObject.Decimal = ( decimal )2;
       selectedObject.Double = (double)3;
@@ -68,14 +64,6 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       selectedObject.UInt16 = (ushort)9;
       selectedObject.UInt32 = (uint)10;
       selectedObject.UInt64 = (ulong)11;
-
-      selectedObject.Char = 'a';
-      selectedObject.Guid = Guid.NewGuid();
-      selectedObject.DoubleCollection = new DoubleCollection(new[] { 1.0, 2.0, 3.0 });
-      selectedObject.Int32Collection = new Int32Collection(new[] { 1, 2, 3 });
-      selectedObject.StringCollection = new StringCollection() {"a"};
-
-      selectedObject.IPAddressFilled = IPAddress.Parse("127.0.0.1");
 
       this.DataContext = selectedObject;
     }
@@ -131,15 +119,9 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Category( "Non-Numeric Editors" )]
       [Description( "This property uses a TimeSpanUpDown as the default editor." )]
       public System.TimeSpan TimeSpan { get; set; }
-        [Category("Non-Numeric Editors")]
-        [Description("This property uses a TimeSpanUpDown as the default editor.")]
-        public System.TimeSpan? NTimeSpan { get; set; }
-            [Category( "Non-Numeric Editors" )]
+      [Category( "Non-Numeric Editors" )]
       [Description( "This property uses a ColorPicker as the default editor." )]
       public System.Windows.Media.Color? Color { get; set; }
-      [Category( "Non-Numeric Editors" )]
-      [Description("This property uses a BrushPicker as the default editor.")]
-      public Brush Brush { get; set; }
       [Category( "Non-Numeric Editors" )]
       [Description( "(C# enum type) This property uses a ComboBox as the default editor. The ComboBox is auto-populated with the enum values." )]
       public HorizontalAlignment Enum { get; set; }
@@ -182,29 +164,6 @@ namespace Xceed.Wpf.Toolkit.LiveExplorer.Samples.PropertyGrid.Views
       [Category( "Non-Numeric Editors" )]
       [Description( "This property is a complex property and has no default editor." )]
       public Person Person { get; set; }
-
-      [Category("Additional")]
-      [Description("")]
-      public Guid? NGuid { get; set; }
-      [Category("Additional")]
-      [Description("")]
-      public char? NChar { get; set; }
-
-      [Category("Additional")]
-      [Description("")]
-      public DoubleCollection DoubleCollection { get; set; }
-
-      [Category("Additional")]
-      [Description("")]
-      public StringCollection StringCollection { get; set; }
-
-      [Category("Additional")]
-      [Description("")]
-      public Int32Collection Int32Collection { get; set; }
-
-      public IPAddress IPAddressEmpty { get; set; }
-
-      public IPAddress IPAddressFilled { get; set; }
     }
 
     public class Person

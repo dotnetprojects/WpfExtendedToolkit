@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -247,7 +247,7 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       this.GenerateSubPropertiesCore( this.UpdatePropertyItemsCallback );
     }
 
-    private void UpdatePropertyItemsCallback( IEnumerable<PropertyItem> subProperties )
+    protected internal virtual void UpdatePropertyItemsCallback( IEnumerable<PropertyItem> subProperties )
     {
       foreach( var propertyItem in subProperties )
       {
@@ -273,6 +273,11 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       if( propertyGrid != null )
       {
         propertyGrid.SelectedPropertyItem = this.DefaultProperty;
+      }
+
+      if( ObjectsGenerated != null )
+      {
+        ObjectsGenerated( this, EventArgs.Empty );
       }
     }
 
@@ -466,18 +471,9 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       if( editorElement == null && definitionKeyAsType == null )
         editorElement = this.GenerateCustomEditingElement( propertyItem.PropertyType, propertyItem );
 
-      if (this.PropertyContainer != null && this.PropertyContainer.EditorDefinitions != null)
-      {
-        foreach (var edef in this.PropertyContainer.EditorDefinitions.Where(x => x!= null && x.HasAttribute != null))
-        {
-          if (propertyItem.PropertyDescriptor.Attributes.Cast<Attribute>().Any(x => x.GetType() == edef.HasAttribute))
-            return edef.GenerateEditingElementInternal(propertyItem);
-        }
-      }
-
       if( editorElement == null )
       {
-        if( pd.IsReadOnly )
+        if( propertyItem.IsReadOnly )
           editor = new TextBlockEditor();
 
         // Fallback: Use a default type editor.
@@ -509,8 +505,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
           def = propertyDefs.GetRecursiveBaseTypes( descriptor.PropertyType );
         }
       }
-
-        
 
       return def;
     }
@@ -566,5 +560,6 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
         || string.Equals( propertyName, PropertyItemCollection.PropertyOrderPropertyName );
     }
 
+    internal event EventHandler ObjectsGenerated;
   }
 }

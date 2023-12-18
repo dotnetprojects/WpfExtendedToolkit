@@ -2,10 +2,10 @@
    
    Toolkit for WPF
 
-   Copyright (C) 2007-2018 Xceed Software Inc.
+   Copyright (C) 2007-2019 Xceed Software Inc.
 
    This program is provided to you under the terms of the Microsoft Public
-   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+   License (Ms-PL) as published at https://github.com/xceedsoftware/wpftoolkit/blob/master/license.md
 
    For more features, controls, and fast professional support,
    pick up the Plus Edition at https://xceed.com/xceed-toolkit-plus-for-wpf/
@@ -140,12 +140,29 @@ namespace Xceed.Wpf.Toolkit.PropertyGrid
       if( categoryValue == null )
         return int.MaxValue;
 
-      object selectedObject = SelectedObject;
-      var orderAttribute = TypeDescriptor.GetAttributes(selectedObject)
-        .OfType<CategoryOrderAttribute>()
-        .FirstOrDefault(a => Equals(a.CategoryValue, categoryValue));
+      int order = int.MaxValue;
+        object selectedObject = SelectedObject;
+        CategoryOrderAttribute[] orderAttributes = ( selectedObject != null )
+          ? ( CategoryOrderAttribute[] )selectedObject.GetType().GetCustomAttributes( typeof( CategoryOrderAttribute ), true )
+          : new CategoryOrderAttribute[ 0 ];
 
-      return orderAttribute?.Order ?? int.MaxValue;
+        var orderAttribute = orderAttributes
+          .FirstOrDefault( ( a ) => object.Equals( a.CategoryValue, categoryValue ) );
+
+        if( orderAttribute != null )
+        {
+          order = orderAttribute.Order;
+        }
+
+      return order;
     }
+
+
+
+
+
+
+
+
   }
 }
