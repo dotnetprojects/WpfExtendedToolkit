@@ -584,7 +584,7 @@ namespace Xceed.Wpf.DataGrid
       var propertyDescription = propertyDescriptionRoute.Current;
       var dataType = propertyDescription.DataType;
 
-      if( !propertyDescription.IsBrowsable || !propertyDescription.IsDisplayable )
+      if( !propertyDescription.IsBrowsable )
         return null;
 
       for( var current = propertyDescriptionRoute; current != null; current = current.Parent )
